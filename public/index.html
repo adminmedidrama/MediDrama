@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>MediDrama - Serial Eksklusif & Studio Founder</title>
 
-  <!-- PWA & Mobile Meta Tags -->
+  <!-- PWA & Mobile Optimization Meta Tags -->
   <meta name="theme-color" content="#0B0D14" />
   <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MediDrama" />
+
+  <!-- Web App Manifest (Standar PWA & PWABuilder Store) -->
+  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22MediDrama%22%2C%22short_name%22%3A%22MediDrama%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230B0D14%22%2C%22theme_color%22%3A%22%230B0D14%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1534447677768-be436bb09401%3Fauto%3Dformat%26fit%3Dcrop%26w%3D512%26q%3D80%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -780,7 +784,7 @@
         <div>
           <label class="block text-xs text-gray-400 mb-1">Poster Cover Film (Rasio 2:3)</label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <input type="url" id="uploadCoverUrl" oninput="window.previewCoverFromUrl(this.value)" placeholder="Tempel Link URL Gambar..." class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
+            <input type="url" id="uploadCoverUrl" oninput="window.previewCoverFromUrl(this.value)" placeholder="Tempel Link URL Cloud (Cloudinary / Supabase)..." class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
             <input type="file" accept="image/*" onchange="window.handleCoverFileSelected(event)" class="text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-gray-800 file:text-white cursor-pointer" />
           </div>
           <div id="coverPreviewContainer" class="hidden mt-2 items-center gap-2">
@@ -825,7 +829,7 @@
         MediDrama adalah platform serial independen karya Founder yang menyajikan hiburan per episode dengan sistem reward koin iklan Google AdSense, Cloud Database Firestore, dan proteksi hak cipta.
       </p>
       <div class="text-[10px] text-gray-500 pt-2 border-t border-gray-800">
-        Versi 3.8.0 • Hak Cipta Dilindungi
+        Versi 3.9.0 • Hak Cipta Dilindungi
       </div>
       <button onclick="window.closeAboutModal()" class="w-full py-2 bg-gray-800 text-white rounded-xl text-xs font-bold">Tutup</button>
     </div>
@@ -954,35 +958,38 @@
       }, 12000);
     };
 
-    // Tombol Back Fisik Android
+    // Tombol Back Fisik Android (Bebas Crash)
     window.setupAndroidBackButtonHandler = function() {
       try {
-        if (window.history.state === null) {
+        if (!window.history.state) {
           window.history.replaceState({ view: 'home' }, '');
         }
       } catch (err) {}
 
-      window.addEventListener('popstate', function() {
-        const openModal = document.querySelector('.fixed.inset-0:not(.hidden)');
-        if (openModal) {
-          openModal.classList.add('hidden');
-          openModal.classList.remove('flex');
-          try { window.history.pushState({ view: currentActiveView }, ''); } catch (e) {}
-          return;
-        }
+      window.addEventListener('popstate', function(event) {
+        try {
+          const openModal = document.querySelector('.fixed.inset-0:not(.hidden)');
+          if (openModal) {
+            openModal.classList.add('hidden');
+            openModal.classList.remove('flex');
+            return;
+          }
 
-        if (currentActiveView !== 'home') {
-          window.switchView('home', false);
-          return;
-        }
+          if (currentActiveView !== 'home') {
+            window.switchView('home', false);
+            return;
+          }
 
-        const currentTime = new Date().getTime();
-        if (currentTime - lastBackPressTime < 2000) {
-          window.history.back();
-        } else {
-          lastBackPressTime = currentTime;
-          window.showToast("Tekan sekali lagi untuk keluar dari aplikasi", "info");
-          try { window.history.pushState({ view: 'home' }, ''); } catch (e) {}
+          const currentTime = Date.now();
+          if (currentTime - lastBackPressTime < 2000) {
+            // Izinkan keluar normal
+          } else {
+            lastBackPressTime = currentTime;
+            window.showToast("Tekan sekali lagi untuk keluar dari aplikasi", "info");
+            try { window.history.pushState({ view: 'home' }, ''); } catch (e) {}
+          }
+        } catch (e) {
+          console.log("Nav guard handled:", e);
         }
       });
     };
@@ -1055,12 +1062,10 @@
         window.bindFirestoreRealtime();
         window.listenFirebaseAuth();
 
-        // Tangani hasil redirect jika browser membatasi popup
         if (firebaseAuth.getRedirectResult) {
           firebaseAuth.getRedirectResult().then(result => {
             if (result && result.user) {
-              const u = result.user;
-              window.processSuccessfulLogin(u);
+              window.processSuccessfulLogin(result.user);
             }
           }).catch(err => console.log("Redirect check:", err));
         }
@@ -1127,7 +1132,6 @@
       });
     };
 
-    // Alur Login Google Fleksibel (Popup + Fallback Redirect)
     window.loginWithGoogle = function() {
       if (!firebaseAuth) {
         window.showToast("Menghubungkan layanan...", "info");
@@ -1137,13 +1141,12 @@
       firebaseAuth.signInWithPopup(provider).then(result => {
         window.processSuccessfulLogin(result.user);
       }).catch(err => {
-        console.warn("Popup blocked or failed, trying redirect...", err);
         if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request') {
           firebaseAuth.signInWithRedirect(provider).catch(() => {
-            window.showToast("Silakan masuk menggunakan opsi Email & Sandi di bawah.", "info");
+            window.showToast("Silakan masuk menggunakan email dan sandi di bawah.", "info");
           });
         } else {
-          window.showToast("Silakan gunakan opsi Masuk Email/Sandi jika peramban membatasi pop-up.", "info");
+          window.showToast("Gunakan opsi Masuk Email/Sandi jika peramban membatasi pop-up.", "info");
         }
       });
     };
@@ -1671,7 +1674,6 @@
       const name = document.getElementById('authNameInput').value.trim() || "Penonton";
       const emLower = email.toLowerCase();
 
-      // Autentikasi Founder
       const isMasterAdmin = (emLower === "adminmedidrama@gmail.com" && (password === "harussukses" || password === "8888")) ||
                             (emLower === "admin@mediadrama.com" && password === "8888");
 
@@ -2140,7 +2142,7 @@
             <input type="text" placeholder="Durasi" value="${duration}" class="ep-duration w-1/2 bg-[#12141D] border border-gray-700 rounded-lg px-2 py-1 text-xs text-gray-300" />
           </div>
         </div>
-        <input type="url" placeholder="Link Video MP4 (https://...)" value="${videoUrl}" class="ep-url w-full bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
+        <input type="url" placeholder="Link Video MP4 Cloud (Supabase / Cloudinary)" value="${videoUrl}" class="ep-url w-full bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
       `;
       container.appendChild(box);
     };
