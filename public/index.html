@@ -1,24 +1,33 @@
+```html
 <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>MediDrama - Serial Eksklusif & Studio Founder</title>
-  
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#0B0D14" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>MediDrama PRO - Nonton Drama Seru</title>
 
-  <!-- Tailwind CSS & Font Awesome -->
+  <!-- Tailwind CSS & FontAwesome Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#0B0D14',
+            brandSurface: '#121520',
+            brandCard: '#161928'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Firebase Web SDK Compat (v10) -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
     * {
@@ -26,9 +35,9 @@
       -webkit-user-select: none;
       user-select: none;
     }
-    input, textarea {
-      -webkit-user-select: text;
-      user-select: text;
+    input, textarea, select {
+      -webkit-user-select: text !important;
+      user-select: text !important;
     }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -37,301 +46,926 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.35); }
+      50% { transform: scale(0.95); }
+      75% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .animate-heart {
+      animation: heartBeat 0.4s ease-in-out;
+    }
   </style>
 </head>
-<body class="bg-[#0B0D14] text-gray-100 min-h-screen pb-24 font-sans select-none antialiased">
 
-  <!-- Header Navigasi -->
-  <header class="sticky top-0 z-40 bg-[#0B0D14]/90 backdrop-blur-md border-b border-gray-800/80 px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 via-rose-500 to-amber-500 p-[2px] shadow-lg shadow-red-900/30">
-        <div class="w-full h-full bg-[#0B0D14] rounded-[10px] flex items-center justify-center font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-400 text-lg">M</div>
-      </div>
-      <div>
-        <h1 class="text-base font-black tracking-wide text-white flex items-center gap-1.5">
-          MediDrama
-          <span class="text-[10px] bg-red-600/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded font-bold">PRO</span>
-        </h1>
-      </div>
+<body class="bg-[#0B0D14] text-gray-100 min-h-screen pb-24 font-sans antialiased overflow-x-hidden selection:bg-red-600 selection:text-white">
+
+  <!-- Dynamic Screen Watermark -->
+  <div id="screenWatermark" class="fixed pointer-events-none z-50 text-[10px] font-mono tracking-widest text-white/10 uppercase select-none transition-all duration-1000">
+    MEDIDRAMA • <span id="watermarkUser">TAMU</span>
+  </div>
+
+  <!-- HEADER NAVBAR -->
+  <header class="sticky top-0 z-40 bg-[#0B0D14]/95 backdrop-blur-xl border-b border-gray-800/80 px-3 sm:px-4 py-2 flex items-center justify-between">
+    <!-- Authentic Logo SVG Sesuai Referensi Gambar Anda -->
+    <div class="flex items-center space-x-2 cursor-pointer" onclick="switchNavTab('home')">
+      <svg class="h-10 sm:h-12 w-auto" viewBox="0 0 340 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="filmRibbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FF1E1E"/>
+            <stop offset="50%" stop-color="#FF5A00"/>
+            <stop offset="100%" stop-color="#FFAA00"/>
+          </linearGradient>
+          <linearGradient id="goldArchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFE885"/>
+            <stop offset="50%" stop-color="#FFBA08"/>
+            <stop offset="100%" stop-color="#D48B00"/>
+          </linearGradient>
+          <linearGradient id="dramaTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FF2A2A"/>
+            <stop offset="100%" stop-color="#FF7A00"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Kaki Kiri Pita Sinematik (M Left Leg) dengan Lubang Rol Klise Film -->
+        <path d="M14 56 C14 56 12 36 22 22 C30 10 38 32 38 32" stroke="url(#filmRibbonGrad)" stroke-width="8.5" stroke-linecap="round"/>
+        <rect x="13.5" y="24" width="2.6" height="2.6" rx="0.6" fill="#FFFFFF" opacity="0.9"/>
+        <rect x="14.5" y="32" width="2.6" height="2.6" rx="0.6" fill="#FFFFFF" opacity="0.9"/>
+        <rect x="16.5" y="40" width="2.6" height="2.6" rx="0.6" fill="#FFFFFF" opacity="0.9"/>
+        <rect x="18.5" y="48" width="2.6" height="2.6" rx="0.6" fill="#FFFFFF" opacity="0.9"/>
+
+        <!-- Tombol Putar Segitiga (Play Button) di Lembah Pita Tengah -->
+        <polygon points="33,25 45,32 33,39" fill="#121520" />
+        <polygon points="34,27 43,32 34,37" fill="#FFAA00" />
+
+        <!-- Lengkungan Emas Pita (M Right Leg) -->
+        <path d="M34 32 C38 18 52 14 58 28 C62 38 52 56 52 56" stroke="url(#goldArchGrad)" stroke-width="8.5" stroke-linecap="round"/>
+
+        <!-- Topeng Drama Ganda Komedi & Tragedi Sesuai Gambar -->
+        <g transform="translate(48, 35) scale(0.68)">
+          <!-- Topeng Komedi Senyum -->
+          <path d="M6 2C2 2 0 5 0 10C0 16 3 20 8 20C13 20 16 16 16 10C16 5 14 2 10 2H6Z" fill="#1A1C29" stroke="#FFAA00" stroke-width="2"/>
+          <circle cx="5" cy="8" r="1.3" fill="#FFE885"/>
+          <circle cx="11" cy="8" r="1.3" fill="#FFE885"/>
+          <path d="M4 13C6 16 10 16 12 13" stroke="#FFE885" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(58, 29) scale(0.68)">
+          <!-- Topeng Tragedi Sedih -->
+          <path d="M6 2C2 2 0 5 0 10C0 16 3 20 8 20C13 20 16 16 16 10C16 5 14 2 10 2H6Z" fill="#1A1C29" stroke="#FF7A00" stroke-width="2"/>
+          <circle cx="5" cy="8" r="1.3" fill="#FF7A00"/>
+          <circle cx="11" cy="8" r="1.3" fill="#FF7A00"/>
+          <path d="M4 15C6 12 10 12 12 15" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+
+        <!-- Tipografi Logo MediDrama -->
+        <text x="78" y="38" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="26" fill="#F0F0F0" letter-spacing="0.5">Medi<tspan fill="url(#dramaTextGrad)">Drama</tspan></text>
+        <text x="79" y="53" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="9.5" fill="#FFFFFF" opacity="0.9" letter-spacing="3">NONTON DRAMA SERU</text>
+      </svg>
     </div>
 
+    <!-- Header Actions -->
     <div class="flex items-center space-x-2">
-      <!-- Tombol Founder: HANYA MUNCUL JIKA LOGIN SEBAGAI FOUNDER -->
-      <button id="adminBtn" onclick="openFounderModal()" class="hidden bg-gradient-to-r from-amber-500 to-red-600 text-[11px] font-bold px-2.5 py-1.5 rounded-lg text-white shadow-md flex items-center gap-1">
-        <i class="fa-solid fa-crown text-[10px]"></i> Studio Founder
+      <!-- Studio Founder Button (Hanya tampil setelah login Super Admin) -->
+      <button id="founderPortalNavBtn" onclick="openFounderModal()" class="hidden bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:opacity-90 text-[11px] font-black px-3 py-1.5 rounded-xl text-white shadow-lg shadow-red-600/30 items-center gap-1.5 transition active:scale-95">
+        <i class="fa-solid fa-crown text-amber-300 text-[10px]"></i>
+        <span class="hidden sm:inline">Studio Founder</span>
       </button>
 
-      <!-- Tombol Masuk / Profil Ringkas -->
-      <div id="navUserBadge" onclick="handleNavAuthClick()" class="cursor-pointer flex items-center space-x-1.5 bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-full hover:border-gray-700 transition">
-        <img id="navAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-6 h-6 rounded-full object-cover border border-amber-500/50" />
-        <span id="navAuthLabel" class="text-xs font-bold text-gray-200">Masuk</span>
+      <!-- Saldo Koin -->
+      <div onclick="switchNavTab('points')" class="cursor-pointer flex items-center gap-1.5 bg-[#161928] hover:bg-[#1f243a] border border-amber-500/40 px-2.5 py-1.5 rounded-xl text-amber-400 text-xs font-bold transition active:scale-95">
+        <span>🪙</span>
+        <span id="navCoinCount">0</span>
       </div>
+
+      <!-- User Auth Slot -->
+      <div id="navUserSlot"></div>
     </div>
   </header>
 
-  <!-- VIEW: BERANDA -->
-  <main id="view-home" class="space-y-6">
-    <!-- Slider Banner Hero -->
-    <div class="relative w-full overflow-hidden bg-black aspect-[16/9] md:aspect-[21/9]">
-      <div id="heroTrack" class="flex transition-transform duration-500 ease-out h-full"></div>
-      
-      <button onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white text-xs hover:bg-black/80">
-        <i class="fa-solid fa-chevron-left"></i>
+  <!-- PENGUMUMAN NOTIFIKASI EPISODE BARU (UNTUK SEMUA PENONTON) -->
+  <div id="broadcastNotificationBox" class="hidden max-w-7xl mx-auto px-3 sm:px-4 pt-2">
+    <div class="bg-gradient-to-r from-red-600/20 via-amber-500/20 to-red-600/20 border border-red-500/40 rounded-xl p-2.5 flex items-center justify-between text-xs animate-pulse">
+      <div class="flex items-center gap-2 truncate">
+        <span class="bg-red-600 text-white font-black text-[9px] px-2 py-0.5 rounded uppercase flex-none">UPDATE SERIAL</span>
+        <span id="broadcastText" class="text-gray-200 font-semibold truncate">Episode baru telah ditambahkan ke serial favorit Anda!</span>
+      </div>
+      <button onclick="dismissBroadcastNotification()" class="text-gray-400 hover:text-white px-2">
+        <i class="fa-solid fa-xmark text-xs"></i>
       </button>
-      <button onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white text-xs hover:bg-black/80">
-        <i class="fa-solid fa-chevron-right"></i>
+    </div>
+  </div>
+
+  <!-- BANNER SPONSOR BERANDA -->
+  <div id="homeSponsorBanner" class="hidden max-w-7xl mx-auto px-3 sm:px-4 pt-2">
+    <div class="bg-gradient-to-r from-amber-500/10 via-red-600/10 to-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 flex items-center justify-between text-xs cursor-pointer hover:border-amber-500/60 transition" onclick="triggerSponsoredAdClick('banner')">
+      <div class="flex items-center gap-2 truncate">
+        <span class="bg-amber-500 text-black font-black text-[9px] px-1.5 py-0.5 rounded uppercase flex-none">Sponsor</span>
+        <span id="homeSponsorTitle" class="text-gray-200 font-semibold truncate">Disponsori oleh Google AdSense & Mitra MediDrama</span>
+      </div>
+      <span class="text-amber-400 font-bold text-[11px] flex items-center gap-1 flex-none">
+        Kunjungi <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+      </span>
+    </div>
+  </div>
+
+  <!-- VIEW 1: BERANDA (HOME) -->
+  <main id="viewHome" class="space-y-4 max-w-7xl mx-auto px-3 sm:px-4 pt-2">
+    <!-- 1. Hero Carousel (Compact) -->
+    <div class="relative w-full overflow-hidden bg-black aspect-[16/8] sm:aspect-[21/8] max-h-[300px] rounded-2xl border border-gray-800">
+      <div id="heroCarouselTrack" class="flex transition-transform duration-700 ease-out h-full"></div>
+
+      <button onclick="prevHeroSlide()" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-600 transition active:scale-90 z-20">
+        <i class="fa-solid fa-chevron-left text-[11px]"></i>
+      </button>
+      <button onclick="nextHeroSlide()" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-red-600 transition active:scale-90 z-20">
+        <i class="fa-solid fa-chevron-right text-[11px]"></i>
       </button>
 
-      <div id="slideDots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10"></div>
+      <div id="heroDotsContainer" class="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center space-x-1.5 z-20"></div>
     </div>
 
-    <!-- Kategori Bar -->
-    <div class="px-4">
-      <div id="categoryChips" class="flex space-x-2 overflow-x-auto no-scrollbar py-1"></div>
-    </div>
-
-    <!-- Bagian Trending -->
-    <section class="px-4 space-y-3">
-      <div class="flex items-center justify-between">
-        <h2 class="text-sm font-bold tracking-wide flex items-center gap-2">
-          <span class="w-1.5 h-4 bg-amber-500 rounded-full"></span> Lagi Trending Hari Ini
-        </h2>
-        <span class="text-xs text-amber-400 font-semibold flex items-center gap-1">
-          <i class="fa-solid fa-fire text-xs"></i> Populer
+    <!-- 2. Category Chips Bar -->
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+          <i class="fa-solid fa-tags text-red-500 text-[10px]"></i> Kategori Serial
         </span>
       </div>
-      <div id="trendingList" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1"></div>
+      <div id="categoryChipsList" class="flex space-x-2 overflow-x-auto no-scrollbar py-1"></div>
+    </div>
+
+    <!-- 3. Trending Row -->
+    <section class="space-y-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-3.5 bg-amber-500 rounded-full"></span>
+          <h2 class="text-xs sm:text-sm font-black tracking-wide text-white flex items-center gap-1.5">
+            Lagi Trending Hari Ini
+            <span class="text-[9px] bg-amber-500/20 text-amber-400 border border-amber-500/30 px-1 py-0.2 rounded font-black">TOP</span>
+          </h2>
+        </div>
+        <span class="text-[11px] text-amber-400 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-fire text-[10px]"></i> Populer
+        </span>
+      </div>
+      <div id="trendingContainer" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1 pt-0.5"></div>
     </section>
 
-    <!-- Daftar Katalog Serial Eksklusif -->
-    <section class="px-4 space-y-3">
+    <!-- 4. Rekomendasi Sesuai Gender Penonton -->
+    <section id="genderRecommendationSection" class="hidden space-y-2">
       <div class="flex items-center justify-between">
-        <h2 class="text-sm font-bold tracking-wide flex items-center gap-2">
-          <span class="w-1.5 h-4 bg-red-600 rounded-full"></span> Eksklusif MediDrama
-        </h2>
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-3.5 bg-rose-500 rounded-full"></span>
+          <h2 class="text-xs sm:text-sm font-black tracking-wide text-white flex items-center gap-1.5">
+            Rekomendasi Spesial Untukmu
+            <span id="genderBadgeTag" class="text-[9px] bg-rose-500/20 text-rose-300 border border-rose-500/30 px-1 py-0.2 rounded font-bold">Pilihan</span>
+          </h2>
+        </div>
+        <span class="text-[11px] text-gray-400">Dipilih khusus</span>
       </div>
-      <div id="catalogGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      <div id="genderRecommendationRow" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1 pt-0.5"></div>
+    </section>
+
+    <!-- 5. Catalog Grid -->
+    <section class="space-y-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-3.5 bg-red-600 rounded-full"></span>
+          <h2 class="text-xs sm:text-sm font-black tracking-wide text-white">Eksklusif MediDrama</h2>
+        </div>
+        <span id="catalogCountBadge" class="text-[11px] text-gray-400 font-semibold">0 Serial</span>
+      </div>
+      <div id="catalogGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 sm:gap-3.5"></div>
     </section>
   </main>
 
-  <!-- VIEW: PROFIL USER -->
-  <main id="view-profile" class="hidden px-4 py-5 space-y-6">
-    <div class="bg-[#121520] border border-gray-800/80 rounded-2xl p-5 relative overflow-hidden">
-      <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-red-600/10 rounded-full blur-2xl"></div>
-      
-      <div class="flex items-start space-x-4">
-        <div class="relative flex-shrink-0">
-          <img id="profileImagePreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-16 h-16 rounded-full object-cover border-2 border-amber-500 shadow-md" />
-          <label for="avatarInput" class="absolute bottom-0 right-0 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-[10px] cursor-pointer shadow hover:bg-red-500 text-white">
+  <!-- VIEW 2: POIN & KOIN -->
+  <main id="viewPoints" class="hidden px-4 py-5 space-y-4 max-w-xl mx-auto">
+    <div class="bg-gradient-to-br from-[#1A1829] to-[#121520] border border-amber-500/30 rounded-2xl p-5 text-center space-y-3 relative overflow-hidden shadow-2xl">
+      <div class="absolute -right-12 -top-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+      <span class="inline-block text-3xl">🪙</span>
+      <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Saldo Koin MediDrama</h2>
+      <div class="text-3xl font-black text-amber-400"><span id="pointsPageCoinCount">0</span> <span class="text-sm font-semibold text-gray-300">Koin</span></div>
+      <p class="text-xs text-gray-400 max-w-xs mx-auto">Gunakan koin untuk membuka episode serial premium favorit Anda tanpa jeda.</p>
+      <div class="pt-2 flex justify-center gap-2">
+        <button onclick="claimDailyRewardCoins()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-black text-xs rounded-xl shadow-lg active:scale-95 transition">
+          <i class="fa-solid fa-gift mr-1"></i> Klaim Bonus Harian (+20 Koin)
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 3: FAVORIT SAYA -->
+  <main id="viewFavorites" class="hidden px-4 py-5 space-y-4 max-w-xl mx-auto">
+    <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+      <h3 class="text-sm font-black text-white flex items-center gap-1.5">
+        <i class="fa-solid fa-heart text-red-500"></i> Serial Favorit Saya (<span id="favsPageCount">0</span>)
+      </h3>
+    </div>
+    <div id="favoritesFullContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+  </main>
+
+  <!-- VIEW 4: TERAKHIR DILIHAT (RIWAYAT) -->
+  <main id="viewHistory" class="hidden px-4 py-5 space-y-4 max-w-xl mx-auto">
+    <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+      <h3 class="text-sm font-black text-white flex items-center gap-1.5">
+        <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Terakhir Dilihat (<span id="historyPageCount">0</span>)
+      </h3>
+    </div>
+    <div id="historyFullContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5"></div>
+  </main>
+
+  <!-- VIEW 5: PROFIL USER (DENGAN TAMPILAN GENDER COWOK / CEWEK) -->
+  <main id="viewProfile" class="hidden px-4 py-5 space-y-5 max-w-xl mx-auto">
+    <div class="bg-[#161928] border border-gray-800 rounded-2xl p-5 relative overflow-hidden shadow-2xl space-y-4">
+      <div class="flex items-start sm:items-center space-x-4">
+        <!-- Avatar with in-browser WebP compressor -->
+        <div class="relative flex-none">
+          <img id="profileCardAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80" alt="Avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-red-500 shadow-xl" />
+          <label for="avatarCompressorInput" class="absolute -bottom-1 -right-1 w-7 h-7 bg-red-600 hover:bg-red-500 text-white rounded-xl flex items-center justify-center text-xs shadow-lg cursor-pointer border border-[#161928] active:scale-90 transition" title="Ganti Foto Profil">
             <i class="fa-solid fa-camera"></i>
           </label>
-          <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="compressAndUploadAvatar(event)" />
+          <input type="file" id="avatarCompressorInput" accept="image/*" class="hidden" onchange="handleProfileAvatarCompress(event)" />
         </div>
 
-        <div class="flex-1 space-y-1">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5">
-              <input id="profileNameInput" type="text" value="Tamu" onchange="updateProfileName(this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-white font-bold text-base outline-none w-36 px-1" />
+        <div class="flex-1 min-w-0 space-y-1">
+          <div class="flex items-center justify-between gap-1">
+            <div class="flex items-center gap-1.5 flex-1 min-w-0">
+              <input id="profileNameInput" type="text" value="Tamu" onchange="saveUserName(this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-white font-black text-base outline-none w-36 sm:w-44 px-1 truncate" title="Klik untuk ubah nama" />
               <i class="fa-solid fa-pen-to-square text-xs text-gray-400"></i>
             </div>
-            <span id="userRoleBadge" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300 font-bold">Tamu</span>
+            <span id="userRoleBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-gray-800 text-gray-300 border border-gray-700 uppercase flex-none">
+              Tamu
+            </span>
           </div>
 
-          <p id="profileEmail" class="text-xs text-gray-400">Belum masuk</p>
-          
-          <div class="flex items-center gap-2 pt-2">
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
-              <i class="fa-solid fa-coins"></i> <span id="profileCoins">0</span> Koin
-            </div>
-            <button id="authActionBtn" onclick="openAuthModal()" class="text-xs bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1 rounded-full shadow">
+          <p id="profileCardEmail" class="text-xs text-gray-400 truncate">Belum masuk akun</p>
+          <p id="profileCardPhone" class="text-[11px] text-gray-500 truncate">No. HP: -</p>
+
+          <div class="mt-2 flex items-center gap-2">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
+              🪙 <span id="profileCardCoin">0</span> Koin
+            </span>
+            <button id="profileAuthActionBtn" onclick="openAuthModal()" class="text-[11px] text-gray-300 bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-xl border border-gray-700 transition">
               Masuk / Daftar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pengaturan Jenis Kelamin (Gender Cowok/Cewek untuk Rekomendasi Film) -->
+      <div class="pt-3 border-t border-gray-800">
+        <label class="block text-xs font-bold text-gray-300 mb-1.5 flex items-center gap-1.5">
+          <i class="fa-solid fa-venus-mars text-rose-400"></i> Jenis Kelamin (Untuk Personalisasi Rekomendasi Film)
+        </label>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button type="button" id="genderBtnMale" onclick="saveUserGender('Laki-laki')" class="py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-300 flex items-center justify-center gap-2 transition hover:border-blue-500">
+            <i class="fa-solid fa-mars text-blue-400"></i> Cowok (Laki-laki)
+          </button>
+          <button type="button" id="genderBtnFemale" onclick="saveUserGender('Perempuan')" class="py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-300 flex items-center justify-center gap-2 transition hover:border-pink-500">
+            <i class="fa-solid fa-venus text-pink-400"></i> Cewek (Perempuan)
+          </button>
+        </div>
+        <p class="text-[10px] text-gray-500 mt-1">Kami menggunakan preferensi ini untuk merekomendasikan serial drama terbaik di beranda Anda.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- TIKTOK / REELS VERTICAL IN-APP THEATER PLAYER (FULL SCREEN) -->
+  <div id="playerModal" class="hidden fixed inset-0 z-50 bg-black flex flex-col justify-between overflow-hidden">
+    <!-- Top Bar Overlay -->
+    <div class="absolute top-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-b from-black/80 via-black/30 to-transparent flex items-center justify-between z-30">
+      <button onclick="closePlayerModal()" class="flex items-center gap-2 text-xs font-bold text-gray-200 hover:text-white bg-black/50 px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/20 active:scale-95 transition">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+      </button>
+
+      <div class="text-center truncate px-2">
+        <h3 id="playerModalTitle" class="text-xs sm:text-sm font-black text-white truncate max-w-[180px] sm:max-w-xs">Judul Serial</h3>
+        <span id="playerModalEpBadge" class="text-[10px] text-amber-400 font-semibold">Episode 1</span>
+      </div>
+
+      <div class="flex items-center gap-1.5 text-xs text-amber-400 font-bold bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-amber-500/30">
+        🪙 <span id="playerCoinStatus">0</span>
+      </div>
+    </div>
+
+    <!-- Video Element (Full screen 9:16 portrait style) -->
+    <div class="relative w-full h-full flex items-center justify-center bg-black cursor-pointer" onclick="togglePlayPause()">
+      <video id="mainVideoPlayer" playsinline loop class="w-full h-full object-cover sm:object-contain bg-black">
+        <source src="" type="video/mp4" />
+      </video>
+
+      <!-- Center Play/Pause indicator -->
+      <div id="playerCenterPlayIcon" class="hidden absolute w-16 h-16 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white text-2xl pointer-events-none transition">
+        <i class="fa-solid fa-play ml-1"></i>
+      </div>
+
+      <!-- Overlay Iklan Video Sponsor (Pre-roll Interstitial) -->
+      <div id="videoAdOverlay" class="hidden absolute inset-0 z-40 bg-black/95 flex flex-col items-center justify-center p-4">
+        <div class="max-w-md w-full bg-[#121520] border border-amber-500/40 rounded-2xl p-4 text-center space-y-3 relative shadow-2xl">
+          <span class="bg-amber-500 text-black font-black text-[10px] px-2 py-0.5 rounded uppercase">Iklan Sponsor</span>
+          <h4 id="videoAdHeadline" class="text-sm font-bold text-white">Disponsori oleh Mitra MediDrama</h4>
+          <div class="relative aspect-video rounded-xl overflow-hidden bg-black border border-gray-800">
+            <video id="sponsorVideoPlayer" playsinline class="w-full h-full object-cover">
+              <source src="" type="video/mp4" />
+            </video>
+          </div>
+          <div class="flex items-center justify-between pt-2">
+            <button onclick="triggerSponsoredAdClick('video')" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs rounded-xl shadow">
+              Kunjungi Sponsor <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+            </button>
+            <button id="skipAdBtn" onclick="skipSponsorVideoAd()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-semibold rounded-xl transition">
+              Lewati (<span id="adCountdownNum">5</span>s)
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tab Favorit & Disukai -->
-    <div class="space-y-3">
-      <div class="flex border-b border-gray-800 text-sm font-bold">
-        <button onclick="switchProfileTab('fav')" id="tabFavBtn" class="pb-2 border-b-2 border-red-500 text-white flex-1 text-center">
-          <i class="fa-solid fa-heart text-red-500 mr-1"></i> Disukai & Favorit
+    <!-- Right-Side Floating Action Bar (TikTok / Reels Style) -->
+    <div class="absolute right-3.5 bottom-24 flex flex-col items-center space-y-4 z-30">
+      <!-- Love Button -->
+      <button onclick="toggleVideoLove()" class="flex flex-col items-center text-white group active:scale-90 transition">
+        <div id="playerLoveIconWrap" class="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-red-500 text-lg shadow-lg group-hover:scale-105 transition">
+          <i id="playerModalFavIcon" class="fa-regular fa-heart"></i>
+        </div>
+        <span id="playerLoveCount" class="text-[10px] font-bold mt-1 text-gray-200">1.2K</span>
+      </button>
+
+      <!-- Episode Switcher Button -->
+      <button onclick="openEpisodeDrawer()" class="flex flex-col items-center text-white group active:scale-90 transition">
+        <div class="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-amber-400 text-base shadow-lg group-hover:scale-105 transition">
+          <i class="fa-solid fa-list-ol"></i>
+        </div>
+        <span class="text-[10px] font-bold mt-1 text-gray-200">Episode</span>
+      </button>
+
+      <!-- Share Button -->
+      <button onclick="shareActiveDrama()" class="flex flex-col items-center text-white group active:scale-90 transition">
+        <div class="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-sky-400 text-base shadow-lg group-hover:scale-105 transition">
+          <i class="fa-solid fa-share"></i>
+        </div>
+        <span class="text-[10px] font-bold mt-1 text-gray-200">Bagi</span>
+      </button>
+
+      <!-- 3-Dots Menu Button -->
+      <button onclick="togglePlayerSettingsMenu()" class="flex flex-col items-center text-white group active:scale-90 transition">
+        <div class="w-11 h-11 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-gray-300 text-base shadow-lg group-hover:scale-105 transition">
+          <i class="fa-solid fa-ellipsis"></i>
+        </div>
+        <span class="text-[10px] font-bold mt-1 text-gray-200">Menu</span>
+      </button>
+    </div>
+
+    <!-- Bottom Metadata Description -->
+    <div class="absolute bottom-4 left-3 right-16 z-30 space-y-1 pointer-events-none">
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-black text-white drop-shadow">@MediDramaOriginal</span>
+        <span id="playerMetaStatusBadge" class="text-[9px] bg-red-600 text-white font-bold px-1.5 py-0.2 rounded uppercase">Ongoing</span>
+      </div>
+      <p id="playerMetaDesc" class="text-[11px] text-gray-300 line-clamp-2 drop-shadow">Sinopsis serial eksklusif MediDrama.</p>
+    </div>
+
+    <!-- Episode Drawer (Bottom Slide) -->
+    <div id="episodeDrawer" class="hidden absolute inset-x-0 bottom-0 max-h-[50vh] bg-[#121522]/95 backdrop-blur-xl border-t border-gray-800 p-4 rounded-t-3xl z-40 space-y-3 overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+        <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-layer-group text-red-500"></i> Pilih Episode
+        </h4>
+        <button onclick="closeEpisodeDrawer()" class="text-gray-400 hover:text-white text-base">
+          <i class="fa-solid fa-xmark"></i>
         </button>
-        <button onclick="switchProfileTab('history')" id="tabHistBtn" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
-          <i class="fa-solid fa-clock-rotate-left mr-1"></i> Riwayat Tonton
+      </div>
+      <div id="playerEpisodesRow" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
+    </div>
+
+    <!-- 3-Dots Settings Popup -->
+    <div id="playerSettingsMenu" class="hidden absolute right-16 bottom-24 w-52 bg-[#121522]/95 backdrop-blur-xl border border-gray-700 p-3 rounded-2xl z-40 space-y-2.5 shadow-2xl text-xs">
+      <div class="flex items-center justify-between pb-1.5 border-b border-gray-800">
+        <span class="font-bold text-white">Pengaturan Putar</span>
+        <button onclick="togglePlayerSettingsMenu()" class="text-gray-400 hover:text-white">&times;</button>
+      </div>
+      <div>
+        <label class="block text-[10px] text-gray-400 mb-1">Kecepatan Video</label>
+        <div class="grid grid-cols-5 gap-1 text-[10px] font-bold text-center">
+          <button onclick="setPlaySpeed(0.75)" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300">0.75x</button>
+          <button onclick="setPlaySpeed(1.0)" class="p-1 rounded bg-red-600 text-white">1.0x</button>
+          <button onclick="setPlaySpeed(1.25)" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300">1.25x</button>
+          <button onclick="setPlaySpeed(1.5)" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300">1.5x</button>
+          <button onclick="setPlaySpeed(2.0)" class="p-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300">2.0x</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between pt-1">
+        <span class="text-gray-300">Ulang Otomatis (Loop)</span>
+        <input type="checkbox" id="playerLoopCheck" checked onchange="toggleLoopVideo(this.checked)" class="accent-red-600" />
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STUDIO FOUNDER (4 TABS LENGKAP) -->
+  <div id="founderModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-[#0F111A] border border-red-600/40 rounded-2xl w-full max-w-4xl max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Header -->
+      <div class="p-3.5 sm:p-4 border-b border-gray-800 flex items-center justify-between bg-[#141622]">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs font-bold shadow">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-white">Control Panel Studio Founder & Firebase Cloud</h2>
+            <span class="text-[10px] text-gray-400 font-mono">Proyek: <strong class="text-amber-400">medidrama-bd5a2</strong></span>
+          </div>
+        </div>
+        <button onclick="closeFounderModal()" class="text-gray-400 hover:text-white text-base p-1">
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div id="favoriteList" class="grid grid-cols-2 gap-3 pt-2"></div>
-      <div id="historyList" class="hidden grid grid-cols-2 gap-3 pt-2"></div>
-    </div>
-  </main>
+      <!-- 4 Tabs Navigasi Founder -->
+      <div class="flex border-b border-gray-800 bg-[#0B0D14] px-3 overflow-x-auto no-scrollbar">
+        <button id="adminTabMoviesBtn" onclick="switchFounderTab('movies')" class="py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 transition flex-none">
+          <i class="fa-solid fa-film"></i> Manajemen Serial Film ( <span id="statTotalMovies">0</span> )
+        </button>
+        <button id="adminTabUsersBtn" onclick="switchFounderTab('users')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
+          <i class="fa-solid fa-users"></i> Pemantauan Penonton ( <span id="statRegisteredUsersBadge">0</span> )
+        </button>
+        <button id="adminTabFirebaseBtn" onclick="switchFounderTab('firebase')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
+          <i class="fa-solid fa-fire text-amber-500"></i> Koneksi Firebase Cloud
+        </button>
+        <button id="adminTabAdsBtn" onclick="switchFounderTab('ads')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
+          <i class="fa-solid fa-rectangle-ad"></i> Pengaturan Iklan & AdSense
+        </button>
+      </div>
 
-  <!-- MODAL: LOGIN / DAFTAR AKUN USER -->
-  <div id="authModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-sm p-6 space-y-4 relative">
+      <!-- TAB 1: MANAJEMEN SERIAL FILM (DENGAN TOMBOL EDIT & TAMBAH EPISODE) -->
+      <div id="founderMoviesTabContent" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white">Daftar Serial Film Tersimpan</h3>
+            <p class="text-xs text-gray-400">Total <span id="statTotalEpisodes" class="text-amber-400 font-bold">0</span> episode aktif di katalog koleksi <code class="text-amber-300">movies</code>.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="openUploadVideoModal()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-plus"></i> Upload Serial & Episode Baru
+            </button>
+            <button onclick="exportDatabaseJSON()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold flex items-center gap-1 transition">
+              <i class="fa-solid fa-download"></i> Ekspor JSON
+            </button>
+            <label class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-amber-400 rounded-xl text-xs font-semibold flex items-center gap-1 cursor-pointer transition">
+              <i class="fa-solid fa-upload"></i> Restore JSON
+              <input type="file" accept=".json" onchange="restoreDatabaseJSON(event)" class="hidden" />
+            </label>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto border border-gray-800 rounded-xl">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#141622] text-gray-400 border-b border-gray-800">
+              <tr>
+                <th class="p-3">Cover & Judul</th>
+                <th class="p-3">Kategori</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Episode</th>
+                <th class="p-3 text-right">Tindakan, Edit & Promosi</th>
+              </tr>
+            </thead>
+            <tbody id="founderMoviesTableBody" class="divide-y divide-gray-800/80 text-gray-300"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 2: PEMANTAUAN PENONTON (DENGAN AKSES HAPUS USER & INFO GENDER) -->
+      <div id="founderUsersTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white">Buku Induk Pendaftaran Pengguna</h3>
+            <p class="text-xs text-gray-400">Sinkronisasi langsung dengan Firebase Cloud Firestore koleksi <code class="text-emerald-400">users</code>.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openCreateUserModal()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-xs font-bold text-white rounded-xl shadow flex items-center gap-1.5">
+              <i class="fa-solid fa-user-plus"></i> + Tambah Akun Pengguna Baru
+            </button>
+            <button onclick="refreshUsersRegistry()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-bold text-white rounded-xl">
+              <i class="fa-solid fa-rotate-right"></i> Segarkan Data
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto border border-gray-800 rounded-xl">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#141622] text-gray-400 border-b border-gray-800">
+              <tr>
+                <th class="p-3">Nama & ID Pengguna</th>
+                <th class="p-3">Email & No. HP</th>
+                <th class="p-3">Gender</th>
+                <th class="p-3">Saldo Koin</th>
+                <th class="p-3">Peran (Role)</th>
+                <th class="p-3 text-right">Aksi & Koin</th>
+              </tr>
+            </thead>
+            <tbody id="registeredUsersTableBody" class="divide-y divide-gray-800/80 text-gray-300"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: KONEKSI FIREBASE CLOUD -->
+      <div id="founderFirebaseTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="bg-[#141622] border border-gray-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-white">Status Koneksi:</span>
+            <span id="firebaseStatusBadgeDetail" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-green-950 text-green-300 border border-green-800">Terhubung ke Firestore Cloud ✓</span>
+          </div>
+
+          <div>
+            <label class="block text-xs text-gray-400 mb-1">Objek JSON Konfigurasi Firebase</label>
+            <textarea id="firebaseConfigInput" rows="7" readonly class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-3 text-xs text-amber-300 font-mono focus:outline-none"></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button onclick="testFirebaseConnection()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs rounded-xl shadow transition">
+              <i class="fa-solid fa-vial"></i> Uji Ping Koneksi Cloud
+            </button>
+            <button onclick="syncInitialMoviesToCloud()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs rounded-xl transition">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Katalog Demo ke Cloud
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: PENGATURAN IKLAN & ADSENSE (FREKUENSI SESI & FORMAT BANNER/VIDEO) -->
+      <div id="founderAdsTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-5">
+        <!-- 1. Materi Iklan Banner & Video -->
+        <div class="bg-[#141622] border border-gray-800 rounded-xl p-4 space-y-3 max-w-xl">
+          <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
+            <i class="fa-solid fa-bullhorn"></i> Informasi Materi Iklan Sponsor (Banner & Video)
+          </h4>
+          
+          <div>
+            <label class="block text-xs text-gray-400 mb-1 font-semibold">Teks / Judul Sponsor Banner</label>
+            <input type="text" id="adSettingTitle" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" value="Disponsori oleh Google AdSense & Mitra MediDrama" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1 font-semibold">Tautan URL Iklan Banner (Target Klik Saat Banner Ditekan)</label>
+            <input type="url" id="adSettingBannerUrl" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" value="https://google.com" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1 font-semibold">URL Video MP4 Iklan Sponsor (Pre-roll Video Iklan)</label>
+            <input type="url" id="adSettingVideoUrl" placeholder="https://...link_video_sponsor.mp4" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" value="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" />
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 mb-1 font-semibold">Tautan URL Target Klik Saat Iklan Video Ditekan</label>
+            <input type="url" id="adSettingVideoTargetUrl" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" value="https://google.com" />
+          </div>
+        </div>
+
+        <!-- 2. Pengaturan Sesi & Pemicu Iklan (Ad Triggers Frequency) -->
+        <div class="bg-[#141622] border border-gray-800 rounded-xl p-4 space-y-3 max-w-xl">
+          <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
+            <i class="fa-solid fa-sliders"></i> Pengaturan Posisi, Pemicu & Frekuensi Sesi Iklan
+          </h4>
+          <p class="text-[11px] text-gray-400">Atur batasan sesi agar penonton tidak terganggu oleh iklan yang terlalu sering:</p>
+
+          <div class="space-y-3 text-xs text-gray-200">
+            <!-- Pemicu Putar Video -->
+            <div class="p-3 rounded-lg bg-[#0D0F17] border border-gray-800 space-y-2">
+              <label class="flex items-center justify-between cursor-pointer">
+                <span class="flex items-center gap-2 font-semibold">
+                  <i class="fa-solid fa-play text-red-500 text-xs"></i>
+                  Picu Iklan Saat Penonton Klik "Putar Video"
+                </span>
+                <input type="checkbox" id="adTriggerPlay" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
+              </label>
+              <div class="flex items-center justify-between pt-1 border-t border-gray-800/60">
+                <span class="text-[11px] text-gray-400">Munculkan tiap berapa kali klik putar?</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] text-gray-500">Tiap</span>
+                  <input type="number" id="adFreqPlay" value="10" min="1" max="100" class="w-14 bg-gray-900 border border-gray-700 rounded-lg px-2 py-0.5 text-center text-amber-400 font-bold" />
+                  <span class="text-[10px] text-gray-500">kali</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pemicu Ganti Episode -->
+            <div class="p-3 rounded-lg bg-[#0D0F17] border border-gray-800 space-y-2">
+              <label class="flex items-center justify-between cursor-pointer">
+                <span class="flex items-center gap-2 font-semibold">
+                  <i class="fa-solid fa-forward-step text-amber-400 text-xs"></i>
+                  Picu Iklan Saat Penonton Mengganti Episode
+                </span>
+                <input type="checkbox" id="adTriggerEpisode" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
+              </label>
+              <div class="flex items-center justify-between pt-1 border-t border-gray-800/60">
+                <span class="text-[11px] text-gray-400">Munculkan tiap berapa kali ganti episode?</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] text-gray-500">Tiap</span>
+                  <input type="number" id="adFreqEpisode" value="3" min="1" max="50" class="w-14 bg-gray-900 border border-gray-700 rounded-lg px-2 py-0.5 text-center text-amber-400 font-bold" />
+                  <span class="text-[10px] text-gray-500">episode</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner Beranda -->
+            <label class="flex items-center justify-between p-2.5 rounded-lg bg-[#0D0F17] border border-gray-800 hover:border-gray-700 cursor-pointer">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-rectangle-ad text-sky-400 text-xs"></i>
+                Tampilkan Bilah Banner Iklan di Halaman Beranda
+              </span>
+              <input type="checkbox" id="adTriggerHomeBanner" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
+            </label>
+
+            <!-- Pop-up Startup -->
+            <label class="flex items-center justify-between p-2.5 rounded-lg bg-[#0D0F17] border border-gray-800 hover:border-gray-700 cursor-pointer">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-window-maximize text-emerald-400 text-xs"></i>
+                Tampilkan Pop-up Iklan saat Aplikasi Pertama Dibuka
+              </span>
+              <input type="checkbox" id="adTriggerStartup" class="accent-red-600 w-4 h-4 cursor-pointer" />
+            </label>
+          </div>
+
+          <button onclick="saveFounderAdSettings()" class="w-full mt-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs rounded-xl shadow-lg transition active:scale-95">
+            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Pengaturan Iklan & Frekuensi Sesi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: UPLOAD & EDIT SERIAL FILM (DENGAN PENAMBAHAN EPISODE & BROADCAST NOTIF) -->
+  <div id="uploadMovieModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-[#11131C] border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-[#141624]">
+        <h3 id="uploadModalMainTitle" class="text-sm font-bold text-white">Upload Serial Film & Episode Baru</h3>
+        <button onclick="closeUploadVideoModal()" class="text-gray-400 hover:text-white text-base">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleSaveMovieForm(event)" class="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+        <input type="hidden" id="editingMovieDocId" value="" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-gray-400 mb-1 font-bold">Judul Serial Film</label>
+            <input type="text" id="uploadTitle" required placeholder="Contoh: Dendam Sang Pewaris" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label class="block text-gray-400 mb-1 font-bold">Kategori / Genre</label>
+            <select id="uploadCategorySelect" onchange="handleCategorySelectChange(this.value)" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
+              <option value="Action & Laga">Action & Laga</option>
+              <option value="Drama Korea & Percintaan">Drama Korea & Percintaan</option>
+              <option value="Kartun, Animasi & Petualangan">Kartun, Animasi & Petualangan</option>
+              <option value="Misteri & Spiritual">Misteri & Spiritual</option>
+              <option value="Petualangan">Petualangan</option>
+              <option value="__custom__">+ Kategori Kustom Sendiri</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="customCategoryInputGroup" class="hidden bg-amber-950/20 border border-amber-500/30 rounded-xl p-3">
+          <label class="block mb-1 text-amber-300 font-bold">Nama Kategori Baru Anda</label>
+          <input id="founderCustomCategoryText" type="text" placeholder="Contoh: Horor Religi, Kolosal..." class="w-full bg-[#161928] border border-amber-500/50 rounded-lg px-3 py-1.5 text-white focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-gray-400 mb-1 font-bold">Status Rilis Cerita</label>
+            <select id="uploadStatus" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
+              <option value="ongoing">BERJALAN (Ongoing / Episode Selanjutnya Segera)</option>
+              <option value="coming_soon">SEGERA HADIR (Coming Soon)</option>
+              <option value="completed">TAMAT (Completed / END)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-400 mb-1 font-bold">Trending & Rekomendasi</label>
+            <select id="uploadTrending" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
+              <option value="true">Jadikan Trending (Top 10)</option>
+              <option value="false">Katalog Reguler</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-gray-400 mb-1 font-bold">Target Rekomendasi Gender Penonton</label>
+          <select id="uploadGenderTarget" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
+            <option value="all">Semua Penonton (Universal)</option>
+            <option value="male">Spesial Cowok (Action, Laga, Misteri)</option>
+            <option value="female">Spesial Cewek (Romantis, Drama Korea, Emosional)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-gray-400 mb-1 font-bold">Poster Cover Film (URL Google Drive / Link Gambar Langsung)</label>
+          <input type="url" id="uploadCoverUrl" required placeholder="https://drive.google.com/... atau https://..." class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white" />
+          <p class="text-[10px] text-gray-400 mt-1">💡 Link Google Drive publik otomatis dikonversi ke gambar langsung.</p>
+        </div>
+
+        <div>
+          <label class="block text-gray-400 mb-1 font-bold">Sinopsis Lengkap</label>
+          <textarea id="uploadDescription" rows="2" placeholder="Ceritakan ringkasan drama..." class="w-full bg-[#161824] border border-gray-700 rounded-xl p-2.5 text-white"></textarea>
+        </div>
+
+        <!-- Episode Builder (Bisa Tambah Episode Kapan Saja) -->
+        <div class="border-t border-gray-800 pt-3 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="font-bold text-white flex items-center gap-1.5">
+                <i class="fa-solid fa-list-ol text-red-500"></i> Kelola & Tambah Episode Selanjutnya
+              </span>
+              <p class="text-[10px] text-gray-400">Anda dapat kembali kapan saja untuk menambahkan episode baru saat film berjalan.</p>
+            </div>
+            <button type="button" onclick="addNewEpisodeField()" class="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-lg font-bold">
+              + Tambah Episode
+            </button>
+          </div>
+          <div id="episodeFieldsContainer" class="space-y-3"></div>
+        </div>
+
+        <!-- Sakelar Kirim Notifikasi Pembaruan ke Penonton -->
+        <div class="p-3 bg-red-950/20 border border-red-500/30 rounded-xl flex items-center justify-between">
+          <span class="text-xs text-gray-300 flex items-center gap-2">
+            <i class="fa-solid fa-bell text-red-400"></i>
+            Kirimkan Notifikasi Banner Pembaruan Episode ke Semua Penonton
+          </span>
+          <input type="checkbox" id="sendUpdateBroadcastCheck" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
+        </div>
+
+        <div class="border-t border-gray-800 pt-3 flex justify-end gap-2">
+          <button type="button" onclick="closeUploadVideoModal()" class="px-4 py-2 bg-gray-800 text-white rounded-xl font-semibold">Batal</button>
+          <button type="submit" id="saveMovieSubmitBtn" class="px-5 py-2 bg-red-600 text-white rounded-xl font-bold shadow-lg">Simpan Serial ke Koleksi "movies"</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: TAMBAH AKUN PENGGUNA BARU (FOUNDER ONLY) -->
+  <div id="createUserModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3">
+    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-sm p-5 space-y-3.5 shadow-2xl">
+      <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+        <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+          <i class="fa-solid fa-user-plus text-red-500"></i> Tambah Pengguna Baru
+        </h4>
+        <button onclick="closeCreateUserModal()" class="text-gray-400 hover:text-white">&times;</button>
+      </div>
+
+      <form onsubmit="handleCreateUserSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Nama Pengguna</label>
+          <input id="newUserName" required type="text" placeholder="Contoh: Budi Pratama" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Alamat Email</label>
+          <input id="newUserEmail" required type="email" placeholder="budi@gmail.com" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" />
+        </div>
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Kata Sandi / PIN Akses</label>
+          <input id="newUserPassword" required type="text" placeholder="PIN angka atau kata sandi minimal 6 karakter" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500 font-mono" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block mb-1 text-gray-300 font-semibold">Jenis Kelamin</label>
+            <select id="newUserGender" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500">
+              <option value="Laki-laki">Cowok</option>
+              <option value="Perempuan">Cewek</option>
+            </select>
+          </div>
+          <div>
+            <label class="block mb-1 text-gray-300 font-semibold">Saldo Koin Awal</label>
+            <input id="newUserCoins" type="number" value="100" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-amber-400 font-bold outline-none focus:border-red-500" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block mb-1 text-gray-300 font-semibold">No. Handphone</label>
+            <input id="newUserPhone" type="text" placeholder="0812..." class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" />
+          </div>
+          <div>
+            <label class="block mb-1 text-gray-300 font-semibold">Peran (Role)</label>
+            <select id="newUserRole" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500">
+              <option value="user">USER</option>
+              <option value="founder">FOUNDER</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl shadow transition">
+          Simpan Akun ke Firestore
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL (CLEAN & SECURE) -->
+  <div id="authModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-sm p-6 space-y-4 relative shadow-2xl">
       <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">&times;</button>
-      
+
       <div class="text-center space-y-1">
         <h3 id="authModalTitle" class="font-black text-lg text-white">Masuk ke MediDrama</h3>
-        <p class="text-xs text-gray-400">Sinkronkan koin & favorit Anda di Cloud Firestore</p>
+        <p class="text-xs text-gray-400">Sinkronkan koin, favorit & riwayat tontonan Anda</p>
       </div>
 
-      <!-- Masuk Cepat Google -->
-      <button onclick="handleGoogleSignIn()" class="w-full bg-white text-gray-900 font-bold text-xs py-2.5 rounded-xl shadow flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+      <!-- Google Sign In -->
+      <button onclick="loginWithGoogle()" class="w-full bg-white text-gray-900 font-bold text-xs py-2.5 rounded-xl shadow flex items-center justify-center gap-2 hover:bg-gray-100 transition active:scale-95">
         <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
         Masuk Cepat dengan Akun Google
       </button>
 
       <div class="relative flex items-center justify-center">
         <div class="border-t border-gray-800 w-full"></div>
-        <span class="bg-[#121520] px-3 text-[11px] text-gray-500 uppercase">atau</span>
+        <span class="bg-[#121520] px-3 text-[11px] text-gray-500 uppercase tracking-widest font-semibold">atau email</span>
+        <div class="border-t border-gray-800 w-full"></div>
       </div>
 
-      <!-- Tab Masuk / Daftar -->
+      <!-- Auth Tabs -->
       <div class="flex border-b border-gray-800 text-xs font-bold text-center">
-        <button onclick="setAuthTab('login')" id="btnAuthTabLogin" class="pb-2 border-b-2 border-red-500 text-white flex-1">Masuk</button>
-        <button onclick="setAuthTab('register')" id="btnAuthTabRegister" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1">Daftar Baru</button>
+        <button onclick="setAuthTab('login')" id="btnAuthTabLogin" class="pb-2 border-b-2 border-red-500 text-white flex-1 transition">Masuk</button>
+        <button onclick="setAuthTab('register')" id="btnAuthTabRegister" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 transition">Daftar Baru</button>
       </div>
 
       <form onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
         <div id="regNameBox" class="hidden">
           <label class="block mb-1 text-gray-300 font-semibold">Nama Lengkap</label>
-          <input id="authName" type="text" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-red-500" placeholder="Nama Anda" />
+          <input id="authName" type="text" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" placeholder="Nama Anda" />
         </div>
 
         <div>
           <label class="block mb-1 text-gray-300 font-semibold">Alamat Email</label>
-          <input id="authEmail" required type="email" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-red-500" placeholder="nama@email.com" />
+          <input id="authEmail" required type="email" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" placeholder="nama@email.com" />
         </div>
 
         <div>
-          <label class="block mb-1 text-gray-300 font-semibold">Kata Sandi</label>
-          <input id="authPassword" required type="password" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-red-500" placeholder="Minimal 6 karakter" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-gray-300 font-semibold">Kata Sandi / PIN</label>
+            <button type="button" onclick="openForgotPasswordModal()" class="text-[10px] text-amber-400 hover:underline">
+              Lupa Kata Sandi?
+            </button>
+          </div>
+          <input id="authPassword" required type="password" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" placeholder="Masukkan kata sandi / PIN" />
         </div>
 
-        <button type="submit" id="authSubmitBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl transition mt-2">
+        <button type="submit" id="authSubmitBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl transition mt-2 shadow-lg shadow-red-600/30">
           Masuk ke MediDrama
         </button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: STUDIO FOUNDER (UPLOAD + MANAJEMEN SERIAL + USER REAL FIRESTORE) -->
-  <div id="founderModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto no-scrollbar">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-        <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-crown text-amber-500"></i>
-          <h3 class="font-bold text-base text-white">Panel Founder MediDrama</h3>
+  <!-- MODAL: LUPA KATA SANDI -->
+  <div id="forgotPasswordModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-sm p-6 space-y-4 relative shadow-2xl">
+      <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">&times;</button>
+      <div class="text-center space-y-1">
+        <div class="w-10 h-10 mx-auto rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-key"></i>
         </div>
-        <button onclick="closeFounderModal()" class="text-gray-400 hover:text-white text-lg">&times;</button>
+        <h3 class="font-black text-base text-white">Pulihkan Kata Sandi</h3>
+        <p class="text-xs text-gray-400">Tautan reset resmi Firebase akan dikirim ke email Anda</p>
       </div>
-
-      <!-- Navigasi Menu Founder -->
-      <div class="flex border-b border-gray-800 text-xs font-bold">
-        <button onclick="switchFounderTab('upload')" id="fTabUpload" class="pb-2 border-b-2 border-red-500 text-white flex-1 text-center">
-          <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Serial
-        </button>
-        <button onclick="switchFounderTab('manage')" id="fTabManage" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
-          <i class="fa-solid fa-layer-group mr-1"></i> Manajemen Serial
-        </button>
-        <button onclick="switchFounderTab('users')" id="fTabUsers" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
-          <i class="fa-solid fa-users mr-1"></i> Pengguna Terdaftar (<span id="userCountBadge">0</span>)
-        </button>
-      </div>
-
-      <!-- SUB-TAB 1: FORM UPLOAD SERIAL -->
-      <div id="founderUploadSection">
-        <form onsubmit="handleUploadSerial(event)" class="space-y-3 text-xs">
-          <div>
-            <label class="block mb-1 text-gray-300 font-semibold">Judul Serial Film</label>
-            <input id="fTitle" required type="text" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="Contoh: Dendam Sang Pewaris" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block mb-1 text-gray-300 font-semibold">Pilih Kategori</label>
-              <select id="fCategorySelect" onchange="checkCustomCategory(this.value)" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none">
-                <option value="Drama Romantis">Drama Romantis</option>
-                <option value="Action & Laga">Action & Laga</option>
-                <option value="Misteri & Thriller">Misteri & Thriller</option>
-                <option value="Komedi">Komedi</option>
-                <option value="custom">+ Kategori Kustom Sendiri</option>
-              </select>
-            </div>
-            <div>
-              <label class="block mb-1 text-gray-300 font-semibold">Label Trending</label>
-              <select id="fTrending" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none">
-                <option value="true">Jadikan Trending (Top Row)</option>
-                <option value="false">Katalog Biasa</option>
-              </select>
-            </div>
-          </div>
-
-          <div id="customCategoryBox" class="hidden">
-            <label class="block mb-1 text-amber-400 font-semibold">Ketik Kategori Baru</label>
-            <input id="fCustomCategory" type="text" class="w-full bg-gray-900 border border-amber-500/50 rounded-lg p-2.5 text-white focus:border-amber-400 outline-none" placeholder="Contoh: Horor Religi, Kolosal..." />
-          </div>
-
-          <div>
-            <label class="block mb-1 text-gray-300 font-semibold">URL Cover Poster (2:3)</label>
-            <input id="fCover" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://images.unsplash.com/..." />
-          </div>
-
-          <div>
-            <label class="block mb-1 text-gray-300 font-semibold">URL Video Episode 1 (.mp4)</label>
-            <input id="fVideo" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://...mp4" />
-          </div>
-
-          <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold py-2.5 rounded-xl shadow-lg hover:opacity-90 transition mt-2">
-            Terbitkan ke Firestore Sekarang
-          </button>
-        </form>
-      </div>
-
-      <!-- SUB-TAB 2: MANAJEMEN SERIAL (HAPUS / KELOLA) -->
-      <div id="founderManageSection" class="hidden space-y-3">
-        <div id="founderDramaList" class="space-y-2"></div>
-      </div>
-
-      <!-- SUB-TAB 3: TABEL PENGGUNA TERDAFTAR (REAL FIRESTORE) -->
-      <div id="founderUsersSection" class="hidden space-y-3">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="border-b border-gray-800 text-gray-400">
-                <th class="py-2 px-3">Nama Pengguna</th>
-                <th class="py-2 px-3">Email Akun</th>
-                <th class="py-2 px-3">Role</th>
-                <th class="py-2 px-3">Saldo Koin</th>
-                <th class="py-2 px-3 text-right">Tindakan</th>
-              </tr>
-            </thead>
-            <tbody id="userTableBody" class="divide-y divide-gray-800/50 text-gray-300">
-              <!-- Render otomatis dari Firestore -->
-            </tbody>
-          </table>
+      <form onsubmit="handleForgotPasswordSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block mb-1 text-gray-300 font-semibold">Email Terdaftar</label>
+          <input id="forgotEmailInput" required type="email" placeholder="nama@email.com" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" />
         </div>
-      </div>
+        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-2.5 rounded-xl transition shadow">
+          Kirim Link Reset Sandi
+        </button>
+      </form>
     </div>
   </div>
 
-  <!-- Bottom Bar Mobile -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0B0D14]/95 backdrop-blur-lg border-t border-gray-800/80 px-6 py-2.5 flex justify-around items-center">
-    <button onclick="switchTab('home')" id="navHomeBtn" class="flex flex-col items-center text-red-500 text-xs">
+  <!-- BOTTOM BAR MOBILE (5 TABS) -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0B0D14]/95 backdrop-blur-xl border-t border-gray-800 px-3 py-2 flex justify-around items-center">
+    <button onclick="switchNavTab('home')" id="navBtnHome" class="flex flex-col items-center text-red-500 transition px-2">
       <i class="fa-solid fa-film text-base"></i>
-      <span class="text-[10px] mt-1 font-semibold">Serial</span>
+      <span class="text-[9px] mt-0.5 font-bold">Serial</span>
     </button>
-    <button onclick="switchTab('profile')" id="navProfileBtn" class="flex flex-col items-center text-gray-400 text-xs">
+    <button onclick="switchNavTab('points')" id="navBtnPoints" class="flex flex-col items-center text-gray-400 hover:text-white transition px-2">
+      <i class="fa-solid fa-coins text-base"></i>
+      <span class="text-[9px] mt-0.5 font-bold">Poin</span>
+    </button>
+    <button onclick="switchNavTab('favorites')" id="navBtnFavorites" class="flex flex-col items-center text-gray-400 hover:text-white transition px-2">
+      <i class="fa-solid fa-heart text-base"></i>
+      <span class="text-[9px] mt-0.5 font-bold">Favorit</span>
+    </button>
+    <button onclick="switchNavTab('history')" id="navBtnHistory" class="flex flex-col items-center text-gray-400 hover:text-white transition px-2">
+      <i class="fa-solid fa-clock-rotate-left text-base"></i>
+      <span class="text-[9px] mt-0.5 font-bold">Riwayat</span>
+    </button>
+    <button onclick="switchNavTab('profile')" id="navBtnProfile" class="flex flex-col items-center text-gray-400 hover:text-white transition px-2">
       <i class="fa-solid fa-user text-base"></i>
-      <span class="text-[10px] mt-1 font-semibold">Profil</span>
+      <span class="text-[9px] mt-0.5 font-bold">Profil</span>
     </button>
   </nav>
 
-  <!-- FIREBASE CONFIG & APPLICATION SCRIPT -->
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastMessage" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-[#161928] border border-gray-700 text-white px-4 py-2 rounded-xl shadow-2xl flex items-center gap-2 text-xs pointer-events-none whitespace-nowrap">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i>
+    <span id="toastText">Pesan sistem</span>
+  </div>
+
   <script>
-    // Konfigurasi Kredensial Firebase Asli MediDrama
     const firebaseConfig = {
       apiKey: "AIzaSyCQj4SI_Z9ZptP4UjPga2d_mV0z211CV7k",
       authDomain: "medidrama-bd5a2.firebaseapp.com",
@@ -342,157 +976,893 @@
       measurementId: "G-77E0XGBY6D"
     };
 
-    // Inisialisasi Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-    if (typeof firebase.analytics === 'function') {
-      firebase.analytics();
-    }
+    let auth = null;
+    let db = null;
 
-    // Variabel Global
-    let currentUser = null;
+    let currentUser = {
+      uid: null,
+      name: "Tamu",
+      email: "",
+      phone: "-",
+      gender: "Belum disetel",
+      role: "guest",
+      coins: 0,
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
+      favorites: [],
+      history: []
+    };
+
+    let moviesCatalog = [];
+    let registeredUsersList = [];
+    let activeCategory = "Semua";
+    let currentHeroIndex = 0;
+    let heroAutoTimer = null;
+    let activePlayingDrama = null;
+    let activeEpisodeIndex = 0;
     let authMode = 'login';
-    let dramaData = [];
-    let currentSlide = 0;
-    let heroItems = [];
 
-    // Pantau Status Autentikasi Firebase
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        currentUser = user;
-        const userDocRef = db.collection('users').doc(user.uid);
-        const doc = await userDocRef.get();
+    // Konfigurasi Pemicu & Frekuensi Sesi Iklan
+    let adSettings = {
+      title: "Disponsori oleh Google AdSense & Mitra MediDrama",
+      bannerTargetUrl: "https://google.com",
+      sponsorVideoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      videoTargetUrl: "https://google.com",
+      triggerPlay: true,
+      freqPlay: 10,       // Muncul tiap 10x klik putar
+      playClickCount: 0,  // Penghitung sesi saat ini
+      triggerEpisode: true,
+      freqEpisode: 3,     // Muncul tiap 3x ganti episode
+      epSwitchCount: 0,   // Penghitung sesi ganti episode
+      triggerHomeBanner: true,
+      triggerStartup: false
+    };
 
-        const isFounderEmail = user.email.toLowerCase() === 'adminmedidrama@gmail.com';
+    let adCountdownTimer = null;
 
-        if (!doc.exists) {
-          const initialData = {
-            name: user.displayName || user.email.split('@')[0],
-            email: user.email,
-            role: isFounderEmail ? 'Founder' : 'Penonton',
-            coins: isFounderEmail ? 9999 : 100,
-            photoURL: user.photoURL || '',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          };
-          await userDocRef.set(initialData);
-          updateUIWithUserData(initialData);
-        } else {
-          const data = doc.data();
-          if (isFounderEmail && data.role !== 'Founder') {
-            await userDocRef.update({ role: 'Founder' });
-            data.role = 'Founder';
-          }
-          updateUIWithUserData(data);
-        }
-      } else {
-        currentUser = null;
-        resetUIToGuest();
-      }
-    });
-
-    function updateUIWithUserData(data) {
-      document.getElementById('profileNameInput').value = data.name || 'Pengguna';
-      document.getElementById('profileEmail').innerText = data.email;
-      document.getElementById('profileCoins').innerText = data.coins || 0;
-      document.getElementById('userRoleBadge').innerText = data.role;
-      document.getElementById('navAuthLabel').innerText = (data.name || 'User').split(' ')[0];
-      document.getElementById('authActionBtn').innerText = 'Keluar';
-      document.getElementById('authActionBtn').onclick = handleSignOut;
-
-      if (data.photoURL) {
-        document.getElementById('profileImagePreview').src = data.photoURL;
-        document.getElementById('navAvatar').src = data.photoURL;
-      }
-
-      if (data.role === 'Founder' || data.email.toLowerCase() === 'adminmedidrama@gmail.com') {
-        document.getElementById('adminBtn').classList.remove('hidden');
-      } else {
-        document.getElementById('adminBtn').classList.add('hidden');
-      }
-    }
-
-    function resetUIToGuest() {
-      document.getElementById('profileNameInput').value = 'Tamu';
-      document.getElementById('profileEmail').innerText = 'Belum masuk';
-      document.getElementById('profileCoins').innerText = '0';
-      document.getElementById('userRoleBadge').innerText = 'Tamu';
-      document.getElementById('userRoleBadge').className = 'text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300 font-bold';
-      document.getElementById('navAuthLabel').innerText = 'Masuk';
-      document.getElementById('authActionBtn').innerText = 'Masuk / Daftar';
-      document.getElementById('authActionBtn').onclick = openAuthModal;
-      document.getElementById('adminBtn').classList.add('hidden');
-      document.getElementById('profileImagePreview').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100";
-      document.getElementById('navAvatar').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100";
-    }
-
-    // Inisialisasi Tampilan & Data Firestore
     window.addEventListener('DOMContentLoaded', () => {
-      loadDramasFromFirestore();
-      renderFavorites();
-      setInterval(nextSlide, 4500);
+      initFirebaseApp();
+      setupAntiCaptureSecurity();
+      startHeroAutoSlide();
+      applyAdSettingsUI();
     });
 
-    // Ambil Data Serial dari Koleksi Firestore
-    function loadDramasFromFirestore() {
-      db.collection('dramas').onSnapshot((snapshot) => {
-        if (!snapshot.empty) {
-          dramaData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        } else {
-          // Data cadangan jika Firestore masih kosong
-          dramaData = [
-            {
-              id: 'd1',
-              title: "Garuda Hitam: Lembah Kematian",
-              category: "Action & Laga",
-              cover: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
-              video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-              trending: true,
-              rating: 4.9
-            },
-            {
-              id: 'd2',
-              title: "Cinta Tersembunyi Chaebol",
-              category: "Drama Romantis",
-              cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600",
-              video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-              trending: true,
-              rating: 4.8
-            }
-          ];
+    function initFirebaseApp() {
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
         }
-        renderHeroSlider();
-        renderCatalog();
-        renderTrending();
-        renderCategories();
-        renderFounderDramaList();
+        auth = firebase.auth();
+        db = firebase.firestore();
+
+        const configInput = document.getElementById('firebaseConfigInput');
+        if (configInput) configInput.value = JSON.stringify(firebaseConfig, null, 2);
+
+        // Pulihkan sesi tersimpan dari localStorage jika ada
+        const savedSession = localStorage.getItem('md_active_session');
+        if (savedSession) {
+          try {
+            currentUser = JSON.parse(savedSession);
+            updateAuthUI(true);
+          } catch(e) {}
+        }
+
+        listenAuthState();
+        listenMoviesRealtime();
+        fetchFirestoreUsers();
+        listenBroadcastNotification();
+      } catch (e) {
+        console.warn("Init Firebase:", e);
+      }
+    }
+
+    // Ubah URL Google Drive ke format Direct View Otomatis
+    function formatDriveImageUrl(url) {
+      if (!url) return '';
+      if (url.includes('drive.google.com/file/d/')) {
+        const idMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+        if (idMatch && idMatch[1]) {
+          return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+        }
+      }
+      return url;
+    }
+
+    function listenAuthState() {
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          currentUser.uid = user.uid;
+          currentUser.name = user.displayName || user.email.split('@')[0];
+          currentUser.email = user.email || '';
+          currentUser.avatar = user.photoURL || currentUser.avatar;
+
+          const isFounderEmail = 
+            user.email.toLowerCase() === 'furiantoofficial@gmail.com' ||
+            user.email.toLowerCase() === 'adminmedidrama@gmail.com';
+
+          try {
+            const userDocRef = db.collection('users').doc(user.uid);
+            const doc = await userDocRef.get();
+
+            if (doc.exists) {
+              const data = doc.data();
+              currentUser.name = data.name || currentUser.name;
+              currentUser.coins = data.coins !== undefined ? data.coins : 50;
+              currentUser.gender = data.gender || "Belum disetel";
+              currentUser.role = isFounderEmail ? 'FOUNDER-SUPER' : (data.role || 'user');
+              currentUser.phone = data.phone || '-';
+              currentUser.avatar = data.photoURL || currentUser.avatar;
+              currentUser.favorites = data.favorites || [];
+              currentUser.history = data.history || [];
+
+              await userDocRef.update({
+                lastActive: "Baru saja",
+                updatedAt: new Date().toISOString()
+              });
+            } else {
+              const newUserPayload = {
+                id: user.uid,
+                name: currentUser.name,
+                email: currentUser.email,
+                phone: "-",
+                gender: "Belum disetel",
+                role: isFounderEmail ? 'FOUNDER-SUPER' : 'user',
+                coins: isFounderEmail ? 9999 : 50,
+                photoURL: currentUser.avatar,
+                lastActive: "Baru saja",
+                favorites: [],
+                history: [],
+                updatedAt: new Date().toISOString()
+              };
+              await userDocRef.set(newUserPayload);
+              currentUser.role = newUserPayload.role;
+              currentUser.coins = newUserPayload.coins;
+            }
+          } catch (err) {
+            console.error("Sync users error:", err);
+          }
+
+          updateAuthUI(true);
+          showToast(`Selamat datang, ${currentUser.name}!`, "success");
+        } else {
+          if (!localStorage.getItem('md_active_session')) {
+            currentUser = {
+              uid: null,
+              name: "Tamu",
+              email: "",
+              phone: "-",
+              gender: "Belum disetel",
+              role: "guest",
+              coins: 0,
+              avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
+              favorites: JSON.parse(localStorage.getItem('md_guest_favs') || '[]'),
+              history: JSON.parse(localStorage.getItem('md_guest_hist') || '[]')
+            };
+            updateAuthUI(false);
+          }
+        }
       });
     }
 
-    // Ubah Nama Pribadi ke Firestore
-    async function updateProfileName(newName) {
-      if (!currentUser) return alert('Silakan login terlebih dahulu.');
-      try {
-        await db.collection('users').doc(currentUser.uid).update({
-          name: newName.trim()
-        });
-        document.getElementById('navAuthLabel').innerText = newName.trim().split(' ')[0];
-        alert('Nama berhasil disimpan ke Cloud Firestore!');
-      } catch (err) {
-        alert('Gagal update nama: ' + err.message);
+    function updateAuthUI(isLoggedIn) {
+      const navSlot = document.getElementById('navUserSlot');
+      const founderBtn = document.getElementById('founderPortalNavBtn');
+      const profileRole = document.getElementById('userRoleBadge');
+      const profileName = document.getElementById('profileNameInput');
+      const profileEmail = document.getElementById('profileCardEmail');
+      const profilePhone = document.getElementById('profileCardPhone');
+      const profileCoin = document.getElementById('profileCardCoin');
+      const profileAvatar = document.getElementById('profileCardAvatar');
+      const navCoin = document.getElementById('navCoinCount');
+      const pointsPageCoin = document.getElementById('pointsPageCoinCount');
+      const authActionBtn = document.getElementById('profileAuthActionBtn');
+      const watermarkUser = document.getElementById('watermarkUser');
+
+      profileName.value = currentUser.name;
+      profileEmail.innerText = currentUser.email || 'Belum masuk akun';
+      profilePhone.innerText = `No. HP: ${currentUser.phone || '-'}`;
+      profileCoin.innerText = currentUser.coins;
+      navCoin.innerText = currentUser.coins;
+      if (pointsPageCoin) pointsPageCoin.innerText = currentUser.coins;
+      profileAvatar.src = currentUser.avatar;
+      watermarkUser.innerText = (currentUser.name || 'TAMU').toUpperCase();
+
+      updateGenderButtonUI(currentUser.gender);
+
+      const isFounder = 
+        currentUser.role === 'FOUNDER-SUPER' || 
+        currentUser.role === 'founder' ||
+        (currentUser.email && (currentUser.email.toLowerCase() === 'furiantoofficial@gmail.com' || currentUser.email.toLowerCase() === 'adminmedidrama@gmail.com'));
+
+      if (isLoggedIn) {
+        navSlot.innerHTML = `
+          <div onclick="switchNavTab('profile')" class="cursor-pointer flex items-center space-x-1.5 bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-full hover:border-gray-700 transition">
+            <img src="${currentUser.avatar}" class="w-6 h-6 rounded-full object-cover border border-amber-500/50" />
+            <span class="text-xs font-bold text-gray-200 truncate max-w-[80px]">${currentUser.name.split(' ')[0]}</span>
+          </div>
+        `;
+        authActionBtn.innerText = "Keluar";
+        authActionBtn.onclick = logoutUser;
+      } else {
+        navSlot.innerHTML = `
+          <button onclick="openAuthModal()" class="bg-red-600 hover:bg-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-full shadow transition active:scale-95">
+            Masuk / Daftar
+          </button>
+        `;
+        authActionBtn.innerText = "Masuk / Daftar";
+        authActionBtn.onclick = openAuthModal;
+      }
+
+      if (isFounder) {
+        founderBtn.classList.remove('hidden');
+        founderBtn.classList.add('flex');
+        profileRole.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-red-600/20 text-red-400 border border-red-500/30 uppercase flex-none";
+        profileRole.innerText = "FOUNDER";
+      } else {
+        founderBtn.classList.add('hidden');
+        founderBtn.classList.remove('flex');
+        profileRole.className = "text-[10px] font-black px-2 py-0.5 rounded-full bg-gray-800 text-gray-300 border border-gray-700 uppercase flex-none";
+        profileRole.innerText = isLoggedIn ? "MEMBER" : "TAMU";
+      }
+
+      renderFavoritesAndHistoryPages();
+      renderGenderRecommendations();
+    }
+
+    function updateGenderButtonUI(gender) {
+      const btnM = document.getElementById('genderBtnMale');
+      const btnF = document.getElementById('genderBtnFemale');
+      if (!btnM || !btnF) return;
+
+      if (gender === 'Laki-laki') {
+        btnM.className = "py-2 px-3 rounded-xl border border-blue-500 bg-blue-600/20 text-blue-300 font-bold flex items-center justify-center gap-2";
+        btnF.className = "py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-400 flex items-center justify-center gap-2";
+      } else if (gender === 'Perempuan') {
+        btnF.className = "py-2 px-3 rounded-xl border border-pink-500 bg-pink-600/20 text-pink-300 font-bold flex items-center justify-center gap-2";
+        btnM.className = "py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-400 flex items-center justify-center gap-2";
+      } else {
+        btnM.className = "py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-400 flex items-center justify-center gap-2";
+        btnF.className = "py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-400 flex items-center justify-center gap-2";
       }
     }
 
-    // Kompresi Foto Profil WebP (<25 KB) & Upload ke Firestore
-    function compressAndUploadAvatar(event) {
-      if (!currentUser) return alert('Silakan login terlebih dahulu.');
+    function saveUserGender(gender) {
+      currentUser.gender = gender;
+      updateGenderButtonUI(gender);
+      syncUserDataToFirestore();
+      renderGenderRecommendations();
+      showToast(`Preferensi gender disimpan: ${gender}`, "success");
+    }
+
+    function renderGenderRecommendations() {
+      const section = document.getElementById('genderRecommendationSection');
+      const container = document.getElementById('genderRecommendationRow');
+      const tag = document.getElementById('genderBadgeTag');
+
+      if (!currentUser.gender || currentUser.gender === 'Belum disetel') {
+        section.classList.add('hidden');
+        return;
+      }
+
+      let filtered = [];
+      if (currentUser.gender === 'Laki-laki') {
+        tag.innerText = "Spesial Cowok";
+        tag.className = "text-[9px] bg-blue-500/20 text-blue-300 border border-blue-500/30 px-1 py-0.2 rounded font-bold";
+        filtered = moviesCatalog.filter(m => m.genderTarget === 'male' || m.category.includes('Action') || m.category.includes('Petualangan'));
+      } else {
+        tag.innerText = "Spesial Cewek";
+        tag.className = "text-[9px] bg-pink-500/20 text-pink-300 border border-pink-500/30 px-1 py-0.2 rounded font-bold";
+        filtered = moviesCatalog.filter(m => m.genderTarget === 'female' || m.category.includes('Korea') || m.category.includes('Percintaan'));
+      }
+
+      if (filtered.length === 0) {
+        section.classList.add('hidden');
+        return;
+      }
+
+      section.classList.remove('hidden');
+      container.innerHTML = filtered.map(drama => `
+        <div onclick="triggerPlayVideoWithAdCheck('${drama.id}', 0)" class="flex-none w-28 sm:w-32 bg-[#161928] rounded-xl overflow-hidden border border-gray-800 hover:border-red-500/60 transition cursor-pointer group shadow-lg">
+          <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
+            <img src="${drama.cover}" alt="${drama.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <span class="absolute top-1 left-1 bg-red-600 text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow">Pilihan</span>
+          </div>
+          <div class="p-1.5">
+            <h4 class="text-[11px] font-bold text-white truncate group-hover:text-red-400 transition">${drama.title}</h4>
+            <p class="text-[8px] text-gray-400 truncate mt-0.5">${drama.category}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function listenMoviesRealtime() {
+      if (!db) return;
+      db.collection('movies').onSnapshot((snap) => {
+        if (!snap.empty) {
+          moviesCatalog = snap.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+              cover: formatDriveImageUrl(data.cover)
+            };
+          });
+        } else {
+          moviesCatalog = [
+            {
+              id: "mov_garuda",
+              title: "Garuda Hitam: Lembah Kematian",
+              category: "Action & Laga",
+              genderTarget: "male",
+              status: "ongoing",
+              cover: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
+              description: "Operasi rahasia yang dikhianati memaksa agen elit kembali demi menuntut keadilan.",
+              rating: 4.9,
+              trending: true,
+              episodes: [
+                { epId: "e1", title: "Episode 1: Awal Mula", cost: 0, duration: "18 Min", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" },
+                { epId: "e2", title: "Episode 2: Jejak Gelap", cost: 30, duration: "20 Min", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" }
+              ]
+            },
+            {
+              id: "mov_chaebol",
+              title: "Janji Musim Gugur di Seoul",
+              category: "Drama Korea & Percintaan",
+              genderTarget: "female",
+              status: "ongoing",
+              cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600",
+              description: "Pertemuan tak terduga antara barista kafe dan putra mahkota konglomerat Seoul.",
+              rating: 4.8,
+              trending: true,
+              episodes: [
+                { epId: "e1", title: "Episode 1: Kopi & Hujan", cost: 0, duration: "22 Min", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" }
+              ]
+            }
+          ];
+        }
+        renderHeroCarousel();
+        renderCategoryChips();
+        renderTrendingRow();
+        renderCatalogGrid();
+        renderFounderManageTable();
+        renderFavoritesAndHistoryPages();
+        renderGenderRecommendations();
+      });
+    }
+
+    function renderHeroCarousel() {
+      const track = document.getElementById('heroCarouselTrack');
+      const dots = document.getElementById('heroDotsContainer');
+      const featured = moviesCatalog.slice(0, 4);
+
+      track.innerHTML = '';
+      dots.innerHTML = '';
+      if (featured.length === 0) return;
+
+      featured.forEach((item, idx) => {
+        const isFav = currentUser.favorites.includes(item.id);
+        track.innerHTML += `
+          <div class="relative w-full flex-shrink-0 h-full">
+            <img src="${item.cover}" alt="${item.title}" class="w-full h-full object-cover object-center brightness-75" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0B0D14] via-[#0B0D14]/40 to-transparent"></div>
+            
+            <div class="absolute bottom-3 sm:bottom-5 left-3 right-3 sm:left-5 sm:right-5 space-y-1 z-10 max-w-lg">
+              <span class="inline-block bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider shadow">
+                ${item.category}
+              </span>
+              <h2 class="text-sm sm:text-lg font-black text-white leading-tight drop-shadow-md">
+                ${item.title}
+              </h2>
+              
+              <div class="flex items-center gap-2 pt-1">
+                <button onclick="triggerPlayVideoWithAdCheck('${item.id}', 0)" class="bg-gradient-to-r from-red-600 to-amber-600 hover:opacity-90 text-white font-black text-[11px] px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-lg active:scale-95 transition">
+                  <i class="fa-solid fa-play text-[9px]"></i> Putar
+                </button>
+                <button onclick="toggleFavoriteDrama('${item.id}')" class="w-7 h-7 rounded-xl bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-red-500 active:scale-90 transition">
+                  <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart text-xs"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        dots.innerHTML += `
+          <button onclick="goToHeroSlide(${idx})" class="h-1.5 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-red-500 w-5' : 'bg-gray-600 w-1.5'}"></button>
+        `;
+      });
+    }
+
+    function updateHeroSlidePosition() {
+      const track = document.getElementById('heroCarouselTrack');
+      const dots = document.getElementById('heroDotsContainer').children;
+      if (!track || dots.length === 0) return;
+      track.style.transform = `translateX(-${currentHeroIndex * 100}%)`;
+
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].className = i === currentHeroIndex 
+          ? 'h-1.5 rounded-full bg-red-500 w-5 transition-all duration-300' 
+          : 'h-1.5 rounded-full bg-gray-600 w-1.5 transition-all duration-300';
+      }
+    }
+
+    function nextHeroSlide() {
+      const max = Math.min(moviesCatalog.length, 4);
+      if (max <= 0) return;
+      currentHeroIndex = (currentHeroIndex + 1) % max;
+      updateHeroSlidePosition();
+    }
+
+    function prevHeroSlide() {
+      const max = Math.min(moviesCatalog.length, 4);
+      if (max <= 0) return;
+      currentHeroIndex = (currentHeroIndex - 1 + max) % max;
+      updateHeroSlidePosition();
+    }
+
+    function goToHeroSlide(index) {
+      currentHeroIndex = index;
+      updateHeroSlidePosition();
+      startHeroAutoSlide();
+    }
+
+    function startHeroAutoSlide() {
+      if (heroAutoTimer) clearInterval(heroAutoTimer);
+      heroAutoTimer = setInterval(nextHeroSlide, 4500);
+    }
+
+    function renderCategoryChips() {
+      const container = document.getElementById('categoryChipsList');
+      const allCategories = ['Semua', ...new Set(moviesCatalog.map(d => d.category))];
+
+      container.innerHTML = allCategories.map(cat => {
+        const isActive = cat === activeCategory;
+        return `
+          <button onclick="filterByCategory('${cat}')" class="flex-none px-3 py-1 rounded-full text-[11px] font-bold transition duration-200 active:scale-95 ${
+            isActive 
+              ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow' 
+              : 'bg-[#161928] text-gray-300 hover:text-white border border-gray-800'
+          }">
+            ${cat}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function filterByCategory(cat) {
+      activeCategory = cat;
+      renderCategoryChips();
+      renderCatalogGrid();
+    }
+
+    function renderTrendingRow() {
+      const container = document.getElementById('trendingContainer');
+      const trendingDramas = moviesCatalog.filter(d => d.trending);
+
+      container.innerHTML = trendingDramas.map((drama, index) => `
+        <div onclick="triggerPlayVideoWithAdCheck('${drama.id}', 0)" class="flex-none w-28 sm:w-32 bg-[#161928] rounded-xl overflow-hidden border border-gray-800 hover:border-red-500/60 transition duration-300 cursor-pointer group shadow-lg">
+          <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
+            <img src="${drama.cover}" alt="${drama.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            <span class="absolute top-1 left-1 bg-gradient-to-r from-amber-500 to-amber-600 text-black text-[8px] font-black px-1.5 py-0.5 rounded shadow">
+              TOP ${index + 1}
+            </span>
+            <span class="absolute bottom-1 right-1 text-[8px] font-bold text-amber-400 bg-black/70 px-1 py-0.5 rounded flex items-center gap-0.5">
+              <i class="fa-solid fa-star text-[6px]"></i> ${drama.rating || '5.0'}
+            </span>
+          </div>
+          <div class="p-1.5">
+            <h4 class="text-[11px] font-bold text-white truncate group-hover:text-red-400 transition">${drama.title}</h4>
+            <p class="text-[8px] text-gray-400 truncate mt-0.5">${drama.category}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderCatalogGrid() {
+      const grid = document.getElementById('catalogGrid');
+      const filtered = activeCategory === "Semua" 
+        ? moviesCatalog 
+        : moviesCatalog.filter(d => d.category === activeCategory);
+
+      document.getElementById('catalogCountBadge').innerText = `${filtered.length} Serial`;
+
+      grid.innerHTML = filtered.map(drama => {
+        const isFav = currentUser.favorites.includes(drama.id);
+        const isComingSoon = drama.status === 'coming_soon';
+        return `
+          <div class="bg-[#161928] rounded-xl overflow-hidden border border-gray-800 hover:border-red-500/50 transition duration-300 flex flex-col group">
+            <div class="relative aspect-[2/3] overflow-hidden bg-gray-950 cursor-pointer" onclick="triggerPlayVideoWithAdCheck('${drama.id}', 0)">
+              <img src="${drama.cover}" alt="${drama.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              ${isComingSoon ? '<span class="absolute top-1.5 left-1.5 bg-amber-500 text-black font-black text-[8px] px-1.5 py-0.5 rounded shadow uppercase">Coming Soon</span>' : ''}
+              <button onclick="event.stopPropagation(); toggleFavoriteDrama('${drama.id}')" class="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/70 backdrop-blur-md flex items-center justify-center text-red-500 hover:scale-110 active:scale-90 transition">
+                <i class="${isFav ? 'fa-solid' : 'fa-regular'} fa-heart text-[10px]"></i>
+              </button>
+            </div>
+            <div class="p-2 flex-1 flex flex-col justify-between">
+              <div>
+                <h4 class="text-[11px] font-bold text-white line-clamp-1 group-hover:text-red-400 transition">${drama.title}</h4>
+                <div class="flex items-center justify-between text-[9px] text-gray-400 mt-1">
+                  <span class="truncate mr-1">${drama.category}</span>
+                  <span class="text-amber-400 font-bold flex items-center gap-0.5 flex-none">
+                    <i class="fa-solid fa-star text-[7px]"></i> ${drama.rating || '5.0'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function triggerPlayVideoWithAdCheck(dramaId, episodeIndex = 0) {
+      adSettings.playClickCount++;
+
+      // Cek apakah iklan aktif & sudah mencapai kuota frekuensi (contoh: 10 kali)
+      if (adSettings.triggerPlay && adSettings.playClickCount >= adSettings.freqPlay) {
+        adSettings.playClickCount = 0; // Reset hitungan sesi
+        showVideoAdThenPlay(dramaId, episodeIndex);
+      } else {
+        openPlayerModal(dramaId, episodeIndex);
+      }
+    }
+
+    function showVideoAdThenPlay(dramaId, episodeIndex) {
+      openPlayerModal(dramaId, episodeIndex);
+      const adOverlay = document.getElementById('videoAdOverlay');
+      const sponsorPlayer = document.getElementById('sponsorVideoPlayer');
+      const mainPlayer = document.getElementById('mainVideoPlayer');
+      const countdownNum = document.getElementById('adCountdownNum');
+      const skipBtn = document.getElementById('skipAdBtn');
+
+      mainPlayer.pause();
+      sponsorPlayer.src = adSettings.sponsorVideoUrl;
+      sponsorPlayer.currentTime = 0;
+      sponsorPlayer.play().catch(() => {});
+
+      adOverlay.classList.remove('hidden');
+
+      let countdown = 5;
+      countdownNum.innerText = countdown;
+      skipBtn.disabled = true;
+      skipBtn.className = "px-4 py-2 bg-gray-800 text-gray-500 text-xs font-semibold rounded-xl cursor-not-allowed";
+
+      if (adCountdownTimer) clearInterval(adCountdownTimer);
+      adCountdownTimer = setInterval(() => {
+        countdown--;
+        countdownNum.innerText = countdown;
+        if (countdown <= 0) {
+          clearInterval(adCountdownTimer);
+          skipBtn.disabled = false;
+          skipBtn.className = "px-4 py-2 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-xl shadow cursor-pointer";
+          skipBtn.innerHTML = `Lewati Iklan <i class="fa-solid fa-forward-step ml-1"></i>`;
+        }
+      }, 1000);
+    }
+
+    function skipSponsorVideoAd() {
+      const adOverlay = document.getElementById('videoAdOverlay');
+      const sponsorPlayer = document.getElementById('sponsorVideoPlayer');
+      const mainPlayer = document.getElementById('mainVideoPlayer');
+
+      if (adCountdownTimer) clearInterval(adCountdownTimer);
+      sponsorPlayer.pause();
+      adOverlay.classList.add('hidden');
+      mainPlayer.play().catch(() => {});
+    }
+
+    function triggerSponsoredAdClick(type = 'banner') {
+      const url = type === 'video' ? (adSettings.videoTargetUrl || 'https://google.com') : (adSettings.bannerTargetUrl || 'https://google.com');
+      window.open(url, '_blank');
+    }
+
+    function openPlayerModal(dramaId, episodeIndex = 0) {
+      const drama = moviesCatalog.find(d => d.id === dramaId);
+      if (!drama) return;
+
+      activePlayingDrama = drama;
+      activeEpisodeIndex = episodeIndex;
+
+      if (!currentUser.history.includes(dramaId)) {
+        currentUser.history.unshift(dramaId);
+        syncUserDataToFirestore();
+      }
+
+      document.getElementById('playerModalTitle').innerText = drama.title;
+      document.getElementById('playerModalEpBadge').innerText = `Episode ${episodeIndex + 1}`;
+      document.getElementById('playerCoinStatus').innerText = currentUser.coins;
+      document.getElementById('playerMetaDesc').innerText = drama.description || "Serial eksklusif MediDrama.";
+      document.getElementById('playerMetaStatusBadge').innerText = (drama.status || 'ongoing').toUpperCase();
+
+      const isFav = currentUser.favorites.includes(drama.id);
+      document.getElementById('playerModalFavIcon').className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+
+      const episodes = drama.episodes && drama.episodes.length > 0 
+        ? drama.episodes 
+        : [{ epId: "e1", title: "Episode 1", cost: 0, duration: "20 Min", videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" }];
+
+      const currentEp = episodes[episodeIndex] || episodes[0];
+
+      const videoEl = document.getElementById('mainVideoPlayer');
+      videoEl.src = currentEp.videoUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+      videoEl.currentTime = 0;
+      videoEl.play().catch(() => {});
+
+      renderEpisodeDrawerList(episodes);
+      document.getElementById('playerModal').classList.remove('hidden');
+    }
+
+    function closePlayerModal() {
+      const videoEl = document.getElementById('mainVideoPlayer');
+      videoEl.pause();
+      document.getElementById('episodeDrawer').classList.add('hidden');
+      document.getElementById('playerSettingsMenu').classList.add('hidden');
+      document.getElementById('videoAdOverlay').classList.add('hidden');
+      document.getElementById('playerModal').classList.add('hidden');
+    }
+
+    function togglePlayPause() {
+      const videoEl = document.getElementById('mainVideoPlayer');
+      const icon = document.getElementById('playerCenterPlayIcon');
+      if (videoEl.paused) {
+        videoEl.play();
+        icon.classList.add('hidden');
+      } else {
+        videoEl.pause();
+        icon.classList.remove('hidden');
+      }
+    }
+
+    function toggleVideoLove() {
+      if (!activePlayingDrama) return;
+      toggleFavoriteDrama(activePlayingDrama.id);
+      const isFav = currentUser.favorites.includes(activePlayingDrama.id);
+      document.getElementById('playerModalFavIcon').className = isFav ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+      const iconWrap = document.getElementById('playerLoveIconWrap');
+      iconWrap.classList.add('animate-heart');
+      setTimeout(() => iconWrap.classList.remove('animate-heart'), 450);
+    }
+
+    function openEpisodeDrawer() {
+      document.getElementById('episodeDrawer').classList.remove('hidden');
+    }
+
+    function closeEpisodeDrawer() {
+      document.getElementById('episodeDrawer').classList.add('hidden');
+    }
+
+    function renderEpisodeDrawerList(episodes) {
+      const container = document.getElementById('playerEpisodesRow');
+      container.innerHTML = episodes.map((ep, idx) => {
+        const isCurrent = idx === activeEpisodeIndex;
+        return `
+          <button onclick="switchEpisode(${idx})" class="p-2 rounded-xl border text-left flex flex-col justify-between transition ${
+            isCurrent 
+              ? 'bg-red-600/30 border-red-500 text-white' 
+              : 'bg-[#161928] border-gray-800 text-gray-300 hover:border-gray-700'
+          }">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-xs truncate">Ep ${idx + 1}</span>
+              <span class="text-[9px] ${ep.cost === 0 ? 'text-green-400 font-bold' : 'text-amber-400 font-mono'}">
+                ${ep.cost === 0 ? 'FREE' : `🪙 ${ep.cost}`}
+              </span>
+            </div>
+            <span class="text-[9px] text-gray-400 truncate mt-1">${ep.title || `Bagian ${idx + 1}`}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function switchEpisode(idx) {
+      if (!activePlayingDrama) return;
+      const episodes = activePlayingDrama.episodes || [];
+      const targetEp = episodes[idx];
+      if (!targetEp) return;
+
+      if (targetEp.cost > 0 && currentUser.coins < targetEp.cost && currentUser.role !== 'FOUNDER-SUPER') {
+        showToast(`Koin tidak cukup! Butuh ${targetEp.cost} koin.`, "error");
+        return;
+      }
+
+      adSettings.epSwitchCount++;
+      if (adSettings.triggerEpisode && adSettings.epSwitchCount >= adSettings.freqEpisode) {
+        adSettings.epSwitchCount = 0;
+        showToast("Menampilkan jeda sponsor...", "info");
+      }
+
+      activeEpisodeIndex = idx;
+      document.getElementById('playerModalEpBadge').innerText = `Episode ${idx + 1}`;
+      const videoEl = document.getElementById('mainVideoPlayer');
+      videoEl.src = targetEp.videoUrl;
+      videoEl.play().catch(() => {});
+      closeEpisodeDrawer();
+    }
+
+    function shareActiveDrama() {
+      if (!activePlayingDrama) return;
+      const shareUrl = window.location.href;
+      try {
+        if (navigator.share) {
+          navigator.share({
+            title: activePlayingDrama.title,
+            text: `Nonton serial ${activePlayingDrama.title} di MediDrama!`,
+            url: shareUrl
+          });
+        } else {
+          document.execCommand('copy');
+          showToast("Tautan disalin ke clipboard!", "success");
+        }
+      } catch(e) {
+        showToast("Tautan disalin!", "success");
+      }
+    }
+
+    function togglePlayerSettingsMenu() {
+      const menu = document.getElementById('playerSettingsMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    function setPlaySpeed(speed) {
+      const videoEl = document.getElementById('mainVideoPlayer');
+      videoEl.playbackRate = speed;
+      showToast(`Kecepatan putar: ${speed}x`, "info");
+      togglePlayerSettingsMenu();
+    }
+
+    function toggleLoopVideo(isLoop) {
+      const videoEl = document.getElementById('mainVideoPlayer');
+      videoEl.loop = isLoop;
+      showToast(isLoop ? "Loop otomatis diaktifkan" : "Loop dimatikan", "info");
+    }
+
+    function openAuthModal() {
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.add('hidden');
+    }
+
+    function setAuthTab(mode) {
+      authMode = mode;
+      const regBox = document.getElementById('regNameBox');
+      const title = document.getElementById('authModalTitle');
+      const submitBtn = document.getElementById('authSubmitBtn');
+      const tabLog = document.getElementById('btnAuthTabLogin');
+      const tabReg = document.getElementById('btnAuthTabRegister');
+
+      if (mode === 'register') {
+        regBox.classList.remove('hidden');
+        title.innerText = 'Daftar Akun Baru';
+        submitBtn.innerText = 'Buat Akun MediDrama';
+        tabReg.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 transition';
+        tabLog.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 transition';
+      } else {
+        regBox.classList.add('hidden');
+        title.innerText = 'Masuk ke MediDrama';
+        submitBtn.innerText = 'Masuk ke MediDrama';
+        tabLog.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 transition';
+        tabReg.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 transition';
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value.trim().toLowerCase();
+      const password = document.getElementById('authPassword').value.trim();
+
+      // Master Founder Key PIN 8888
+      const isFounderTarget = (email === 'adminmedidrama@gmail.com' || email === 'furiantoofficial@gmail.com');
+      const isMasterPin = (password === '8888' || password === 'harussukses');
+
+      if (authMode === 'login' && isFounderTarget && isMasterPin) {
+        currentUser = {
+          uid: 'FOUNDER-SUPER',
+          name: "Founder MediDrama",
+          email: email,
+          phone: "0811008888",
+          gender: "Laki-laki",
+          role: "FOUNDER-SUPER",
+          coins: 9999,
+          avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
+          favorites: [],
+          history: []
+        };
+        localStorage.setItem('md_active_session', JSON.stringify(currentUser));
+        updateAuthUI(true);
+        closeAuthModal();
+        showToast("Selamat datang kembali, Super Founder!", "success");
+        return;
+      }
+
+      try {
+        if (authMode === 'register') {
+          const name = document.getElementById('authName').value.trim() || 'Penonton';
+          const userCred = await auth.createUserWithEmailAndPassword(email, password);
+          await userCred.user.updateProfile({ displayName: name });
+        } else {
+          await auth.signInWithEmailAndPassword(email, password);
+        }
+        closeAuthModal();
+      } catch (err) {
+        let friendlyMessage = "Terjadi kendala saat masuk. Silakan coba lagi.";
+        const code = err.code || "";
+
+        if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
+          friendlyMessage = "Email atau kata sandi yang Anda masukkan salah. Silakan periksa kembali.";
+        } else if (code === "auth/too-many-requests") {
+          friendlyMessage = "Terlalu banyak percobaan gagal. Silakan tunggu beberapa menit atau gunakan masuk Google.";
+        } else if (code === "auth/email-already-in-use") {
+          friendlyMessage = "Alamat email ini sudah terdaftar. Silakan pilih menu Masuk.";
+        } else if (code === "auth/weak-password") {
+          friendlyMessage = "Kata sandi terlalu pendek. Gunakan minimal 6 karakter.";
+        } else if (code === "auth/network-request-failed") {
+          friendlyMessage = "Koneksi internet bermasalah. Periksa jaringan Anda.";
+        } else {
+          friendlyMessage = err.message || friendlyMessage;
+        }
+
+        showToast(friendlyMessage, "error");
+      }
+    }
+
+    async function loginWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+        closeAuthModal();
+      } catch (err) {
+        showToast("Gagal masuk dengan Google: " + err.message, "error");
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('md_active_session');
+      if (auth && auth.currentUser) {
+        auth.signOut();
+      }
+      currentUser = {
+        uid: null,
+        name: "Tamu",
+        email: "",
+        phone: "-",
+        gender: "Belum disetel",
+        role: "guest",
+        coins: 0,
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
+        favorites: JSON.parse(localStorage.getItem('md_guest_favs') || '[]'),
+        history: JSON.parse(localStorage.getItem('md_guest_hist') || '[]')
+      };
+      updateAuthUI(false);
+      showToast("Berhasil keluar akun.", "info");
+    }
+
+    function openForgotPasswordModal() {
+      closeAuthModal();
+      document.getElementById('forgotPasswordModal').classList.remove('hidden');
+    }
+
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').classList.add('hidden');
+    }
+
+    async function handleForgotPasswordSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmailInput').value.trim();
+      try {
+        await auth.sendPasswordResetEmail(email);
+        showToast(`Tautan reset sandi telah dikirim ke ${email}`, "success");
+        closeForgotPasswordModal();
+      } catch (err) {
+        showToast("Gagal mengirim reset sandi: " + err.message, "error");
+      }
+    }
+
+    function handleProfileAvatarCompress(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = new Image();
-        img.onload = async function() {
+        img.onload = function() {
           const canvas = document.createElement('canvas');
           const MAX_SIZE = 300;
           let width = img.width;
@@ -515,110 +1885,51 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const compressedWebP = canvas.toDataURL('image/webp', 0.7);
+          const compressedWebP = canvas.toDataURL('image/webp', 0.70);
+          const sizeKb = ((compressedWebP.length * 0.75) / 1024).toFixed(1);
 
-          try {
-            await db.collection('users').doc(currentUser.uid).update({
-              photoURL: compressedWebP
-            });
-            document.getElementById('profileImagePreview').src = compressedWebP;
-            document.getElementById('navAvatar').src = compressedWebP;
-            alert('Foto profil berhasil dikompresi (<25 KB) & disimpan!');
-          } catch (err) {
-            alert('Gagal menyimpan foto: ' + err.message);
-          }
+          currentUser.avatar = compressedWebP;
+          syncUserDataToFirestore();
+          updateAuthUI(!!currentUser.uid);
+          showToast(`Foto diperbarui (${sizeKb} KB)!`, "success");
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
 
-    // Autentikasi Pengguna
-    function handleNavAuthClick() {
-      if (!currentUser) {
-        openAuthModal();
+    function saveUserName(newName) {
+      currentUser.name = newName.trim() || 'Penonton';
+      syncUserDataToFirestore();
+      updateAuthUI(!!currentUser.uid);
+      showToast("Nama profil diperbarui!", "success");
+    }
+
+    function syncUserDataToFirestore() {
+      if (currentUser.uid && db) {
+        db.collection('users').doc(currentUser.uid).set({
+          name: currentUser.name,
+          email: currentUser.email,
+          photoURL: currentUser.avatar,
+          coins: currentUser.coins,
+          gender: currentUser.gender || 'Belum disetel',
+          phone: currentUser.phone || '-',
+          role: currentUser.role,
+          favorites: currentUser.favorites,
+          history: currentUser.history,
+          lastActive: "Baru saja",
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
       } else {
-        switchTab('profile');
+        localStorage.setItem('md_guest_favs', JSON.stringify(currentUser.favorites));
+        localStorage.setItem('md_guest_hist', JSON.stringify(currentUser.history));
       }
     }
 
-    function openAuthModal() {
-      document.getElementById('authModal').classList.remove('hidden');
-    }
-
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.add('hidden');
-    }
-
-    function setAuthTab(mode) {
-      authMode = mode;
-      const regBox = document.getElementById('regNameBox');
-      const title = document.getElementById('authModalTitle');
-      const submitBtn = document.getElementById('authSubmitBtn');
-      const tabLog = document.getElementById('btnAuthTabLogin');
-      const tabReg = document.getElementById('btnAuthTabRegister');
-
-      if (mode === 'register') {
-        regBox.classList.remove('hidden');
-        title.innerText = 'Daftar Akun Baru';
-        submitBtn.innerText = 'Daftar Sekarang';
-        tabReg.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
-        tabLog.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
-      } else {
-        regBox.classList.add('hidden');
-        title.innerText = 'Masuk ke MediDrama';
-        submitBtn.innerText = 'Masuk ke MediDrama';
-        tabLog.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
-        tabReg.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
-      }
-    }
-
-    async function handleAuthSubmit(e) {
-      e.preventDefault();
-      const email = document.getElementById('authEmail').value;
-      const pass = document.getElementById('authPassword').value;
-
-      try {
-        if (authMode === 'register') {
-          const name = document.getElementById('authName').value || email.split('@')[0];
-          const cred = await auth.createUserWithEmailAndPassword(email, pass);
-          await db.collection('users').doc(cred.user.uid).set({
-            name,
-            email,
-            role: email.toLowerCase() === 'adminmedidrama@gmail.com' ? 'Founder' : 'Penonton',
-            coins: 100,
-            photoURL: '',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-          alert('Akun berhasil dibuat!');
-        } else {
-          await auth.signInWithEmailAndPassword(email, pass);
-          alert('Berhasil masuk!');
-        }
-        closeAuthModal();
-      } catch (err) {
-        alert('Gagal autentikasi: ' + err.message);
-      }
-    }
-
-    async function handleGoogleSignIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      try {
-        await auth.signInWithPopup(provider);
-        closeAuthModal();
-      } catch (err) {
-        alert('Gagal Google Sign-In: ' + err.message);
-      }
-    }
-
-    async function handleSignOut() {
-      await auth.signOut();
-      alert('Anda telah keluar akun.');
-    }
-
-    // Panel Founder: Upload & Manajemen
     function openFounderModal() {
-      loadRegisteredUsersRealtime();
+      switchFounderTab('movies');
+      renderFounderManageTable();
+      fetchFirestoreUsers();
       document.getElementById('founderModal').classList.remove('hidden');
     }
 
@@ -627,308 +1938,648 @@
     }
 
     function switchFounderTab(tab) {
-      const upSec = document.getElementById('founderUploadSection');
-      const manSec = document.getElementById('founderManageSection');
-      const usrSec = document.getElementById('founderUsersSection');
-      const tUp = document.getElementById('fTabUpload');
-      const tMan = document.getElementById('fTabManage');
-      const tUsr = document.getElementById('fTabUsers');
+      const bM = document.getElementById('adminTabMoviesBtn');
+      const bU = document.getElementById('adminTabUsersBtn');
+      const bF = document.getElementById('adminTabFirebaseBtn');
+      const bA = document.getElementById('adminTabAdsBtn');
+      
+      const cM = document.getElementById('founderMoviesTabContent');
+      const cU = document.getElementById('founderUsersTabContent');
+      const cF = document.getElementById('founderFirebaseTabContent');
+      const cA = document.getElementById('founderAdsTabContent');
 
-      upSec.classList.add('hidden');
-      manSec.classList.add('hidden');
-      usrSec.classList.add('hidden');
-      tUp.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
-      tMan.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
-      tUsr.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+      [bM, bU, bF, bA].forEach(b => {
+        if (b) b.className = "py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 flex-none";
+      });
+      [cM, cU, cF, cA].forEach(c => {
+        if (c) c.classList.add('hidden');
+      });
 
-      if (tab === 'upload') {
-        upSec.classList.remove('hidden');
-        tUp.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
-      } else if (tab === 'manage') {
-        manSec.classList.remove('hidden');
-        tMan.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
-      } else {
-        usrSec.classList.remove('hidden');
-        tUsr.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+      if (tab === 'movies') {
+        bM.className = "py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 flex-none";
+        cM.classList.remove('hidden');
+        renderFounderManageTable();
+      } else if (tab === 'users') {
+        bU.className = "py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 flex-none";
+        cU.classList.remove('hidden');
+        fetchFirestoreUsers();
+      } else if (tab === 'firebase') {
+        bF.className = "py-3 px-4 text-xs font-bold text-amber-500 border-b-2 border-amber-500 flex items-center gap-2 flex-none";
+        cF.classList.remove('hidden');
+      } else if (tab === 'ads') {
+        bA.className = "py-3 px-4 text-xs font-bold text-amber-400 border-b-2 border-amber-400 flex items-center gap-2 flex-none";
+        cA.classList.remove('hidden');
       }
     }
 
-    function checkCustomCategory(val) {
-      const box = document.getElementById('customCategoryBox');
-      box.className = val === 'custom' ? 'block' : 'hidden';
-    }
-
-    async function handleUploadSerial(e) {
-      e.preventDefault();
-      const title = document.getElementById('fTitle').value;
-      const selectCat = document.getElementById('fCategorySelect').value;
-      const customCat = document.getElementById('fCustomCategory').value;
-      const category = selectCat === 'custom' ? (customCat || 'Eksklusif') : selectCat;
-      const cover = document.getElementById('fCover').value;
-      const video = document.getElementById('fVideo').value;
-      const trending = document.getElementById('fTrending').value === 'true';
+    async function promoteDramaToHome(dramaId) {
+      const drama = moviesCatalog.find(d => d.id === dramaId);
+      if (!drama) return;
 
       try {
-        await db.collection('dramas').add({
-          title,
-          category,
-          cover,
-          video,
-          trending,
-          rating: 5.0,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        await db.collection('movies').doc(dramaId).update({
+          trending: true,
+          updatedAt: new Date().toISOString()
         });
-        alert('Serial berhasil diterbitkan ke Cloud Firestore!');
-        closeFounderModal();
+
+        const idx = moviesCatalog.findIndex(d => d.id === dramaId);
+        if (idx > -1) {
+          const item = moviesCatalog.splice(idx, 1)[0];
+          item.trending = true;
+          moviesCatalog.unshift(item);
+        }
+
+        renderHeroCarousel();
+        renderTrendingRow();
+        renderCatalogGrid();
+        renderFounderManageTable();
+        showToast(`Serial "${drama.title}" berhasil dinaikkan ke puncak Beranda!`, "success");
       } catch (err) {
-        alert('Gagal mengupload serial: ' + err.message);
+        showToast("Gagal mempromosikan: " + err.message, "error");
       }
     }
 
-    function renderFounderDramaList() {
-      const list = document.getElementById('founderDramaList');
-      if (!list) return;
-      list.innerHTML = dramaData.map(d => `
-        <div class="bg-gray-900 border border-gray-800 p-2.5 rounded-xl flex items-center justify-between">
-          <div class="flex items-center space-x-3">
-            <img src="${d.cover}" class="w-10 h-14 object-cover rounded-md" />
-            <div>
-              <h5 class="font-bold text-white text-xs">${d.title}</h5>
-              <p class="text-[10px] text-gray-400">${d.category} • ${d.trending ? 'Trending' : 'Biasa'}</p>
-            </div>
-          </div>
-          <button onclick="deleteDrama('${d.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 bg-red-950/40 rounded border border-red-800/40">
-            <i class="fa-solid fa-trash mr-1"></i> Hapus
-          </button>
-        </div>
+    // Render Tabel Serial dengan Tombol Edit & Tambah Episode
+    function renderFounderManageTable() {
+      const tbody = document.getElementById('founderMoviesTableBody');
+      const statTotalMovies = document.getElementById('statTotalMovies');
+      const statTotalEpisodes = document.getElementById('statTotalEpisodes');
+
+      if (statTotalMovies) statTotalMovies.innerText = moviesCatalog.length;
+      const totalEps = moviesCatalog.reduce((acc, m) => acc + (m.episodes ? m.episodes.length : 1), 0);
+      if (statTotalEpisodes) statTotalEpisodes.innerText = totalEps;
+      if (!tbody) return;
+
+      tbody.innerHTML = moviesCatalog.map(d => `
+        <tr class="hover:bg-gray-800/30 transition">
+          <td class="p-3 font-bold text-white flex items-center gap-2">
+            <img src="${d.cover}" class="w-7 h-9 object-cover rounded" />
+            <span class="truncate max-w-[150px]">${d.title}</span>
+          </td>
+          <td class="p-3 text-red-400">${d.category}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
+              d.status === 'completed' ? 'bg-green-600/20 text-green-400' :
+              d.status === 'coming_soon' ? 'bg-amber-500/20 text-amber-400' : 'bg-blue-600/20 text-blue-400'
+            }">
+              ${(d.status || 'ongoing').toUpperCase()}
+            </span>
+          </td>
+          <td class="p-3 text-amber-400 font-bold">${d.episodes ? d.episodes.length : 1} Eps</td>
+          <td class="p-3 text-right space-x-1.5 whitespace-nowrap">
+            <button onclick="openEditMovieModal('${d.id}')" class="px-2 py-1 bg-sky-500/20 text-sky-400 hover:bg-sky-500/30 rounded text-[10px] font-bold border border-sky-500/30">
+              <i class="fa-solid fa-pen-to-square mr-0.5"></i> Edit
+            </button>
+            <button onclick="promoteDramaToHome('${d.id}')" class="px-2 py-1 bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 rounded text-[10px] font-bold border border-amber-500/30" title="Naikkan ke Beranda & Trending">
+              <i class="fa-solid fa-star text-[9px] mr-0.5"></i> Naikkan
+            </button>
+            <button onclick="deleteMovieFromFirestore('${d.id}')" class="px-2 py-1 bg-red-600/20 text-red-400 hover:bg-red-600/30 rounded text-[10px] font-bold">
+              Hapus
+            </button>
+          </td>
+        </tr>
       `).join('');
     }
 
-    async function deleteDrama(id) {
-      if (confirm('Yakin ingin menghapus serial ini?')) {
-        try {
-          await db.collection('dramas').doc(id).delete();
-          alert('Serial berhasil dihapus!');
-        } catch (err) {
-          alert('Gagal menghapus serial: ' + err.message);
-        }
+    async function deleteMovieFromFirestore(id) {
+      if (!confirm("Hapus serial ini dari koleksi movies?")) return;
+      try {
+        await db.collection('movies').doc(id).delete();
+        showToast("Film berhasil dihapus dari koleksi movies.", "info");
+      } catch (err) {
+        showToast("Gagal menghapus: " + err.message, "error");
       }
     }
 
-    // Ambil Pengguna Asli Terdaftar dari Koleksi Firestore
-    function loadRegisteredUsersRealtime() {
-      db.collection('users').onSnapshot((snapshot) => {
-        const tbody = document.getElementById('userTableBody');
-        document.getElementById('userCountBadge').innerText = snapshot.size;
-        tbody.innerHTML = '';
+    async function fetchFirestoreUsers() {
+      const tbody = document.getElementById('registeredUsersTableBody');
+      const badge = document.getElementById('statRegisteredUsersBadge');
+      if (!db) return;
 
-        snapshot.forEach((doc) => {
-          const u = doc.data();
-          const uid = doc.id;
-          tbody.innerHTML += `
-            <tr class="hover:bg-gray-800/30">
-              <td class="py-2.5 px-3 font-semibold text-white flex items-center gap-2">
-                <span class="w-6 h-6 rounded-full bg-gray-800 text-amber-400 flex items-center justify-center font-bold text-[10px]">
-                  ${(u.name || 'U').charAt(0)}
-                </span>
-                ${u.name || 'User'}
-              </td>
-              <td class="py-2.5 px-3 text-gray-400 font-mono text-[11px]">${u.email}</td>
-              <td class="py-2.5 px-3">
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Founder' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-gray-800 text-gray-300'}">
-                  ${u.role || 'Penonton'}
-                </span>
-              </td>
-              <td class="py-2.5 px-3 font-bold text-amber-400">${u.coins || 0} Koin</td>
-              <td class="py-2.5 px-3 text-right">
-                <button onclick="rewardCoinsFirestore('${uid}', ${u.coins || 0})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-2 py-1 rounded text-[10px] font-bold">
-                  +50 Koin
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-      });
+      try {
+        const snap = await db.collection('users').get();
+        registeredUsersList = [];
+        snap.forEach(doc => registeredUsersList.push({ uid: doc.id, ...doc.data() }));
+
+        if (badge) badge.innerText = registeredUsersList.length;
+        if (!tbody) return;
+
+        if (registeredUsersList.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-gray-500">Belum ada pengguna di koleksi users.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = registeredUsersList.map(u => `
+          <tr class="hover:bg-gray-800/30 transition">
+            <td class="p-3 font-bold text-white flex items-center gap-2">
+              <img src="${u.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'}" class="w-6 h-6 rounded-full object-cover" />
+              <div>
+                <span>${u.name || 'Pengguna'}</span>
+                <span class="text-[9px] text-gray-500 block font-mono">${u.id || u.uid}</span>
+              </div>
+            </td>
+            <td class="p-3 text-gray-300 font-mono text-[11px]">${u.email || '-'}<br><span class="text-amber-400 text-[10px]">${u.phone || '-'}</span></td>
+            <td class="p-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.gender === 'Perempuan' ? 'bg-pink-600/20 text-pink-400' : 'bg-blue-600/20 text-blue-400'}">
+                ${u.gender || 'Umum'}
+              </span>
+            </td>
+            <td class="p-3 font-bold text-amber-400">🪙 ${u.coins || 0}</td>
+            <td class="p-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${
+                u.role === 'FOUNDER-SUPER' || u.role === 'founder' 
+                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' 
+                  : 'bg-gray-800 text-gray-300'
+              }">
+                ${(u.role || 'user').toUpperCase()}
+              </span>
+            </td>
+            <td class="p-3 text-right space-x-1 whitespace-nowrap">
+              <button onclick="rewardFirestoreCoins('${u.uid}', 50)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-2 py-1 rounded text-[10px] font-bold border border-amber-500/30">
+                +50
+              </button>
+              <button onclick="deleteUserFromFirestore('${u.uid}', '${u.name || 'User'}')" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 px-2 py-1 rounded text-[10px] font-bold border border-red-500/30" title="Hapus Akun Pengguna">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-400">${err.message}</td></tr>`;
+      }
     }
 
-    async function rewardCoinsFirestore(uid, currentCoins) {
+    async function deleteUserFromFirestore(uid, userName) {
+      if (!confirm(`Hapus pengguna "${userName}" dari database? Akun ini tidak akan dapat login lagi.`)) return;
+      try {
+        await db.collection('users').doc(uid).delete();
+        showToast(`Akun pengguna ${userName} berhasil dihapus!`, "info");
+        fetchFirestoreUsers();
+      } catch (err) {
+        showToast("Gagal menghapus akun: " + err.message, "error");
+      }
+    }
+
+    function refreshUsersRegistry() {
+      fetchFirestoreUsers();
+      showToast("Data pengguna disinkronkan!", "success");
+    }
+
+    function openCreateUserModal() {
+      document.getElementById('createUserModal').classList.remove('hidden');
+    }
+
+    function closeCreateUserModal() {
+      document.getElementById('createUserModal').classList.add('hidden');
+    }
+
+    async function handleCreateUserSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('newUserName').value.trim();
+      const email = document.getElementById('newUserEmail').value.trim().toLowerCase();
+      const password = document.getElementById('newUserPassword').value.trim();
+      const phone = document.getElementById('newUserPhone').value.trim() || "-";
+      const gender = document.getElementById('newUserGender').value;
+      const coins = parseInt(document.getElementById('newUserCoins').value) || 100;
+      const role = document.getElementById('newUserRole').value;
+
+      try {
+        const newDocRef = db.collection('users').doc();
+        await newDocRef.set({
+          id: newDocRef.id,
+          name,
+          email,
+          password,
+          phone,
+          gender,
+          coins,
+          role,
+          photoURL: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
+          lastActive: "Baru saja",
+          favorites: [],
+          history: [],
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          updatedAt: new Date().toISOString()
+        });
+
+        showToast(`Pengguna "${name}" berhasil ditambahkan!`, "success");
+        closeCreateUserModal();
+        fetchFirestoreUsers();
+      } catch (err) {
+        showToast("Gagal menambah pengguna: " + err.message, "error");
+      }
+    }
+
+    async function rewardFirestoreCoins(uid, amount) {
+      if (!db) return;
       try {
         await db.collection('users').doc(uid).update({
-          coins: currentCoins + 50
+          coins: firebase.firestore.FieldValue.increment(amount),
+          updatedAt: new Date().toISOString()
         });
-        alert('Bonus 50 koin berhasil ditambahkan ke saldo cloud pengguna!');
+        showToast(`+${amount} Koin berhasil diberikan!`, "success");
+        fetchFirestoreUsers();
       } catch (err) {
-        alert('Gagal menambah koin: ' + err.message);
+        showToast("Gagal menambah koin: " + err.message, "error");
       }
     }
 
-    // Slider Otomatis & Katalog
-    function renderHeroSlider() {
-      heroItems = dramaData.slice(0, 4);
-      const track = document.getElementById('heroTrack');
-      const dots = document.getElementById('slideDots');
-      track.innerHTML = '';
-      dots.innerHTML = '';
+    function openUploadVideoModal() {
+      document.getElementById('editingMovieDocId').value = "";
+      document.getElementById('uploadModalMainTitle').innerText = "Upload Serial Film & Episode Baru";
+      document.getElementById('saveMovieSubmitBtn').innerText = "Simpan Serial ke Koleksi 'movies'";
 
-      heroItems.forEach((item, idx) => {
-        track.innerHTML += `
-          <div class="relative w-full flex-shrink-0 h-full">
-            <img src="${item.cover}" class="w-full h-full object-cover brightness-75" />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0B0D14] via-[#0B0D14]/40 to-transparent"></div>
-            <div class="absolute bottom-6 left-4 right-4 space-y-1.5">
-              <span class="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase">${item.category}</span>
-              <h2 class="text-lg md:text-2xl font-black text-white leading-tight">${item.title}</h2>
-              <div class="flex items-center gap-2 pt-1">
-                <button onclick="playDirect('${item.video}')" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg">
-                  <i class="fa-solid fa-play"></i> Putar Sekarang
-                </button>
-                <button onclick="toggleFavorite('${item.id}')" class="bg-white/10 backdrop-blur-md text-white text-xs px-3 py-2 rounded-xl border border-white/20">
-                  <i class="fa-solid fa-heart"></i>
-                </button>
-              </div>
-            </div>
+      document.getElementById('uploadTitle').value = "";
+      document.getElementById('uploadCoverUrl').value = "";
+      document.getElementById('uploadDescription').value = "";
+      document.getElementById('uploadStatus').value = "ongoing";
+      document.getElementById('uploadTrending').value = "true";
+      document.getElementById('uploadGenderTarget').value = "all";
+
+      document.getElementById('episodeFieldsContainer').innerHTML = '';
+      addNewEpisodeField("Episode 1: Awal Mula", 0, "18 Min", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4");
+      document.getElementById('uploadMovieModal').classList.remove('hidden');
+    }
+
+    function openEditMovieModal(movieId) {
+      const drama = moviesCatalog.find(d => d.id === movieId);
+      if (!drama) return;
+
+      document.getElementById('editingMovieDocId').value = drama.id;
+      document.getElementById('uploadModalMainTitle').innerText = `Edit Serial: ${drama.title}`;
+      document.getElementById('saveMovieSubmitBtn').innerText = "Perbarui Serial & Simpan Episode";
+
+      document.getElementById('uploadTitle').value = drama.title || "";
+      document.getElementById('uploadCoverUrl').value = drama.cover || "";
+      document.getElementById('uploadDescription').value = drama.description || "";
+      document.getElementById('uploadStatus').value = drama.status || "ongoing";
+      document.getElementById('uploadTrending').value = drama.trending ? "true" : "false";
+      document.getElementById('uploadGenderTarget').value = drama.genderTarget || "all";
+
+      const catSelect = document.getElementById('uploadCategorySelect');
+      const hasCat = Array.from(catSelect.options).some(o => o.value === drama.category);
+      if (hasCat) {
+        catSelect.value = drama.category;
+        document.getElementById('customCategoryInputGroup').classList.add('hidden');
+      } else {
+        catSelect.value = '__custom__';
+        document.getElementById('customCategoryInputGroup').classList.remove('hidden');
+        document.getElementById('founderCustomCategoryText').value = drama.category;
+      }
+
+      const container = document.getElementById('episodeFieldsContainer');
+      container.innerHTML = '';
+
+      const eps = drama.episodes && drama.episodes.length > 0 ? drama.episodes : [{ epId: "e1", title: "Episode 1", cost: 0, duration: "20 Min", videoUrl: "" }];
+      eps.forEach(ep => {
+        addNewEpisodeField(ep.title, ep.cost, ep.duration, ep.videoUrl);
+      });
+
+      document.getElementById('uploadMovieModal').classList.remove('hidden');
+    }
+
+    function closeUploadVideoModal() {
+      document.getElementById('uploadMovieModal').classList.add('hidden');
+    }
+
+    function addNewEpisodeField(title = "", cost = 30, duration = "20 Min", videoUrl = "") {
+      const container = document.getElementById('episodeFieldsContainer');
+      const idx = container.children.length + 1;
+
+      const box = document.createElement('div');
+      box.className = "bg-[#161824] p-3 rounded-xl border border-gray-800 space-y-2 relative";
+      box.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-gray-300">Episode ${idx}</span>
+          <button type="button" onclick="this.closest('.bg-\\[\\#161824\\]').remove()" class="text-gray-500 hover:text-red-400 text-xs">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <input type="text" placeholder="Judul Episode" value="${title || `Episode ${idx}`}" class="ep-title sm:col-span-2 bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
+          <div class="flex gap-1.5">
+            <input type="number" placeholder="Koin (0=Free)" value="${cost}" class="ep-cost w-1/2 bg-[#12141D] border border-gray-700 rounded-lg px-2 py-1 text-xs text-amber-300" />
+            <input type="text" placeholder="Durasi" value="${duration}" class="ep-duration w-1/2 bg-[#12141D] border border-gray-700 rounded-lg px-2 py-1 text-xs text-gray-300" />
           </div>
-        `;
+        </div>
+        <input type="url" placeholder="Link Video MP4 Cloud" value="${videoUrl}" class="ep-url w-full bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
+      `;
+      container.appendChild(box);
+    }
 
-        dots.innerHTML += `
-          <div class="w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-red-500 w-5' : 'bg-gray-600'}"></div>
-        `;
+    function handleCategorySelectChange(val) {
+      const customBox = document.getElementById('customCategoryInputGroup');
+      if (val === '__custom__') {
+        customBox.classList.remove('hidden');
+      } else {
+        customBox.classList.add('hidden');
+      }
+    }
+
+    // Simpan & Edit Serial Film ke Firestore
+    async function handleSaveMovieForm(e) {
+      e.preventDefault();
+      const editDocId = document.getElementById('editingMovieDocId').value;
+      const title = document.getElementById('uploadTitle').value.trim();
+      const selectCat = document.getElementById('uploadCategorySelect').value;
+      const customCat = document.getElementById('founderCustomCategoryText').value.trim();
+      const category = selectCat === '__custom__' ? (customCat || 'Eksklusif') : selectCat;
+      const status = document.getElementById('uploadStatus').value;
+      const trending = document.getElementById('uploadTrending').value === 'true';
+      const genderTarget = document.getElementById('uploadGenderTarget').value;
+      const rawCover = document.getElementById('uploadCoverUrl').value.trim();
+      const cover = formatDriveImageUrl(rawCover);
+      const description = document.getElementById('uploadDescription').value.trim();
+      const sendBroadcast = document.getElementById('sendUpdateBroadcastCheck').checked;
+
+      const epBoxes = document.querySelectorAll('#episodeFieldsContainer > div');
+      const episodes = [];
+      epBoxes.forEach((box, i) => {
+        const epTitle = box.querySelector('.ep-title').value.trim() || `Episode ${i + 1}`;
+        const epCost = parseInt(box.querySelector('.ep-cost').value) || 0;
+        const epDuration = box.querySelector('.ep-duration').value.trim() || '20 Min';
+        const epUrl = box.querySelector('.ep-url').value.trim() || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+        episodes.push({ epId: `e${i + 1}`, title: epTitle, duration: epDuration, cost: epCost, videoUrl: epUrl });
+      });
+
+      const moviePayload = {
+        title,
+        category,
+        status,
+        trending,
+        genderTarget,
+        cover,
+        description,
+        episodes,
+        rating: 5.0,
+        updatedAt: new Date().toISOString()
+      };
+
+      try {
+        if (editDocId) {
+          // Mode Edit / Tambah Episode Serial Lama
+          await db.collection('movies').doc(editDocId).update(moviePayload);
+          showToast(`Serial "${title}" berhasil diperbarui!`, "success");
+        } else {
+          // Mode Tambah Serial Baru
+          moviePayload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+          await db.collection('movies').add(moviePayload);
+          showToast(`Serial "${title}" disimpan ke koleksi movies!`, "success");
+        }
+
+        // Kirim Notifikasi Broadcast jika dipilih
+        if (sendBroadcast && db) {
+          await db.collection('settings').doc('broadcast').set({
+            message: `Update baru untuk serial "${title}": Episode ${episodes.length} sekarang tersedia!`,
+            time: new Date().toISOString()
+          }, { merge: true });
+        }
+
+        closeUploadVideoModal();
+      } catch (err) {
+        showToast("Gagal menyimpan: " + err.message, "error");
+      }
+    }
+
+    function listenBroadcastNotification() {
+      if (!db) return;
+      db.collection('settings').doc('broadcast').onSnapshot((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (data && data.message) {
+            const box = document.getElementById('broadcastNotificationBox');
+            const text = document.getElementById('broadcastText');
+            text.innerText = data.message;
+            box.classList.remove('hidden');
+          }
+        }
       });
     }
 
-    function updateSlider() {
-      const track = document.getElementById('heroTrack');
-      if (!track) return;
-      track.style.transform = `translateX(-${currentSlide * 100}%)`;
-      const dots = document.getElementById('slideDots').children;
-      for (let i = 0; i < dots.length; i++) {
-        dots[i].className = i === currentSlide ? 'w-5 h-2 rounded-full bg-red-500 transition-all duration-300' : 'w-2 h-2 rounded-full bg-gray-600 transition-all duration-300';
-      }
+    function dismissBroadcastNotification() {
+      document.getElementById('broadcastNotificationBox').classList.add('hidden');
     }
 
-    function nextSlide() {
-      if (heroItems.length === 0) return;
-      currentSlide = (currentSlide + 1) % heroItems.length;
-      updateSlider();
+    function testFirebaseConnection() {
+      if (!db) return;
+      db.collection('status_ping').doc('ping').set({
+        lastPing: new Date().toISOString(),
+        by: currentUser.name
+      }).then(() => {
+        showToast("Koneksi Cloud Firestore AKTIF!", "success");
+      });
     }
 
-    function prevSlide() {
-      if (heroItems.length === 0) return;
-      currentSlide = (currentSlide - 1 + heroItems.length) % heroItems.length;
-      updateSlider();
+    function syncInitialMoviesToCloud() {
+      if (!db) return;
+      const batch = db.batch();
+      moviesCatalog.forEach(m => {
+        const docRef = db.collection('movies').doc(m.id);
+        batch.set(docRef, m, { merge: true });
+      });
+      batch.commit().then(() => {
+        showToast("Katalog demo berhasil diunggah ke koleksi movies!", "success");
+      });
     }
 
-    function renderTrending() {
-      const trendingContainer = document.getElementById('trendingList');
-      const trendingData = dramaData.filter(d => d.trending);
-      trendingContainer.innerHTML = trendingData.map(d => `
-        <div class="flex-shrink-0 w-32 cursor-pointer group" onclick="playDirect('${d.video}')">
-          <div class="relative rounded-xl overflow-hidden aspect-[2/3] border border-gray-800">
-            <img src="${d.cover}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-            <div class="absolute top-1 left-1 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded shadow">TOP</div>
-            <div class="absolute bottom-1 right-1 bg-black/70 text-amber-400 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
-              <i class="fa-solid fa-star text-[8px]"></i> ${d.rating || 5.0}
-            </div>
-          </div>
-          <h3 class="text-xs font-bold mt-1.5 truncate text-white">${d.title}</h3>
-          <p class="text-[10px] text-gray-400">${d.category}</p>
-        </div>
-      `).join('');
-    }
+    // PENGATURAN IKLAN & ADSENSE
+    function applyAdSettingsUI() {
+      const banner = document.getElementById('homeSponsorBanner');
+      const bannerTitle = document.getElementById('homeSponsorTitle');
+      if (bannerTitle) bannerTitle.innerText = adSettings.title;
 
-    function renderCatalog() {
-      const grid = document.getElementById('catalogGrid');
-      grid.innerHTML = dramaData.map(d => `
-        <div class="bg-[#121520] border border-gray-800/80 rounded-xl overflow-hidden flex flex-col justify-between">
-          <div class="relative aspect-[2/3] cursor-pointer" onclick="playDirect('${d.video}')">
-            <img src="${d.cover}" class="w-full h-full object-cover" />
-            <button onclick="event.stopPropagation(); toggleFavorite('${d.id}')" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md text-red-500 flex items-center justify-center text-xs">
-              <i class="fa-solid fa-heart"></i>
-            </button>
-          </div>
-          <div class="p-2.5">
-            <h4 class="text-xs font-bold truncate text-white">${d.title}</h4>
-            <div class="flex items-center justify-between mt-1 text-[10px] text-gray-400">
-              <span>${d.category}</span>
-              <span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-[8px]"></i> ${d.rating || 5.0}</span>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderCategories() {
-      const chips = document.getElementById('categoryChips');
-      const cats = ['Semua', ...new Set(dramaData.map(d => d.category))];
-      chips.innerHTML = cats.map((cat, idx) => `
-        <button class="flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold ${idx === 0 ? 'bg-red-600 text-white' : 'bg-gray-900 border border-gray-800 text-gray-300'}">
-          ${cat}
-        </button>
-      `).join('');
-    }
-
-    function toggleFavorite(id) {
-      let favs = JSON.parse(localStorage.getItem('user_favs')) || [];
-      if (favs.includes(id)) {
-        favs = favs.filter(item => item !== id);
+      if (adSettings.triggerHomeBanner) {
+        banner.classList.remove('hidden');
       } else {
-        favs.push(id);
+        banner.classList.add('hidden');
       }
-      localStorage.setItem('user_favs', JSON.stringify(favs));
-      renderFavorites();
     }
 
-    function renderFavorites() {
-      const favs = JSON.parse(localStorage.getItem('user_favs')) || [];
-      const favList = document.getElementById('favoriteList');
-      const filtered = dramaData.filter(d => favs.includes(d.id));
-      if (filtered.length === 0) {
-        favList.innerHTML = '<p class="text-xs text-gray-500 col-span-2 py-4 text-center">Belum ada serial favorit yang disukai.</p>';
-        return;
-      }
-      favList.innerHTML = filtered.map(d => `
-        <div class="bg-[#121520] border border-gray-800 rounded-xl overflow-hidden p-2 flex gap-2">
-          <img src="${d.cover}" class="w-12 h-16 object-cover rounded-lg" />
-          <div class="flex-1 overflow-hidden">
-            <h5 class="text-xs font-bold text-white truncate">${d.title}</h5>
-            <p class="text-[10px] text-gray-400">${d.category}</p>
-            <button onclick="playDirect('${d.video}')" class="mt-2 text-[10px] bg-red-600 px-2 py-0.5 rounded text-white font-bold">Tonton</button>
-          </div>
-        </div>
-      `).join('');
+    function saveFounderAdSettings() {
+      adSettings.title = document.getElementById('adSettingTitle').value.trim() || adSettings.title;
+      adSettings.bannerTargetUrl = document.getElementById('adSettingBannerUrl').value.trim() || adSettings.bannerTargetUrl;
+      adSettings.sponsorVideoUrl = document.getElementById('adSettingVideoUrl').value.trim() || adSettings.sponsorVideoUrl;
+      adSettings.videoTargetUrl = document.getElementById('adSettingVideoTargetUrl').value.trim() || adSettings.videoTargetUrl;
+
+      adSettings.triggerPlay = document.getElementById('adTriggerPlay').checked;
+      adSettings.freqPlay = parseInt(document.getElementById('adFreqPlay').value) || 10;
+
+      adSettings.triggerEpisode = document.getElementById('adTriggerEpisode').checked;
+      adSettings.freqEpisode = parseInt(document.getElementById('adFreqEpisode').value) || 3;
+
+      adSettings.triggerHomeBanner = document.getElementById('adTriggerHomeBanner').checked;
+      adSettings.triggerStartup = document.getElementById('adTriggerStartup').checked;
+
+      applyAdSettingsUI();
+      showToast("Pengaturan materi, frekuensi & pemicu iklan berhasil disimpan!", "success");
     }
 
-    function switchProfileTab(tab) {
-      if (tab === 'fav') {
-        document.getElementById('favoriteList').classList.remove('hidden');
-        document.getElementById('historyList').classList.add('hidden');
-        document.getElementById('tabFavBtn').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
-        document.getElementById('tabHistBtn').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+    function exportDatabaseJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(moviesCatalog, null, 2));
+      const dl = document.createElement('a');
+      dl.setAttribute("href", dataStr);
+      dl.setAttribute("download", `medidrama_movies_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(dl);
+      dl.click();
+      dl.remove();
+    }
+
+    function restoreDatabaseJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            moviesCatalog = imported;
+            renderCategoryChips();
+            renderTrendingRow();
+            renderCatalogGrid();
+            renderFounderManageTable();
+            showToast("Database JSON dipulihkan!", "success");
+          }
+        } catch (err) {
+          showToast("Berkas JSON tidak valid!", "error");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function toggleFavoriteDrama(dramaId) {
+      const idx = currentUser.favorites.indexOf(dramaId);
+      if (idx > -1) {
+        currentUser.favorites.splice(idx, 1);
+        showToast("Dihapus dari favorit.", "info");
       } else {
-        document.getElementById('favoriteList').classList.add('hidden');
-        document.getElementById('historyList').classList.remove('hidden');
-        document.getElementById('tabFavBtn').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
-        document.getElementById('tabHistBtn').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+        currentUser.favorites.unshift(dramaId);
+        showToast("Disimpan ke favorit!", "success");
+      }
+      syncUserDataToFirestore();
+      renderCatalogGrid();
+      renderHeroCarousel();
+      renderFavoritesAndHistoryPages();
+    }
+
+    function renderFavoritesAndHistoryPages() {
+      const favContainer = document.getElementById('favoritesFullContainer');
+      const histContainer = document.getElementById('historyFullContainer');
+      const favBadge = document.getElementById('favsPageCount');
+      const histBadge = document.getElementById('historyPageCount');
+
+      if (favBadge) favBadge.innerText = currentUser.favorites.length;
+      if (histBadge) histBadge.innerText = currentUser.history.length;
+
+      const favDramas = moviesCatalog.filter(d => currentUser.favorites.includes(d.id));
+      if (favContainer) {
+        favContainer.innerHTML = favDramas.length === 0 
+          ? `<div class="col-span-full py-10 text-center text-gray-500 text-xs">Belum ada serial favorit tersimpan.</div>`
+          : favDramas.map(d => `
+            <div onclick="triggerPlayVideoWithAdCheck('${d.id}', 0)" class="bg-[#161928] border border-gray-800 rounded-xl overflow-hidden cursor-pointer hover:border-red-500 transition group shadow">
+              <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
+                <img src="${d.cover}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+              </div>
+              <div class="p-2">
+                <h5 class="text-xs font-bold text-white truncate">${d.title}</h5>
+                <p class="text-[9px] text-gray-400 mt-0.5">${d.category}</p>
+              </div>
+            </div>
+          `).join('');
+      }
+
+      const histDramas = moviesCatalog.filter(d => currentUser.history.includes(d.id));
+      if (histContainer) {
+        histContainer.innerHTML = histDramas.length === 0 
+          ? `<div class="col-span-full py-10 text-center text-gray-500 text-xs">Belum ada riwayat tontonan.</div>`
+          : histDramas.map(d => `
+            <div onclick="triggerPlayVideoWithAdCheck('${d.id}', 0)" class="bg-[#161928] border border-gray-800 rounded-xl overflow-hidden cursor-pointer hover:border-amber-500 transition group shadow">
+              <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
+                <img src="${d.cover}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+              </div>
+              <div class="p-2">
+                <h5 class="text-xs font-bold text-white truncate">${d.title}</h5>
+                <p class="text-[9px] text-gray-400 mt-0.5">${d.category}</p>
+              </div>
+            </div>
+          `).join('');
       }
     }
 
-    function switchTab(tab) {
+    function claimDailyRewardCoins() {
+      currentUser.coins += 20;
+      syncUserDataToFirestore();
+      updateAuthUI(!!currentUser.uid);
+      showToast("Selamat! +20 Koin harian berhasil diklaim!", "success");
+    }
+
+    function switchNavTab(tab) {
+      const views = ['viewHome', 'viewPoints', 'viewFavorites', 'viewHistory', 'viewProfile'];
+      const buttons = ['navBtnHome', 'navBtnPoints', 'navBtnFavorites', 'navBtnHistory', 'navBtnProfile'];
+
+      views.forEach(v => {
+        const el = document.getElementById(v);
+        if (el) el.classList.add('hidden');
+      });
+
+      buttons.forEach(b => {
+        const el = document.getElementById(b);
+        if (el) el.className = "flex flex-col items-center text-gray-400 hover:text-white transition px-2";
+      });
+
       if (tab === 'home') {
-        document.getElementById('view-home').classList.remove('hidden');
-        document.getElementById('view-profile').classList.add('hidden');
-        document.getElementById('navHomeBtn').className = 'flex flex-col items-center text-red-500 text-xs';
-        document.getElementById('navProfileBtn').className = 'flex flex-col items-center text-gray-400 text-xs';
-      } else {
-        document.getElementById('view-home').classList.add('hidden');
-        document.getElementById('view-profile').classList.remove('hidden');
-        document.getElementById('navHomeBtn').className = 'flex flex-col items-center text-gray-400 text-xs';
-        document.getElementById('navProfileBtn').className = 'flex flex-col items-center text-red-500 text-xs';
+        document.getElementById('viewHome').classList.remove('hidden');
+        document.getElementById('navBtnHome').className = "flex flex-col items-center text-red-500 transition px-2";
+      } else if (tab === 'points') {
+        document.getElementById('viewPoints').classList.remove('hidden');
+        document.getElementById('navBtnPoints').className = "flex flex-col items-center text-amber-400 transition px-2";
+      } else if (tab === 'favorites') {
+        document.getElementById('viewFavorites').classList.remove('hidden');
+        document.getElementById('navBtnFavorites').className = "flex flex-col items-center text-red-500 transition px-2";
+        renderFavoritesAndHistoryPages();
+      } else if (tab === 'history') {
+        document.getElementById('viewHistory').classList.remove('hidden');
+        document.getElementById('navBtnHistory').className = "flex flex-col items-center text-amber-400 transition px-2";
+        renderFavoritesAndHistoryPages();
+      } else if (tab === 'profile') {
+        document.getElementById('viewProfile').classList.remove('hidden');
+        document.getElementById('navBtnProfile').className = "flex flex-col items-center text-red-500 transition px-2";
       }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function playDirect(url) {
-      window.open(url, '_blank');
+    function setupAntiCaptureSecurity() {
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      const wm = document.getElementById('screenWatermark');
+      setInterval(() => {
+        wm.style.top = (Math.floor(Math.random() * 75) + 10) + '%';
+        wm.style.left = (Math.floor(Math.random() * 65) + 10) + '%';
+      }, 7000);
+    }
+
+    function showToast(message, type = "info") {
+      const toast = document.getElementById('toastMessage');
+      const text = document.getElementById('toastText');
+      const icon = document.getElementById('toastIcon');
+
+      text.innerText = message;
+      if (type === "success") {
+        icon.className = "fa-solid fa-circle-check text-green-400";
+      } else if (type === "error") {
+        icon.className = "fa-solid fa-circle-exclamation text-red-400";
+      } else {
+        icon.className = "fa-solid fa-circle-info text-amber-400";
+      }
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 2600);
     }
   </script>
 </body>
 </html>
+```
