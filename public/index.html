@@ -4,2275 +4,806 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>MediDrama - Serial Eksklusif & Studio Founder</title>
-
-  <!-- PWA & Mobile Optimization Meta Tags -->
+  
+  <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#0B0D14" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="MediDrama" />
 
-  <!-- Web App Manifest (Standar PWA & PWABuilder Store) -->
-  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22MediDrama%22%2C%22short_name%22%3A%22MediDrama%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230B0D14%22%2C%22theme_color%22%3A%22%230B0D14%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimages.unsplash.com%2Fphoto-1534447677768-be436bb09401%3Fauto%3Dformat%26fit%3Dcrop%26w%3D512%26q%3D80%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D" />
-
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              red: '#E50914',
-              gold: '#F59E0B',
-              dark: '#0B0D14',
-              surface: '#12141D',
-              border: '#1F2433'
-            }
-          }
-        }
-      }
-    };
-  </script>
-
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <!-- Firebase CDN (Compat) -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     * {
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
+      -webkit-touch-callout: none;
       -webkit-user-select: none;
+      user-select: none;
     }
     input, textarea {
-      user-select: text !important;
-      -webkit-user-select: text !important;
+      -webkit-user-select: text;
+      user-select: text;
     }
-    .hide-scrollbar::-webkit-scrollbar {
+    .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
-    .hide-scrollbar {
+    .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    button, a {
-      touch-action: manipulation;
-    }
-    img, video {
-      pointer-events: auto;
-      -webkit-user-drag: none;
-      user-drag: none;
-    }
   </style>
 </head>
+<body class="bg-[#0B0D14] text-gray-100 min-h-screen pb-24 font-sans select-none antialiased">
 
-<body class="bg-[#0A0C12] text-gray-100 min-h-screen pb-28 font-sans antialiased overflow-x-hidden">
-
-  <!-- TOP NAVBAR -->
-  <header class="sticky top-0 z-50 bg-[#0E1017]/95 backdrop-blur-md border-b border-gray-800/80 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-3">
-    <!-- Brand Logo Pita Sinematik Huruf M -->
-    <div onclick="window.navDirectClick('home')" class="flex items-center gap-2.5 cursor-pointer flex-none group">
-      <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center transition transform group-hover:scale-105">
-        <svg viewBox="0 0 120 120" class="w-full h-full drop-shadow-[0_2px_12px_rgba(229,9,20,0.5)]">
-          <defs>
-            <linearGradient id="mRibbonRed" x1="0%" y1="100%" x2="50%" y2="0%">
-              <stop offset="0%" stop-color="#990000"/>
-              <stop offset="40%" stop-color="#E50914"/>
-              <stop offset="100%" stop-color="#FF5722"/>
-            </linearGradient>
-            <linearGradient id="mRibbonGold" x1="30%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#FFD54F"/>
-              <stop offset="50%" stop-color="#FFA000"/>
-              <stop offset="100%" stop-color="#E65100"/>
-            </linearGradient>
-            <linearGradient id="mInnerShadow" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
-              <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-
-          <!-- Kaki Kiri Seluloid Merah -->
-          <path d="M 16 96 C 14 75, 24 45, 36 28 C 44 17, 56 18, 59 34 L 56 94 C 54 94, 47 70, 44 65 C 38 52, 28 65, 25 84 Z" fill="url(#mRibbonRed)"/>
-          <circle cx="21" cy="85" r="1.5" fill="#180202" opacity="0.8"/>
-          <circle cx="24" cy="74" r="1.5" fill="#180202" opacity="0.8"/>
-          <circle cx="28" cy="62" r="1.5" fill="#180202" opacity="0.8"/>
-          <circle cx="33" cy="50" r="1.5" fill="#180202" opacity="0.8"/>
-          <circle cx="39" cy="38" r="1.5" fill="#180202" opacity="0.8"/>
-          <circle cx="47" cy="27" r="1.5" fill="#180202" opacity="0.8"/>
-          <path d="M 27 82 C 34 62, 42 46, 50 32" stroke="#4A0505" stroke-width="1.8" stroke-dasharray="2 3" fill="none" opacity="0.85"/>
-
-          <!-- Kaki Kanan Pita Emas -->
-          <path d="M 52 35 C 57 20, 72 16, 82 28 C 96 46, 105 76, 102 96 L 93 96 C 96 78, 86 62, 79 50 C 72 40, 64 42, 59 55 L 52 94 Z" fill="url(#mRibbonGold)"/>
-          <path d="M 52 35 C 56 48, 57 70, 56 94 L 51 94 L 51 50 Z" fill="url(#mInnerShadow)"/>
-
-          <!-- Segitiga Play -->
-          <polygon points="48,46 68,58 48,70" fill="#0F111A" stroke="#FFA000" stroke-width="1.5" stroke-linejoin="round"/>
-          <polygon points="50,49 65,58 50,67" fill="#141724"/>
-
-          <!-- Topeng Sinema -->
-          <path d="M 74 78 C 74 73, 83 73, 83 78 C 83 83, 79 87, 78.5 87 C 78 87, 74 83, 74 78 Z" fill="#202533" stroke="#F59E0B" stroke-width="1"/>
-          <path d="M 76 82 Q 78.5 84, 81 82" stroke="#FFA000" stroke-width="1" fill="none"/>
-          <circle cx="76.5" cy="77" r="0.7" fill="#F59E0B"/>
-          <circle cx="80.5" cy="77" r="0.7" fill="#F59E0B"/>
-          <path d="M 83 74 C 83 69, 93 69, 93 74 C 93 79, 89 84, 88 84 C 87 84, 83 79, 83 74 Z" fill="#151824" stroke="#E50914" stroke-width="1"/>
-          <path d="M 86 80 Q 88 78, 90 80" stroke="#FF5252" stroke-width="1" fill="none"/>
-          <circle cx="86" cy="73.5" r="0.7" fill="#FF5252"/>
-          <circle cx="90" cy="73.5" r="0.7" fill="#FF5252"/>
-        </svg>
+  <!-- Header Navigasi -->
+  <header class="sticky top-0 z-40 bg-[#0B0D14]/90 backdrop-blur-md border-b border-gray-800/80 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-red-600 via-rose-500 to-amber-500 p-[2px] shadow-lg shadow-red-900/30">
+        <div class="w-full h-full bg-[#0B0D14] rounded-[10px] flex items-center justify-center font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-400 text-lg">M</div>
       </div>
       <div>
-        <div class="flex items-center gap-0.5 leading-none">
-          <span class="font-black text-base sm:text-xl tracking-tight text-white">Medi</span>
-          <span class="font-black text-base sm:text-xl tracking-tight bg-gradient-to-r from-red-500 via-rose-500 to-amber-500 bg-clip-text text-transparent">Drama</span>
-        </div>
-        <span class="text-[8px] text-gray-400 font-bold tracking-widest uppercase block mt-0.5">Nonton Drama Seru</span>
+        <h1 class="text-base font-black tracking-wide text-white flex items-center gap-1.5">
+          MediDrama
+          <span class="text-[10px] bg-red-600/20 text-red-400 border border-red-500/30 px-1.5 py-0.5 rounded font-bold">PRO</span>
+        </h1>
       </div>
     </div>
 
-    <!-- Desktop Search -->
-    <div class="hidden sm:flex flex-1 max-w-xs relative items-center">
-      <i class="fa-solid fa-magnifying-glass absolute left-3 text-gray-500 text-xs"></i>
-      <input type="text" id="searchInput" oninput="window.handleSearch(this.value)" placeholder="Cari serial, drakor, laga..." class="w-full bg-[#161822] border border-gray-700/80 rounded-full pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-red-500" />
-    </div>
+    <div class="flex items-center space-x-2">
+      <!-- Tombol Akses Founder -->
+      <button id="adminBtn" onclick="openFounderModal()" class="bg-gradient-to-r from-amber-500 to-red-600 text-[11px] font-bold px-2.5 py-1.5 rounded-lg text-white shadow-md flex items-center gap-1">
+        <i class="fa-solid fa-crown text-[10px]"></i> Studio Founder
+      </button>
 
-    <!-- Sisi Kanan: Koin, Indikator Cloud, Studio & Akun -->
-    <div class="flex items-center gap-2">
-      <div id="firebaseCloudBadge" onclick="window.openFounderBackendModal('firebase')" title="Status Cloud (Founder)" class="hidden items-center gap-1 bg-gray-800/80 border border-gray-700 px-2 py-1 rounded-full text-[10px] text-gray-400 cursor-pointer hover:border-amber-500/50 transition">
-        <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-        <span id="cloudStatusText">Cloud Online</span>
+      <!-- Tombol Masuk / Status Akun Navigasi -->
+      <div id="navUserBadge" onclick="handleNavAuthClick()" class="cursor-pointer flex items-center space-x-1.5 bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-full hover:border-gray-700 transition">
+        <img id="navAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-6 h-6 rounded-full object-cover border border-amber-500/50" />
+        <span id="navAuthLabel" class="text-xs font-bold text-gray-200">Masuk</span>
       </div>
-
-      <button onclick="window.openRewardModal()" type="button" class="flex items-center gap-1 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-2.5 py-1 rounded-full text-amber-400 text-xs font-bold transition">
-        <span>🪙</span>
-        <span id="userCoinsDisplay">100</span>
-      </button>
-
-      <button id="founderPortalNavBtn" onclick="window.openFounderBackendModal()" type="button" class="hidden items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow transition">
-        <i class="fa-solid fa-clapperboard"></i>
-        <span class="hidden md:inline">Studio Founder</span>
-      </button>
-
-      <div id="authNavContainer"></div>
     </div>
   </header>
 
-  <!-- Mobile Search Bar -->
-  <div class="sm:hidden px-3 pt-2.5 pb-1">
-    <div class="relative flex items-center">
-      <i class="fa-solid fa-magnifying-glass absolute left-3 text-gray-500 text-xs"></i>
-      <input type="text" id="searchInputMobile" oninput="window.handleSearch(this.value)" placeholder="Cari judul serial, kategori..." class="w-full bg-[#141620] border border-gray-800 rounded-xl pl-8 pr-8 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-red-500" />
-      <button id="clearSearchBtnMobile" onclick="window.closeSearchView()" class="hidden absolute right-2.5 text-gray-400 hover:text-white text-xs p-1">
-        <i class="fa-solid fa-circle-xmark"></i>
+  <!-- VIEW: BERANDA -->
+  <main id="view-home" class="space-y-6">
+    <!-- Slider Banner Hero -->
+    <div class="relative w-full overflow-hidden bg-black aspect-[16/9] md:aspect-[21/9]">
+      <div id="heroTrack" class="flex transition-transform duration-500 ease-out h-full"></div>
+      
+      <button onclick="prevSlide()" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white text-xs hover:bg-black/80">
+        <i class="fa-solid fa-chevron-left"></i>
       </button>
-    </div>
-  </div>
+      <button onclick="nextSlide()" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center text-white text-xs hover:bg-black/80">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
 
-  <!-- VIEW: SEARCH -->
-  <div id="searchView" class="hidden max-w-6xl mx-auto px-3 sm:px-6 py-4 space-y-4">
-    <div class="flex items-center justify-between border-b border-gray-800 pb-2">
-      <div class="flex items-center gap-2">
-        <button onclick="window.closeSearchView()" class="w-7 h-7 rounded-full bg-gray-800 text-gray-300 flex items-center justify-center text-xs">
-          <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <h2 class="text-sm sm:text-base font-bold text-white">
-          Hasil Pencarian: "<span id="searchKeywordText" class="text-red-400">-</span>"
+      <div id="slideDots" class="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5 z-10"></div>
+    </div>
+
+    <!-- Kategori Bar -->
+    <div class="px-4">
+      <div id="categoryChips" class="flex space-x-2 overflow-x-auto no-scrollbar py-1"></div>
+    </div>
+
+    <!-- Bagian Trending -->
+    <section class="px-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-bold tracking-wide flex items-center gap-2">
+          <span class="w-1.5 h-4 bg-amber-500 rounded-full"></span> Lagi Trending Hari Ini
+        </h2>
+        <span class="text-xs text-amber-400 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-fire text-xs"></i> Populer
+        </span>
+      </div>
+      <div id="trendingList" class="flex space-x-3 overflow-x-auto no-scrollbar pb-1"></div>
+    </section>
+
+    <!-- Daftar Katalog Serial Eksklusif -->
+    <section class="px-4 space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-bold tracking-wide flex items-center gap-2">
+          <span class="w-1.5 h-4 bg-red-600 rounded-full"></span> Eksklusif MediDrama
         </h2>
       </div>
-      <span id="searchCountText" class="text-xs text-gray-400 font-medium">0 serial</span>
-    </div>
-    <div id="searchGridContainer" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2.5 sm:gap-3"></div>
-  </div>
-
-  <!-- VIEW: BERANDA -->
-  <main id="homeView" class="max-w-6xl mx-auto px-3 sm:px-6 pt-2 pb-8 space-y-6">
-    <div class="relative rounded-2xl overflow-hidden border border-gray-800/80 bg-gradient-to-r from-red-950/40 via-[#12141D] to-[#0A0C12] p-4 sm:p-6 shadow-xl">
-      <div class="max-w-md space-y-2 z-10 relative">
-        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-600/20 text-red-400 border border-red-500/30 uppercase tracking-wider">
-          <i class="fa-solid fa-fire text-amber-400"></i> Serial Unggulan Hari Ini
-        </span>
-        <h1 class="text-lg sm:text-2xl font-black text-white leading-tight">Garuda Hitam: Pembalasan Lembah Kematian</h1>
-        <p class="text-xs text-gray-300 line-clamp-2">Operasi rahasia yang dikhianati memaksa agen elit kembali ke kota demi menuntut keadilan. Tonton per episode sekarang!</p>
-        <div class="pt-2 flex items-center gap-2.5">
-          <button onclick="window.startWatchingMovie('mov_garuda_hitam', 0)" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-lg shadow-red-600/30">
-            <i class="fa-solid fa-play"></i> Putar Episode 1 (Gratis)
-          </button>
-          <button onclick="window.openRewardModal()" class="bg-gray-800/80 hover:bg-gray-800 border border-amber-500/30 text-amber-300 font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1 transition">
-            <i class="fa-solid fa-gift"></i> Klaim Koin
-          </button>
-        </div>
-      </div>
-      <div class="absolute right-0 top-0 bottom-0 w-1/2 opacity-20 sm:opacity-30 pointer-events-none overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Cover" class="w-full h-full object-cover" />
-      </div>
-    </div>
-
-    <!-- Sponsor Banner -->
-    <div id="homeAdContainer" class="bg-[#12141F] border border-amber-500/20 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="bg-amber-500/20 text-amber-300 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Sponsor</span>
-        <div id="homeAdContent">
-          <a id="homeAdLink" href="https://google.com" target="_blank" rel="noopener" class="font-bold text-amber-300 hover:underline">Disponsori oleh Google AdSense & Mitra MediDrama</a>
-        </div>
-      </div>
-      <button onclick="window.startAdRewardFlow()" class="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-[11px] rounded-lg shadow hover:opacity-95 transition flex-none">
-        Nonton Iklan (+25 Poin)
-      </button>
-    </div>
-
-    <!-- Rak Kategori -->
-    <div id="categoriesContainer" class="space-y-6"></div>
+      <div id="catalogGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+    </section>
   </main>
 
-  <!-- VIEW: THEATER PLAYER -->
-  <div id="playerView" class="hidden max-w-5xl mx-auto px-2 sm:px-6 py-2 sm:py-4 space-y-4">
-    <div class="flex items-center justify-between">
-      <button onclick="window.handleBackButtonAction()" class="text-xs text-gray-400 hover:text-white flex items-center gap-1.5 bg-[#141620] px-3 py-1.5 rounded-lg border border-gray-800 transition">
-        <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
-      </button>
-      <div class="flex items-center gap-2">
-        <span id="guestTimerBadge" class="hidden items-center gap-1 bg-red-600/20 text-red-400 border border-red-500/30 text-[10px] px-2.5 py-1 rounded-full font-bold">
-          <i class="fa-solid fa-clock"></i> Preview Tamu: <span id="guestTimerCountdown">02:00</span>
-        </span>
-        <span id="playerViewerCoins" class="text-xs text-amber-400 font-bold bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-          🪙 100 Poin
-        </span>
-      </div>
-    </div>
+  <!-- VIEW: PROFIL USER -->
+  <main id="view-profile" class="hidden px-4 py-5 space-y-6">
+    <div class="bg-[#121520] border border-gray-800/80 rounded-2xl p-5 relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-red-600/10 rounded-full blur-2xl"></div>
+      
+      <div class="flex items-start space-x-4">
+        <!-- Foto Profil dengan Pengompres WebP Otomatis -->
+        <div class="relative flex-shrink-0">
+          <img id="profileImagePreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-16 h-16 rounded-full object-cover border-2 border-amber-500 shadow-md" />
+          <label for="avatarInput" class="absolute bottom-0 right-0 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-[10px] cursor-pointer shadow hover:bg-red-500 text-white">
+            <i class="fa-solid fa-camera"></i>
+          </label>
+          <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="compressAndUploadAvatar(event)" />
+        </div>
 
-    <!-- Player Box -->
-    <div class="relative bg-black rounded-2xl overflow-hidden border border-gray-800 shadow-2xl aspect-video flex items-center justify-center group">
-      <video id="theaterVideo" controls controlslist="nodownload" playsinline class="w-full h-full object-contain bg-black">
-        <source src="" type="video/mp4" />
-        Browser Anda tidak mendukung pemutar video HTML5.
-      </video>
-
-      <!-- Watermark Keamanan Dinamis -->
-      <div id="videoWatermarkOverlay" class="absolute pointer-events-none select-none opacity-25 text-[10px] font-mono text-white tracking-widest p-2 top-2 left-2 transition-all duration-1000">
-        MEDIDRAMA SECURE • ID: <span id="watermarkUserId">GUEST-001</span>
-      </div>
-
-      <div class="absolute right-3 bottom-16 sm:bottom-12 flex flex-col gap-3 z-30 pointer-events-auto">
-        <button type="button" onclick="window.toggleFavoriteCurrentMovie()" class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-gray-700/60 flex flex-col items-center justify-center text-white hover:scale-110 active:scale-95 transition shadow-lg">
-          <i id="likeIcon" class="fa-regular fa-heart text-base text-gray-200"></i>
-          <span id="likeCountText" class="text-[8px] font-bold text-gray-300">Suka</span>
-        </button>
-
-        <button type="button" onclick="window.shareCurrentMovie()" class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-gray-700/60 flex flex-col items-center justify-center text-white hover:scale-110 active:scale-95 transition shadow-lg">
-          <i class="fa-solid fa-share-nodes text-base text-gray-200"></i>
-          <span class="text-[8px] font-bold text-gray-300">Share</span>
-        </button>
-
-        <div class="relative">
-          <button type="button" onclick="window.toggleVideoSettingsMenu()" class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-gray-700/60 flex flex-col items-center justify-center text-white hover:scale-110 active:scale-95 transition shadow-lg">
-            <i class="fa-solid fa-ellipsis-vertical text-base text-gray-200"></i>
-            <span class="text-[8px] font-bold text-gray-300">Opsi</span>
-          </button>
-          
-          <div id="videoSettingsDropdown" class="hidden absolute right-0 bottom-12 w-44 bg-[#141620] border border-gray-700 rounded-xl shadow-2xl p-2 space-y-1 text-xs z-40">
-            <div class="px-2 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kecepatan Putar</div>
-            <div class="grid grid-cols-3 gap-1 px-1">
-              <button onclick="window.setPlaybackSpeed(1)" class="py-1 bg-gray-800 hover:bg-gray-700 rounded text-center text-[10px] font-semibold text-white">1.0x</button>
-              <button onclick="window.setPlaybackSpeed(1.25)" class="py-1 bg-gray-800 hover:bg-gray-700 rounded text-center text-[10px] font-semibold text-white">1.25x</button>
-              <button onclick="window.setPlaybackSpeed(1.5)" class="py-1 bg-gray-800 hover:bg-gray-700 rounded text-center text-[10px] font-semibold text-white">1.5x</button>
+        <div class="flex-1 space-y-1">
+          <!-- Ubah Nama Pribadi Langsung -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <input id="profileNameInput" type="text" value="Furianto" onchange="saveUserName(this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-white font-bold text-base outline-none w-36 px-1" />
+              <i class="fa-solid fa-pen-to-square text-xs text-gray-400"></i>
             </div>
-            <div class="border-t border-gray-800 my-1"></div>
-            <button onclick="window.reportIssuePrompt()" class="w-full text-left px-2 py-1.5 hover:bg-gray-800 text-gray-300 hover:text-white rounded flex items-center gap-1.5">
-              <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Laporkan Video
+            <span id="userRoleBadge" class="text-[10px] px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30 font-bold">Founder</span>
+          </div>
+
+          <p id="profileEmail" class="text-xs text-gray-400">adminmedidrama@gmail.com</p>
+          
+          <div class="flex items-center gap-2 pt-2">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
+              <i class="fa-solid fa-coins"></i> <span id="profileCoins">250</span> Koin
+            </div>
+            <button id="authActionBtn" onclick="openAuthModal()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1 rounded-full border border-gray-700">
+              Ganti Akun
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Detail Judul & Sinopsis -->
-    <div class="bg-[#12141D] border border-gray-800 rounded-2xl p-4 space-y-2">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <span id="playerCategoryBadge" class="text-[10px] font-bold bg-red-600/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full">Kategori</span>
-          <span id="movieStatusPill" class="text-[10px] font-bold bg-blue-600/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full uppercase">ONGOING</span>
-        </div>
-        <span id="playerTotalEpsCount" class="text-xs text-gray-400 font-medium">Total 0 Episode</span>
-      </div>
-
-      <h2 id="playerMovieTitle" class="text-base sm:text-xl font-black text-white">Judul Serial</h2>
-      <p id="playerEpisodeTitle" class="text-xs sm:text-sm font-semibold text-amber-400">Episode 1: -</p>
-      <p id="playerMovieSynopsis" class="text-xs text-gray-300 leading-relaxed pt-1">Sinopsis serial...</p>
-    </div>
-
-    <!-- Balok Episode -->
-    <div class="bg-[#12141D] border border-gray-800 rounded-2xl p-4 space-y-3">
-      <div class="flex items-center justify-between border-b border-gray-800 pb-2">
-        <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-layer-group text-red-500"></i> Pilih Episode
-        </h3>
-        <span id="playerActiveEpBadge" class="text-[11px] font-bold text-amber-400">Episode 1</span>
-      </div>
-      <div id="episodeBlocksGrid" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2"></div>
-    </div>
-  </div>
-
-  <!-- VIEW: FAVORIT -->
-  <div id="favoritesView" class="hidden max-w-6xl mx-auto px-3 sm:px-6 py-4 space-y-4">
-    <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-      <div class="flex items-center gap-2">
-        <button onclick="window.handleBackButtonAction()" class="w-7 h-7 rounded-full bg-gray-800 text-gray-300 flex items-center justify-center text-xs">
-          <i class="fa-solid fa-arrow-left"></i>
+    <!-- Tab Favorit & Disukai -->
+    <div class="space-y-3">
+      <div class="flex border-b border-gray-800 text-sm font-bold">
+        <button onclick="switchProfileTab('fav')" id="tabFavBtn" class="pb-2 border-b-2 border-red-500 text-white flex-1 text-center">
+          <i class="fa-solid fa-heart text-red-500 mr-1"></i> Disukai & Favorit
         </button>
-        <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-heart text-red-500"></i> Serial Favorit Saya
-        </h2>
-      </div>
-      <span id="favoritesCountBadge" class="text-xs bg-red-600/20 text-red-400 px-2 py-0.5 rounded-full font-bold">0 Tersimpan</span>
-    </div>
-    <div id="favoritesGridContainer" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3"></div>
-  </div>
-
-  <!-- VIEW: RIWAYAT -->
-  <div id="historyView" class="hidden max-w-6xl mx-auto px-3 sm:px-6 py-4 space-y-4">
-    <div class="flex items-center justify-between border-b border-gray-800 pb-3">
-      <div class="flex items-center gap-2">
-        <button onclick="window.handleBackButtonAction()" class="w-7 h-7 rounded-full bg-gray-800 text-gray-300 flex items-center justify-center text-xs">
-          <i class="fa-solid fa-arrow-left"></i>
+        <button onclick="switchProfileTab('history')" id="tabHistBtn" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
+          <i class="fa-solid fa-clock-rotate-left mr-1"></i> Riwayat Tonton
         </button>
-        <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Riwayat Nonton Terakhir
-        </h2>
       </div>
-      <button onclick="window.clearAllWatchHistory()" class="text-xs text-gray-400 hover:text-red-400 transition">
-        <i class="fa-solid fa-trash-can"></i> Bersihkan Semua
-      </button>
+
+      <div id="favoriteList" class="grid grid-cols-2 gap-3 pt-2"></div>
+      <div id="historyList" class="hidden grid grid-cols-2 gap-3 pt-2"></div>
     </div>
-    <div id="historyGridContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
-  </div>
+  </main>
 
-  <!-- BOTTOM NAVBAR DOCK -->
-  <nav id="mobileBottomNavbar" class="md:hidden fixed bottom-4 left-3 right-3 bg-[#11131A]/95 backdrop-blur-xl border border-gray-800 rounded-2xl py-2 px-1 flex justify-around items-center z-[999] shadow-2xl shadow-black pointer-events-auto">
-    <button type="button" onclick="window.navDirectClick('home')" class="mobile-nav-btn flex-1 py-1 flex flex-col items-center justify-center text-red-500 active:scale-95 transition">
-      <i class="fa-solid fa-house text-base"></i>
-      <span class="text-[10px] mt-0.5 font-semibold">Beranda</span>
-    </button>
-    <button type="button" onclick="window.navDirectClick('reward')" class="mobile-nav-btn flex-1 py-1 flex flex-col items-center justify-center text-amber-400 active:scale-95 transition">
-      <i class="fa-solid fa-gift text-base"></i>
-      <span class="text-[10px] mt-0.5 font-semibold">Poin</span>
-    </button>
-    <button type="button" onclick="window.navDirectClick('favorites')" class="mobile-nav-btn flex-1 py-1 flex flex-col items-center justify-center text-gray-400 hover:text-white active:scale-95 transition">
-      <i class="fa-solid fa-heart text-base"></i>
-      <span class="text-[10px] mt-0.5 font-semibold">Favorit</span>
-    </button>
-    <button type="button" onclick="window.navDirectClick('history')" class="mobile-nav-btn flex-1 py-1 flex flex-col items-center justify-center text-gray-400 hover:text-white active:scale-95 transition">
-      <i class="fa-solid fa-clock-rotate-left text-base"></i>
-      <span class="text-[10px] mt-0.5 font-semibold">Riwayat</span>
-    </button>
-    <button type="button" onclick="window.navDirectClick('profile')" class="mobile-nav-btn flex-1 py-1 flex flex-col items-center justify-center text-gray-400 hover:text-white active:scale-95 transition">
-      <i class="fa-solid fa-user text-base"></i>
-      <span class="text-[10px] mt-0.5 font-semibold">Profil</span>
-    </button>
-  </nav>
-
-  <!-- MODAL AUTH -->
-  <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
-    <div class="bg-[#12141E] border border-gray-800 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-2xl relative">
-      <button onclick="window.closeAuthModal()" class="absolute right-3.5 top-3.5 text-gray-400 hover:text-white text-base">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
+  <!-- MODAL: LOGIN / DAFTAR AKUN USER -->
+  <div id="authModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-sm p-6 space-y-4 relative">
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">&times;</button>
+      
       <div class="text-center space-y-1">
-        <h3 class="text-base font-bold text-white">Selamat Datang di MediDrama</h3>
-        <p id="authSubTitleNotice" class="text-xs text-gray-400">Masuk untuk menikmati serial tanpa batas dan menyimpan koin Anda.</p>
+        <h3 id="authModalTitle" class="font-black text-lg text-white">Masuk ke MediDrama</h3>
+        <p class="text-xs text-gray-400">Akses koleksi serial lengkap & simpan favorit Anda</p>
       </div>
 
-      <!-- Google Button -->
-      <button type="button" onclick="window.loginWithGoogle()" class="w-full py-2.5 px-3 bg-white hover:bg-gray-100 text-gray-900 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition active:scale-95">
-        <svg class="w-4 h-4" viewBox="0 0 24 24">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-        </svg>
-        <span>Masuk Cepat dengan Akun Google</span>
+      <!-- Tombol Masuk Cepat Google -->
+      <button onclick="loginWithGoogle()" class="w-full bg-white text-gray-900 font-bold text-xs py-2.5 rounded-xl shadow flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+        Masuk Cepat dengan Akun Google
       </button>
 
-      <div class="flex items-center my-2">
-        <div class="flex-grow border-t border-gray-800"></div>
-        <span class="flex-shrink mx-2 text-[10px] text-gray-500 uppercase tracking-widest font-semibold">atau dengan email</span>
-        <div class="flex-grow border-t border-gray-800"></div>
+      <div class="relative flex items-center justify-center">
+        <div class="border-t border-gray-800 w-full"></div>
+        <span class="bg-[#121520] px-3 text-[11px] text-gray-500 uppercase">atau</span>
       </div>
 
-      <div class="flex border-b border-gray-800">
-        <button id="tabLoginBtn" onclick="window.switchAuthTab('login')" class="w-1/2 pb-2 text-xs font-bold text-red-500 border-b-2 border-red-500 transition">Masuk</button>
-        <button id="tabRegisterBtn" onclick="window.switchAuthTab('register')" class="w-1/2 pb-2 text-xs font-bold text-gray-400 border-b-2 border-transparent transition">Daftar Baru</button>
+      <!-- Tab Masuk / Daftar -->
+      <div class="flex border-b border-gray-800 text-xs font-bold text-center">
+        <button onclick="setAuthTab('login')" id="btnAuthTabLogin" class="pb-2 border-b-2 border-red-500 text-white flex-1">Masuk</button>
+        <button onclick="setAuthTab('register')" id="btnAuthTabRegister" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1">Daftar Baru</button>
       </div>
 
-      <form id="authForm" onsubmit="window.handleAuthSubmit(event)" class="space-y-3">
-        <div id="registerNameGroup" class="hidden">
-          <label class="block text-[11px] text-gray-400 mb-1">Nama Lengkap Penonton</label>
-          <input type="text" id="authNameInput" placeholder="Contoh: Rian Pratama" class="w-full bg-[#181B26] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
+      <form onsubmit="handleAuthSubmit(event)" class="space-y-3 text-xs">
+        <div id="regNameBox" class="hidden">
+          <label class="block mb-1 text-gray-300 font-semibold">Nama Lengkap</label>
+          <input id="authName" type="text" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-red-500" placeholder="Nama Anda" />
         </div>
 
         <div>
-          <label class="block text-[11px] text-gray-400 mb-1">Alamat Email</label>
-          <input type="email" id="authEmailInput" required placeholder="nama@email.com" class="w-full bg-[#181B26] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
+          <label class="block mb-1 text-gray-300 font-semibold">Alamat Email</label>
+          <input id="authEmail" required type="email" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-red-500" placeholder="nama@email.com" />
         </div>
 
         <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-[11px] text-gray-400">Kata Sandi</label>
-            <button type="button" id="forgotPasswordLink" onclick="window.openForgotPasswordModal()" class="text-[10px] text-amber-400 hover:text-amber-300 font-semibold transition">
-              Lupa Kata Sandi?
-            </button>
-          </div>
-          <input type="password" id="authPasswordInput" required placeholder="Minimal 6 karakter" class="w-full bg-[#181B26] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
+          <label class="block mb-1 text-gray-300 font-semibold">Kata Sandi</label>
+          <input id="authPassword" required type="password" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white outline-none focus:border-red-500" placeholder="Minimal 6 karakter" />
         </div>
 
-        <div id="registerConfirmPassGroup" class="hidden">
-          <label class="block text-[11px] text-gray-400 mb-1">Konfirmasi Kata Sandi</label>
-          <input type="password" id="authConfirmPasswordInput" placeholder="Ulangi kata sandi Anda" class="w-full bg-[#181B26] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
-        </div>
-
-        <button type="submit" id="authSubmitBtn" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-red-600/30 transition">
+        <button type="submit" id="authSubmitBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl transition mt-2">
           Masuk ke MediDrama
         </button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL FORGOT PASSWORD -->
-  <div id="forgotPasswordModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[99999] hidden items-center justify-center p-4">
-    <div class="bg-[#12141E] border border-gray-800 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-2xl relative">
-      <button onclick="window.closeForgotPasswordModal()" class="absolute right-3.5 top-3.5 text-gray-400 hover:text-white text-base">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="text-center space-y-1">
-        <div class="w-10 h-10 mx-auto rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
-          <i class="fa-solid fa-key"></i>
+  <!-- MODAL: STUDIO FOUNDER (UPLOAD + PENGGUNA TERDAFTAR) -->
+  <div id="founderModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <i class="fa-solid fa-crown text-amber-500"></i>
+          <h3 class="font-bold text-base text-white">Panel Founder MediDrama</h3>
         </div>
-        <h3 class="text-base font-bold text-white">Pulihkan Kata Sandi</h3>
-        <p class="text-xs text-gray-400">Masukkan email akun Anda. Tautan reset resmi akan dikirim ke email Anda.</p>
+        <button onclick="closeFounderModal()" class="text-gray-400 hover:text-white text-lg">&times;</button>
       </div>
 
-      <form onsubmit="window.handleForgotPasswordSubmit(event)" class="space-y-3">
-        <div>
-          <label class="block text-[11px] text-gray-400 mb-1">Email Terdaftar</label>
-          <input type="email" id="forgotEmailInput" required placeholder="nama@email.com" class="w-full bg-[#181B26] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-red-500" />
-        </div>
-        <button type="submit" id="forgotSubmitBtn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs rounded-xl shadow transition">
-          Kirim Link Reset ke Email
+      <!-- Navigasi Menu Founder -->
+      <div class="flex border-b border-gray-800 text-xs font-bold">
+        <button onclick="switchFounderTab('upload')" id="fTabUpload" class="pb-2 border-b-2 border-red-500 text-white flex-1 text-center">
+          <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Film Baru
         </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL PROFIL -->
-  <div id="profileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
-    <div class="bg-[#12141E] border border-gray-800 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-2xl relative">
-      <button onclick="window.closeProfileModal()" class="absolute right-3.5 top-3.5 text-gray-400 hover:text-white text-base">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div id="profileGuestView" class="hidden text-center space-y-4 py-2">
-        <div class="w-14 h-14 mx-auto rounded-full bg-gray-800 text-gray-400 flex items-center justify-center text-2xl">
-          <i class="fa-solid fa-user-lock"></i>
-        </div>
-        <div>
-          <h3 class="text-base font-bold text-white">Anda Belum Masuk Akun</h3>
-          <p class="text-xs text-gray-400 mt-1">Daftar sekarang untuk menyimpan favorit, riwayat nonton, dan klaim poin tanpa batas.</p>
-        </div>
-        <div class="space-y-2 pt-2">
-          <button onclick="window.closeProfileModal(); window.openAuthModal('login')" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition">
-            Masuk Akun Saya
-          </button>
-          <button onclick="window.closeProfileModal(); window.openAuthModal('register')" class="w-full py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-semibold transition">
-            Daftar Akun Baru
-          </button>
-        </div>
+        <button onclick="switchFounderTab('users')" id="fTabUsers" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
+          <i class="fa-solid fa-users mr-1"></i> Daftar Pengguna Terdaftar (<span id="userCountBadge">3</span>)
+        </button>
       </div>
 
-      <div id="profileUserView" class="hidden space-y-4">
-        <div class="flex items-center gap-3">
-          <div id="profileAvatarText" class="w-12 h-12 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center text-lg font-black text-white shadow overflow-hidden">
-            M
-          </div>
+      <!-- SUB-TAB 1: FORM UPLOAD SERIAL -->
+      <div id="founderUploadSection">
+        <form onsubmit="handleUploadSerial(event)" class="space-y-3 text-xs">
           <div>
-            <h3 id="profileFullNameDisplay" class="text-sm font-bold text-white">Nama Pengguna</h3>
-            <span id="profileRoleBadge" class="text-[9px] bg-gray-800 text-gray-300 border border-gray-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Member</span>
-            <span id="profileIdDisplay" class="text-[10px] text-gray-400 block font-mono">ID: MD-00000</span>
+            <label class="block mb-1 text-gray-300 font-semibold">Judul Serial Film</label>
+            <input id="fTitle" required type="text" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="Contoh: Janji Musim Gugur di Seoul" />
           </div>
-        </div>
 
-        <div class="bg-[#181B26] p-3 rounded-xl border border-gray-800 flex items-center justify-between">
-          <span class="text-xs text-gray-300">Saldo Poin Nonton:</span>
-          <span id="profileCoinsDisplay" class="text-xs font-bold text-amber-400">🪙 100 Poin</span>
-        </div>
-
-        <div class="bg-amber-950/20 border border-amber-500/30 p-3 rounded-xl space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-amber-300 flex items-center gap-1">
-              <i class="fa-solid fa-phone"></i> Tautkan No. WhatsApp/HP
-            </span>
-            <span id="phoneBonusBadge" class="text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold">+50 Poin</span>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block mb-1 text-gray-300 font-semibold">Pilih Kategori</label>
+              <select id="fCategorySelect" onchange="checkCustomCategory(this.value)" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none">
+                <option value="Drama Romantis">Drama Romantis</option>
+                <option value="Action & Laga">Action & Laga</option>
+                <option value="Misteri & Thriller">Misteri & Thriller</option>
+                <option value="Komedi">Komedi</option>
+                <option value="custom">+ Kategori Kustom Sendiri</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-1 text-gray-300 font-semibold">Label Trending</label>
+              <select id="fTrending" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none">
+                <option value="true">Jadikan Trending (Top Row)</option>
+                <option value="false">Katalog Biasa</option>
+              </select>
+            </div>
           </div>
-          <div class="flex gap-2">
-            <input type="tel" id="profilePhoneInput" placeholder="Contoh: 08123456789" class="flex-1 bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
-            <button onclick="window.saveUserPhoneNumber()" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs rounded-lg transition">Simpan</button>
+
+          <div id="customCategoryBox" class="hidden">
+            <label class="block mb-1 text-amber-400 font-semibold">Ketik Kategori Baru</label>
+            <input id="fCustomCategory" type="text" class="w-full bg-gray-900 border border-amber-500/50 rounded-lg p-2.5 text-white focus:border-amber-400 outline-none" placeholder="Contoh: Drama Kolosal, Slice of Life..." />
           </div>
-        </div>
 
-        <button id="profileFounderStudioBtn" onclick="window.closeProfileModal(); window.openFounderBackendModal()" class="hidden w-full py-2 bg-gradient-to-r from-red-600 to-rose-700 text-white rounded-xl text-xs font-bold items-center justify-center gap-1.5 shadow">
-          <i class="fa-solid fa-clapperboard"></i> Buka Studio Founder & Database
-        </button>
-
-        <div class="border-t border-gray-800 pt-3 flex items-center justify-between text-xs">
-          <button onclick="window.openAboutModal()" class="text-gray-400 hover:text-white flex items-center gap-1">
-            <i class="fa-solid fa-circle-info"></i> Tentang Aplikasi
-          </button>
-          <button onclick="window.logoutCurrentUser()" class="text-red-400 hover:text-red-300 font-semibold flex items-center gap-1">
-            <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL REWARD -->
-  <div id="rewardModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
-    <div class="bg-[#12141E] border border-gray-800 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-2xl relative">
-      <button onclick="window.closeRewardModal()" class="absolute right-3.5 top-3.5 text-gray-400 hover:text-white text-base">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="text-center space-y-1">
-        <div class="w-12 h-12 mx-auto rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl">
-          🪙
-        </div>
-        <h3 class="text-base font-bold text-white">Pusat Hadiah Poin Nonton</h3>
-        <p class="text-xs text-gray-400">Kumpulkan koin gratis untuk membuka episode serial terkunci.</p>
-      </div>
-
-      <div class="space-y-2.5">
-        <div class="bg-[#181B26] p-3 rounded-xl border border-gray-800 flex items-center justify-between">
           <div>
-            <span class="text-xs font-bold text-white block">Klaim Harian (Daily Check-in)</span>
-            <span class="text-[10px] text-gray-400">Dapatkan +50 Poin setiap 24 jam</span>
+            <label class="block mb-1 text-gray-300 font-semibold">URL Cover Poster (2:3)</label>
+            <input id="fCover" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://..." />
           </div>
-          <button onclick="window.claimDailyReward()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">
-            Klaim +50
+
+          <div>
+            <label class="block mb-1 text-gray-300 font-semibold">URL Video Episode 1 (.mp4 Direct Cloud)</label>
+            <input id="fVideo" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://...mp4" />
+          </div>
+
+          <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold py-2.5 rounded-xl shadow-lg hover:opacity-90 transition mt-2">
+            Terbitkan Serial Sekarang
           </button>
-        </div>
-
-        <div class="bg-[#181B26] p-3 rounded-xl border border-amber-500/30 flex items-center justify-between">
-          <div>
-            <span class="text-xs font-bold text-amber-300 block">Tonton Iklan Sponsor (5 Detik)</span>
-            <span class="text-[10px] text-gray-400">Mendukung kreator serial lokal</span>
-          </div>
-          <button onclick="window.startAdRewardFlow()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-black rounded-lg text-xs font-bold transition">
-            +25 Poin
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL SIMULASI AD REWARD -->
-  <div id="adRewardModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[99999] hidden items-center justify-center p-4">
-    <div class="bg-[#12141F] border border-amber-500/50 rounded-2xl w-full max-w-sm p-5 space-y-3 shadow-2xl text-center">
-      <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold uppercase">
-        Sponsor Tayang
-      </span>
-      <h3 class="text-sm font-bold text-white">Menonton Iklan Reward...</h3>
-      <p class="text-xs text-gray-300">Mendukung produksi serial independen karya Founder MediDrama.</p>
-
-      <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden mt-3">
-        <div id="adProgressBar" class="bg-amber-500 h-full w-0 transition-all duration-1000"></div>
-      </div>
-      <span id="adTimerText" class="text-xs font-mono text-amber-400 font-bold block">5s</span>
-
-      <button id="closeAdBtn" disabled onclick="window.finishAdReward()" class="mt-4 w-full py-2 rounded-xl font-bold text-xs bg-gray-800 text-gray-500 cursor-not-allowed transition">
-        Menonton Sponsor (5s)...
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL STUDIO FOUNDER -->
-  <div id="founderBackendModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[9999] hidden items-center justify-center p-2 sm:p-4">
-    <div class="bg-[#0F111A] border border-red-600/40 rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
-      <div class="p-3.5 sm:p-4 border-b border-gray-800 flex items-center justify-between bg-[#141622]">
-        <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs font-bold">
-            <i class="fa-solid fa-crown"></i>
-          </div>
-          <div>
-            <h2 class="text-sm font-bold text-white">Control Panel Studio Founder & Firebase Cloud</h2>
-            <span class="text-[10px] text-gray-400 font-mono">Proyek: <strong class="text-amber-400">medidrama-bd5a2</strong></span>
-          </div>
-        </div>
-        <button onclick="window.closeFounderBackendModal()" class="text-gray-400 hover:text-white text-base p-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+        </form>
       </div>
 
-      <div class="flex border-b border-gray-800 bg-[#0B0D14] px-3 overflow-x-auto hide-scrollbar">
-        <button id="adminTabMoviesBtn" onclick="window.switchFounderTab('movies')" class="py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 transition flex-none">
-          <i class="fa-solid fa-film"></i> Manajemen Serial Film (<span id="statTotalMovies">0</span>)
-        </button>
-        <button id="adminTabUsersBtn" onclick="window.switchFounderTab('users')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
-          <i class="fa-solid fa-users"></i> Pemantauan Penonton (<span id="statRegisteredUsersBadge">0</span>)
-        </button>
-        <button id="adminTabFirebaseBtn" onclick="window.switchFounderTab('firebase')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
-          <i class="fa-solid fa-fire text-amber-500"></i> Koneksi Firebase Cloud
-        </button>
-        <button id="adminTabAdsBtn" onclick="window.switchFounderTab('ads')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
-          <i class="fa-solid fa-rectangle-ad"></i> Pengaturan Iklan & AdSense
-        </button>
-      </div>
-
-      <div id="founderMoviesTabContent" class="flex-1 overflow-y-auto p-4 space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 class="text-sm font-bold text-white">Daftar Serial Film Tersimpan</h3>
-            <p class="text-xs text-gray-400">Total <span id="statTotalEpisodes" class="text-amber-400 font-bold">0</span> episode aktif di katalog.</p>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <button onclick="window.openUploadVideoModal()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
-              <i class="fa-solid fa-plus"></i> Upload Serial & Episode Baru
-            </button>
-            <button onclick="window.exportDatabaseJSON()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold flex items-center gap-1 transition">
-              <i class="fa-solid fa-download"></i> Ekspor JSON
-            </button>
-            <label class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-amber-400 rounded-xl text-xs font-semibold flex items-center gap-1 cursor-pointer transition">
-              <i class="fa-solid fa-upload"></i> Restore JSON
-              <input type="file" accept=".json" onchange="window.restoreDatabaseJSON(event)" class="hidden" />
-            </label>
-          </div>
-        </div>
-
-        <div class="overflow-x-auto border border-gray-800 rounded-xl">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-[#141622] text-gray-400 border-b border-gray-800">
-              <tr>
-                <th class="p-3">Cover & Judul</th>
-                <th class="p-3">Kategori</th>
-                <th class="p-3">Status</th>
-                <th class="p-3">Episode</th>
-                <th class="p-3 text-right">Tindakan</th>
+      <!-- SUB-TAB 2: TABEL PENGGUNA TERDAFTAR -->
+      <div id="founderUsersSection" class="hidden space-y-3">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-gray-800 text-gray-400">
+                <th class="py-2 px-3">Nama Pengguna</th>
+                <th class="py-2 px-3">Email Akun</th>
+                <th class="py-2 px-3">Role</th>
+                <th class="py-2 px-3">Saldo Koin</th>
+                <th class="py-2 px-3 text-right">Tindakan</th>
               </tr>
             </thead>
-            <tbody id="founderMoviesTableBody" class="divide-y divide-gray-800/80"></tbody>
+            <tbody id="userTableBody" class="divide-y divide-gray-800/50 text-gray-300">
+              <!-- Render otomatis dari localStorage -->
+            </tbody>
           </table>
         </div>
       </div>
-
-      <div id="founderUsersTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
-        <div class="flex items-center justify-between">
-          <div>
-            <h3 class="text-sm font-bold text-white">Buku Induk Pendaftaran Pengguna</h3>
-            <p class="text-xs text-gray-400">Sinkronisasi langsung dengan Firebase Cloud Firestore.</p>
-          </div>
-          <button onclick="window.refreshUsersRegistry()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-bold text-white rounded-xl">
-            <i class="fa-solid fa-rotate-right"></i> Segarkan Data
-          </button>
-        </div>
-
-        <div class="overflow-x-auto border border-gray-800 rounded-xl">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-[#141622] text-gray-400 border-b border-gray-800">
-              <tr>
-                <th class="p-3">Nama & ID Pengguna</th>
-                <th class="p-3">Email & No. HP</th>
-                <th class="p-3">Saldo Koin</th>
-                <th class="p-3">Peran (Role)</th>
-                <th class="p-3 text-right">Aktivitas Terakhir</th>
-              </tr>
-            </thead>
-            <tbody id="registeredUsersTableBody" class="divide-y divide-gray-800/80"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="founderFirebaseTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
-        <div class="bg-[#141622] border border-gray-800 rounded-xl p-3.5 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white">Status Koneksi:</span>
-            <span id="firebaseStatusBadgeDetail" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-green-950 text-green-300 border border-green-800">Terhubung ke Firestore Cloud ✓</span>
-          </div>
-
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Objek JSON Konfigurasi Firebase</label>
-            <textarea id="firebaseConfigInput" rows="7" readonly class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-3 text-xs text-amber-300 font-mono focus:outline-none"></textarea>
-          </div>
-
-          <div class="flex flex-wrap gap-2">
-            <button onclick="window.testFirebaseConnection()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs rounded-xl shadow transition">
-              <i class="fa-solid fa-vial"></i> Uji Ping Koneksi Cloud
-            </button>
-            <button onclick="window.syncInitialMoviesToCloud()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs rounded-xl transition">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Katalog Demo ke Cloud
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div id="founderAdsTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
-        <div class="space-y-3 max-w-lg">
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Teks / Judul Sponsor Banner</label>
-            <input type="text" id="adSettingTitle" class="w-full bg-[#141622] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Tautan URL Iklan Sponsor (Target Klik)</label>
-            <input type="url" id="adSettingUrl" class="w-full bg-[#141622] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
-          </div>
-          <button onclick="window.saveFounderAdSettings()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-black font-bold text-xs rounded-xl shadow transition">
-            Simpan Pengaturan Iklan
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 
-  <!-- MODAL UPLOAD SERIAL -->
-  <div id="uploadMovieModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[99999] hidden items-center justify-center p-2 sm:p-4">
-    <div class="bg-[#11131C] border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
-      <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-[#141624]">
-        <h3 id="uploadModalTitle" class="text-sm font-bold text-white">Upload Serial Film & Episode Baru</h3>
-        <button onclick="window.closeUploadVideoModal()" class="text-gray-400 hover:text-white text-base">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
+  <!-- Bottom Bar Mobile -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[#0B0D14]/95 backdrop-blur-lg border-t border-gray-800/80 px-6 py-2.5 flex justify-around items-center">
+    <button onclick="switchTab('home')" id="navHomeBtn" class="flex flex-col items-center text-red-500 text-xs">
+      <i class="fa-solid fa-film text-base"></i>
+      <span class="text-[10px] mt-1 font-semibold">Serial</span>
+    </button>
+    <button onclick="switchTab('profile')" id="navProfileBtn" class="flex flex-col items-center text-gray-400 text-xs">
+      <i class="fa-solid fa-user text-base"></i>
+      <span class="text-[10px] mt-1 font-semibold">Profil</span>
+    </button>
+  </nav>
 
-      <form id="movieUploadForm" onsubmit="window.handleSaveMovieForm(event)" class="flex-1 overflow-y-auto p-4 space-y-4">
-        <input type="hidden" id="editingMovieId" />
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Judul Serial Film</label>
-            <input type="text" id="uploadTitle" required placeholder="Contoh: Janji Musim Gugur di Seoul" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Kategori / Genre</label>
-            <select id="uploadCategory" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-              <option value="Action & Laga">Action & Laga</option>
-              <option value="Kartun, Animasi & Petualangan">Kartun, Animasi & Petualangan</option>
-              <option value="Drama Korea & Percintaan">Drama Korea & Percintaan</option>
-              <option value="Misteri & Spiritual">Misteri & Spiritual</option>
-              <option value="Petualangan">Petualangan</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Status Rilis Cerita</label>
-            <select id="uploadStatus" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white">
-              <option value="ongoing">BERJALAN (Ongoing)</option>
-              <option value="completed">TAMAT (Completed / END)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Catatan Rilis Episode Lanjutan</label>
-            <input type="text" id="uploadNextEpNote" placeholder="Contoh: Ep 5 Rilis Tiap Jumat 19:00 WIB" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs text-gray-400 mb-1">Poster Cover Film (Rasio 2:3)</label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <input type="url" id="uploadCoverUrl" oninput="window.previewCoverFromUrl(this.value)" placeholder="Tempel Link URL Cloud (Cloudinary / Supabase)..." class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" />
-            <input type="file" accept="image/*" onchange="window.handleCoverFileSelected(event)" class="text-xs text-gray-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-gray-800 file:text-white cursor-pointer" />
-          </div>
-          <div id="coverPreviewContainer" class="hidden mt-2 items-center gap-2">
-            <img id="coverPreviewImg" src="" alt="Preview" class="w-12 h-16 object-cover rounded border border-gray-700" />
-            <span class="text-[11px] text-green-400 font-semibold">Cover berhasil dipasang</span>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs text-gray-400 mb-1">Sinopsis Lengkap Serial</label>
-          <textarea id="uploadDescription" rows="2" placeholder="Ceritakan ringkasan serial..." class="w-full bg-[#161824] border border-gray-700 rounded-xl p-2.5 text-xs text-white"></textarea>
-        </div>
-
-        <div class="border-t border-gray-800 pt-3 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white flex items-center gap-1.5">
-              <i class="fa-solid fa-list-ol text-red-500"></i> Kelola Episode
-            </span>
-            <button type="button" onclick="window.addNewEpisodeField()" class="px-2.5 py-1 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold">
-              + Tambah Episode Baru
-            </button>
-          </div>
-          <div id="episodeFieldsContainer" class="space-y-3"></div>
-        </div>
-
-        <div class="border-t border-gray-800 pt-3 flex justify-end gap-2">
-          <button type="button" onclick="window.closeUploadVideoModal()" class="px-4 py-2 bg-gray-800 text-white rounded-xl text-xs font-semibold">Batal</button>
-          <button type="submit" class="px-5 py-2 bg-red-600 text-white rounded-xl text-xs font-bold shadow-lg">Simpan Serial Film</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL ABOUT -->
-  <div id="aboutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4">
-    <div class="bg-[#12141E] border border-gray-800 rounded-2xl w-full max-w-sm p-5 space-y-3 text-center">
-      <div class="w-12 h-12 mx-auto rounded-full bg-red-600/20 text-red-500 flex items-center justify-center text-xl">
-        <i class="fa-solid fa-film"></i>
-      </div>
-      <h3 class="text-base font-bold text-white">Tentang MediDrama</h3>
-      <p class="text-xs text-gray-300 leading-relaxed">
-        MediDrama adalah platform serial independen karya Founder yang menyajikan hiburan per episode dengan sistem reward koin iklan Google AdSense, Cloud Database Firestore, dan proteksi hak cipta.
-      </p>
-      <div class="text-[10px] text-gray-500 pt-2 border-t border-gray-800">
-        Versi 3.9.0 • Hak Cipta Dilindungi
-      </div>
-      <button onclick="window.closeAboutModal()" class="w-full py-2 bg-gray-800 text-white rounded-xl text-xs font-bold">Tutup</button>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toastMessage" class="fixed bottom-24 md:bottom-6 right-4 z-[99999] transform translate-y-20 opacity-0 transition-all duration-300 bg-[#141620] border border-gray-700 text-white px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs pointer-events-none">
-    <i id="toastIcon" class="fa-solid fa-circle-check text-green-400 text-base"></i>
-    <span id="toastText">Pesan</span>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC -->
   <script>
-    const defaultFirebaseConfig = {
-      apiKey: "AIzaSyCQj4SI_Z9ZptP4UjPga2d_mV0z211CV7k",
-      authDomain: "medidrama-bd5a2.firebaseapp.com",
-      projectId: "medidrama-bd5a2",
-      storageBucket: "medidrama-bd5a2.firebasestorage.app",
-      messagingSenderId: "378411394876",
-      appId: "1:378411394876:web:198f7d801bbb0f7e5e2039",
-      measurementId: "G-77E0XGBY6D"
+    // State Pengguna Terdaftar (Disimpan di LocalStorage)
+    let registeredUsers = JSON.parse(localStorage.getItem('medidrama_users')) || [
+      { id: 1, name: "Furianto (Founder)", email: "adminmedidrama@gmail.com", role: "Founder", coins: 999 },
+      { id: 2, name: "Cyntia Rahma", email: "cyntia.ai@gmail.com", role: "Penonton", coins: 150 },
+      { id: 3, name: "Budi Santoso", email: "budisantoso99@gmail.com", role: "Penonton", coins: 80 }
+    ];
+
+    let currentUser = JSON.parse(localStorage.getItem('medidrama_current_user')) || {
+      name: "Furianto",
+      email: "adminmedidrama@gmail.com",
+      role: "Founder",
+      coins: 250
     };
 
-    const defaultInitialMovies = [
+    let authMode = 'login'; // 'login' atau 'register'
+
+    // Data Katalog Film
+    let dramaData = JSON.parse(localStorage.getItem('medidrama_catalog')) || [
       {
-        id: "mov_garuda_hitam",
-        title: "Garuda Hitam: Pembalasan Lembah Kematian",
+        id: 1,
+        title: "Garuda Hitam: Lembah Kematian",
         category: "Action & Laga",
-        status: "ongoing",
-        nextEpNote: "Episode 5 Rilis Tiap Jumat 19:00 WIB",
-        cover: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80",
-        description: "Agen khusus yang dikhianati kembali ke kota metropolitan untuk menuntut keadilan bagi rekan-rekannya yang gugur.",
-        episodes: [
-          { epId: "e1", title: "Episode 1: Darah Pertama & Pengkhianatan", duration: "18 Min", cost: 0, videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" },
-          { epId: "e2", title: "Episode 2: Jebakan Pelabuhan Gelap", duration: "21 Min", cost: 30, videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" },
-          { epId: "e3", title: "Episode 3: Menembus Markas Sindikat", duration: "24 Min", cost: 30, videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" }
-        ]
+        cover: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+        trending: true,
+        rating: 4.9
       },
       {
-        id: "mov_kancil_magis",
-        title: "Petualangan Kancil & Hutan Kristal Magis",
-        category: "Kartun, Animasi & Petualangan",
-        status: "completed",
-        nextEpNote: "Serial Selesai",
-        cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80",
-        description: "Animasi dongeng Nusantara dengan kekuatan magis kristal hutan rimba.",
-        episodes: [
-          { epId: "e1", title: "Episode 1: Permata Hutan Rimba", duration: "12 Min", cost: 0, videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" },
-          { epId: "e2", title: "Episode 2: Raksasa Gunung Belerang", duration: "14 Min", cost: 25, videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" }
-        ]
+        id: 2,
+        title: "Cinta Tersembunyi Chaebol",
+        category: "Drama Romantis",
+        cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        trending: true,
+        rating: 4.8
       },
       {
-        id: "mov_drakor_seoul",
-        title: "Janji Musim Gugur di Seoul",
-        category: "Drama Korea & Percintaan",
-        status: "ongoing",
-        nextEpNote: "Episode 3 Segera Tayang",
-        cover: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80",
-        description: "Pertemuan tak sengaja antara seorang pianis klasik dan barista kafe menghidupkan kembali melodi lama yang telah hilang bertahun-tahun.",
-        episodes: [
-          { epId: "e1", title: "Episode 1: Secangkir Kopi di Bawah Gerimis", duration: "25 Min", cost: 0, videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" }
-        ]
+        id: 3,
+        title: "Kutukan Kamar 404",
+        category: "Misteri & Thriller",
+        cover: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600",
+        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        trending: false,
+        rating: 4.6
       }
     ];
 
-    let currentUser = {
-      id: "GUEST-" + Math.floor(1000 + Math.random() * 9000),
-      name: "Tamu Penonton",
-      email: "",
-      phone: "",
-      photoURL: "",
-      role: "guest",
-      coins: 100,
-      phoneRewardClaimed: false
-    };
+    let currentSlide = 0;
+    let heroItems = [];
 
-    let registeredUsersList = [
-      { id: "FOUNDER-SUPER", name: "Founder MediDrama", email: "adminmedidrama@gmail.com", phone: "0811008888", coins: 9999, role: "founder", lastActive: "Hari ini" }
-    ];
+    // Inisialisasi Tampilan
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHeroSlider();
+      renderCatalog();
+      renderTrending();
+      renderCategories();
+      renderFavorites();
+      updateUserUI();
+      renderFounderUserTable();
 
-    let moviesDatabase = JSON.parse(localStorage.getItem('medidrama_movies')) || [...defaultInitialMovies];
-    let unlockedEpisodes = JSON.parse(localStorage.getItem('medidrama_unlocked')) || {};
-    let favoritesList = JSON.parse(localStorage.getItem('medidrama_favorites')) || [];
-    let watchHistory = JSON.parse(localStorage.getItem('medidrama_history')) || [];
+      setInterval(nextSlide, 4500);
+    });
 
-    let currentPlayingMovie = null;
-    let currentPlayingEpisodeIndex = 0;
-    let currentUploadedCoverData = "";
-    let currentAuthTab = 'login';
-    let currentActiveView = 'home';
+    // Perbarui Tampilan Akun Sesuai State
+    function updateUserUI() {
+      document.getElementById('profileNameInput').value = currentUser.name;
+      document.getElementById('profileEmail').innerText = currentUser.email;
+      document.getElementById('profileCoins').innerText = currentUser.coins;
+      document.getElementById('userRoleBadge').innerText = currentUser.role;
+      document.getElementById('navAuthLabel').innerText = currentUser.name.split(' ')[0];
 
-    let guestWatchTimer = null;
-    let guestTimeRemaining = 120;
-    let lastBackPressTime = 0;
-
-    let firebaseApp = null;
-    let firebaseAuth = null;
-    let firebaseDb = null;
-    let isFirebaseConnected = false;
-
-    // Proteksi Keamanan Hak Cipta
-    window.setupAntiPiracyGuard = function() {
-      document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        window.showToast("Konten video & poster dilindungi hak cipta MediDrama.", "info");
-      });
-
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'PrintScreen' || e.keyCode === 44) {
-          try { navigator.clipboard.writeText(''); } catch (err) {}
-          window.showToast("Tangkapan layar dinonaktifkan demi hak cipta.", "info");
-        }
-        if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || (e.ctrlKey && e.key === 'u')) {
-          e.preventDefault();
-        }
-      });
-
-      setInterval(() => {
-        const wm = document.getElementById('videoWatermarkOverlay');
-        if (wm && currentActiveView === 'player') {
-          const topPercent = Math.floor(Math.random() * 70) + 10;
-          const leftPercent = Math.floor(Math.random() * 60) + 10;
-          wm.style.top = topPercent + '%';
-          wm.style.left = leftPercent + '%';
-        }
-      }, 12000);
-    };
-
-    // Tombol Back Fisik Android (Bebas Crash)
-    window.setupAndroidBackButtonHandler = function() {
-      try {
-        if (!window.history.state) {
-          window.history.replaceState({ view: 'home' }, '');
-        }
-      } catch (err) {}
-
-      window.addEventListener('popstate', function(event) {
-        try {
-          const openModal = document.querySelector('.fixed.inset-0:not(.hidden)');
-          if (openModal) {
-            openModal.classList.add('hidden');
-            openModal.classList.remove('flex');
-            return;
-          }
-
-          if (currentActiveView !== 'home') {
-            window.switchView('home', false);
-            return;
-          }
-
-          const currentTime = Date.now();
-          if (currentTime - lastBackPressTime < 2000) {
-            // Izinkan keluar normal
-          } else {
-            lastBackPressTime = currentTime;
-            window.showToast("Tekan sekali lagi untuk keluar dari aplikasi", "info");
-            try { window.history.pushState({ view: 'home' }, ''); } catch (e) {}
-          }
-        } catch (e) {
-          console.log("Nav guard handled:", e);
-        }
-      });
-    };
-
-    window.handleBackButtonAction = function() {
-      if (currentActiveView !== 'home') {
-        window.switchView('home');
-      }
-    };
-
-    window.switchView = function(viewName, pushHistory = true) {
-      currentActiveView = viewName;
-      if (pushHistory) {
-        try { window.history.pushState({ view: viewName }, ''); } catch (e) {}
+      const savedAvatar = localStorage.getItem('user_avatar');
+      if (savedAvatar) {
+        document.getElementById('profileImagePreview').src = savedAvatar;
+        document.getElementById('navAvatar').src = savedAvatar;
       }
 
-      ['homeView', 'searchView', 'favoritesView', 'historyView', 'playerView'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-      });
-
-      const videoEl = document.getElementById('theaterVideo');
-      if (viewName === 'player') {
-        document.getElementById('playerView').classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (viewName === 'favorites') {
-        if (videoEl) videoEl.pause();
-        document.getElementById('favoritesView').classList.remove('hidden');
-        window.renderFavoritesSection();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (viewName === 'history') {
-        if (videoEl) videoEl.pause();
-        document.getElementById('historyView').classList.remove('hidden');
-        window.renderHistorySection();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (viewName === 'search') {
-        if (videoEl) videoEl.pause();
-        document.getElementById('searchView').classList.remove('hidden');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (currentUser.role === 'Founder') {
+        document.getElementById('adminBtn').classList.remove('hidden');
       } else {
-        if (videoEl) videoEl.pause();
-        document.getElementById('homeView').classList.remove('hidden');
-        window.renderMovieCatalog();
+        document.getElementById('adminBtn').classList.add('hidden');
       }
-    };
-
-    window.navDirectClick = function(target) {
-      if (target === 'home') window.switchView('home');
-      else if (target === 'reward') window.openRewardModal();
-      else if (target === 'favorites') window.switchView('favorites');
-      else if (target === 'history') window.switchView('history');
-      else if (target === 'profile') window.openProfileModal();
-    };
-
-    window.initFirebaseSetup = function() {
-      const configInput = document.getElementById('firebaseConfigInput');
-      if (configInput) configInput.value = JSON.stringify(defaultFirebaseConfig, null, 2);
-
-      try {
-        if (!firebase.apps.length) {
-          firebaseApp = firebase.initializeApp(defaultFirebaseConfig);
-        } else {
-          firebaseApp = firebase.app();
-        }
-
-        firebaseAuth = firebase.auth();
-        firebaseDb = firebase.firestore();
-        isFirebaseConnected = true;
-        window.updateCloudStatusBadge(true);
-        window.bindFirestoreRealtime();
-        window.listenFirebaseAuth();
-
-        if (firebaseAuth.getRedirectResult) {
-          firebaseAuth.getRedirectResult().then(result => {
-            if (result && result.user) {
-              window.processSuccessfulLogin(result.user);
-            }
-          }).catch(err => console.log("Redirect check:", err));
-        }
-      } catch (err) {
-        console.warn("Inisialisasi Firebase:", err);
-        window.updateCloudStatusBadge(false);
-      }
-    };
-
-    function checkIsFounderEmail(email) {
-      if (!email) return false;
-      const em = email.toLowerCase().trim();
-      return em === "adminmedidrama@gmail.com" || em === "admin@mediadrama.com";
     }
 
-    window.processSuccessfulLogin = function(user) {
-      const isFounder = checkIsFounderEmail(user.email);
-      currentUser = {
-        id: user.uid,
-        name: user.displayName || user.email.split('@')[0],
-        email: user.email || "",
-        phone: user.phoneNumber || currentUser.phone || "-",
-        photoURL: user.photoURL || "",
-        role: isFounder ? "founder" : "user",
-        coins: isFounder ? 9999 : 150,
-        phoneRewardClaimed: false
-      };
-
-      if (firebaseDb) {
-        firebaseDb.collection('users').doc(user.uid).get().then(doc => {
-          if (doc.exists) {
-            const data = doc.data();
-            currentUser.coins = data.coins !== undefined ? data.coins : currentUser.coins;
-            currentUser.phone = data.phone || currentUser.phone;
-            currentUser.phoneRewardClaimed = !!data.phoneRewardClaimed;
-            if (data.role) currentUser.role = data.role;
-          }
-          if (isFounder) currentUser.role = "founder";
-          window.syncUserToCloud();
-          window.updateAuthUI();
-        }).catch(() => {
-          window.syncUserToCloud();
-          window.updateAuthUI();
-        });
-      } else {
-        window.syncUserToCloud();
-        window.updateAuthUI();
-      }
-
-      window.closeAuthModal();
-      window.showToast(`Berhasil masuk: ${currentUser.name}!`, "success");
-      if (isFounder) window.openFounderBackendModal();
-    };
-
-    window.listenFirebaseAuth = function() {
-      if (!firebaseAuth) return;
-      firebaseAuth.onAuthStateChanged(user => {
-        if (user) {
-          window.processSuccessfulLogin(user);
-          if (guestWatchTimer) clearInterval(guestWatchTimer);
-          const gTimerBadge = document.getElementById('guestTimerBadge');
-          if (gTimerBadge) gTimerBadge.classList.add('hidden');
-        }
-      });
-    };
-
-    window.loginWithGoogle = function() {
-      if (!firebaseAuth) {
-        window.showToast("Menghubungkan layanan...", "info");
-        return;
-      }
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebaseAuth.signInWithPopup(provider).then(result => {
-        window.processSuccessfulLogin(result.user);
-      }).catch(err => {
-        if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request') {
-          firebaseAuth.signInWithRedirect(provider).catch(() => {
-            window.showToast("Silakan masuk menggunakan email dan sandi di bawah.", "info");
-          });
-        } else {
-          window.showToast("Gunakan opsi Masuk Email/Sandi jika peramban membatasi pop-up.", "info");
-        }
-      });
-    };
-
-    window.updateCloudStatusBadge = function(connected) {
-      const dot = document.getElementById('cloudStatusDot');
-      const text = document.getElementById('cloudStatusText');
-      if (dot && text) {
-        if (connected) {
-          dot.className = "w-2 h-2 rounded-full bg-green-400";
-          text.innerText = "Cloud Online";
-          text.className = "text-green-400 font-semibold";
-        } else {
-          dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
-          text.innerText = "Standby";
-          text.className = "text-amber-400";
-        }
-      }
-    };
-
-    window.bindFirestoreRealtime = function() {
-      if (!isFirebaseConnected || !firebaseDb) return;
-      firebaseDb.collection('movies').onSnapshot(snapshot => {
-        if (!snapshot.empty) {
-          const cloudMovies = [];
-          snapshot.forEach(doc => cloudMovies.push({ id: doc.id, ...doc.data() }));
-          moviesDatabase = cloudMovies;
-          localStorage.setItem('medidrama_movies', JSON.stringify(moviesDatabase));
-          window.renderMovieCatalog();
-          window.renderFounderMoviesTable();
-          window.updateFounderStats();
-        }
-      }, () => {});
-
-      firebaseDb.collection('users').onSnapshot(snapshot => {
-        if (!snapshot.empty) {
-          const cloudUsers = [];
-          snapshot.forEach(doc => cloudUsers.push({ id: doc.id, ...doc.data() }));
-          registeredUsersList = cloudUsers;
-          window.renderRegisteredUsersTable();
-        }
-      }, () => {});
-    };
-
-    window.syncInitialMoviesToCloud = function(showToastNotice = true) {
-      if (!isFirebaseConnected || !firebaseDb) return;
-      const batch = firebaseDb.batch();
-      moviesDatabase.forEach(m => {
-        const docRef = firebaseDb.collection('movies').doc(m.id);
-        batch.set(docRef, m, { merge: true });
-      });
-      batch.commit().then(() => {
-        if (showToastNotice) window.showToast("Katalog disinkronkan ke Firestore!", "success");
-      });
-    };
-
-    window.testFirebaseConnection = function() {
-      if (!isFirebaseConnected || !firebaseDb) return;
-      firebaseDb.collection('status_ping').doc('ping').set({
-        lastPing: new Date().toISOString(),
-        by: currentUser.name
-      }).then(() => {
-        window.showToast("Koneksi Cloud Firestore AKTIF!", "success");
-      });
-    };
-
-    window.renderMovieCatalog = function() {
-      const container = document.getElementById('categoriesContainer');
-      if (!container) return;
-      container.innerHTML = '';
-
-      const categories = [...new Set(moviesDatabase.map(m => m.category))];
-
-      categories.forEach(category => {
-        const rowMovies = moviesDatabase.filter(m => m.category === category);
-        if (rowMovies.length === 0) return;
-
-        const section = document.createElement('section');
-        section.className = "space-y-2.5";
-        section.innerHTML = `
-          <div class="flex items-center justify-between">
-            <h2 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-              <span class="w-1.5 h-3.5 bg-red-600 rounded-full inline-block"></span>
-              <span>${category}</span>
-            </h2>
-            <span class="text-[11px] text-gray-400 font-medium">${rowMovies.length} Serial</span>
-          </div>
-
-          <div class="flex gap-2.5 sm:gap-3 overflow-x-auto hide-scrollbar pb-2 pt-1 -mx-3 px-3 sm:mx-0 sm:px-0">
-            ${rowMovies.map(movie => `
-              <div onclick="window.startWatchingMovie('${movie.id}', 0)" class="flex-none w-28 sm:w-32 md:w-36 bg-[#12141D] rounded-xl overflow-hidden border border-[#1F2433] hover:border-red-500/60 transition duration-300 transform hover:-translate-y-1 cursor-pointer shadow-md group">
-                <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
-                  <img src="${movie.cover}" alt="${movie.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" onerror="this.src='https://placehold.co/300x450/14161F/FFFFFF?text=Film'">
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#12141D] via-transparent to-transparent opacity-80"></div>
-                  
-                  <span class="absolute top-1.5 left-1.5 bg-black/80 text-[8px] text-amber-400 font-bold px-1.5 py-0.5 rounded border border-amber-500/30">
-                    ${movie.episodes ? movie.episodes.length : 0} Eps
-                  </span>
-
-                  <span class="absolute top-1.5 right-1.5 text-[7px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider ${movie.status === 'completed' ? 'bg-green-600/90 text-white' : 'bg-red-600/90 text-white'}">
-                    ${movie.status === 'completed' ? 'TAMAT' : 'ONGOING'}
-                  </span>
-
-                  <div class="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition shadow-lg shadow-red-600/50">
-                    <i class="fa-solid fa-play ml-0.5"></i>
-                  </div>
-                </div>
-
-                <div class="p-2">
-                  <h3 class="text-xs font-bold text-white truncate group-hover:text-red-400 transition leading-snug">${movie.title}</h3>
-                  <p class="text-[9px] text-gray-400 line-clamp-1 mt-0.5">${movie.description || 'Serial MediDrama'}</p>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-        container.appendChild(section);
-      });
-    };
-
-    window.closeSearchView = function() {
-      const inputD = document.getElementById('searchInput');
-      const inputM = document.getElementById('searchInputMobile');
-      if (inputD) inputD.value = '';
-      if (inputM) inputM.value = '';
-      window.switchView('home');
-    };
-
-    window.handleSearch = function(val) {
-      const query = val.trim();
-      const inputD = document.getElementById('searchInput');
-      const inputM = document.getElementById('searchInputMobile');
-      const clearBtn = document.getElementById('clearSearchBtnMobile');
-
-      if (inputD && inputD.value !== query) inputD.value = query;
-      if (inputM && inputM.value !== query) inputM.value = query;
-
-      if (clearBtn) {
-        if (query) clearBtn.classList.remove('hidden');
-        else clearBtn.classList.add('hidden');
-      }
-
-      if (!query) {
-        if (currentActiveView === 'search') window.switchView('home');
-        return;
-      }
-
-      window.switchView('search');
-      window.renderSearchResults(query);
-    };
-
-    window.renderSearchResults = function(query) {
-      const container = document.getElementById('searchGridContainer');
-      const keywordText = document.getElementById('searchKeywordText');
-      const countText = document.getElementById('searchCountText');
-
-      if (keywordText) keywordText.innerText = query;
-      if (!container) return;
-      container.innerHTML = '';
-
-      const filtered = moviesDatabase.filter(m => 
-        m.title.toLowerCase().includes(query.toLowerCase()) || 
-        m.category.toLowerCase().includes(query.toLowerCase())
-      );
-
-      if (countText) countText.innerText = `${filtered.length} serial`;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-12 text-center text-gray-500">
-            <i class="fa-solid fa-film text-3xl mb-2 block"></i>
-            Tidak ditemukan serial dengan kata kunci tersebut.
-          </div>
-        `;
-        return;
-      }
-
-      filtered.forEach(movie => {
-        const card = document.createElement('div');
-        card.className = "bg-[#12141D] rounded-xl overflow-hidden border border-[#1F2433] hover:border-red-500/60 transition cursor-pointer group flex flex-col";
-        card.onclick = () => window.startWatchingMovie(movie.id, 0);
-        card.innerHTML = `
-          <div class="relative aspect-[2/3] overflow-hidden bg-gray-950">
-            <img src="${movie.cover}" alt="${movie.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/300x450/14161F/FFFFFF?text=Film'">
-            <span class="absolute top-1.5 left-1.5 bg-black/80 text-[8px] text-amber-400 font-bold px-1 py-0.5 rounded">
-              ${movie.episodes ? movie.episodes.length : 0} Eps
-            </span>
-          </div>
-          <div class="p-2 flex-1 flex flex-col justify-between">
-            <h4 class="text-xs font-bold text-white line-clamp-1 group-hover:text-red-400">${movie.title}</h4>
-            <span class="text-[9px] text-red-400 font-semibold block truncate mt-1">${movie.category}</span>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    };
-
-    window.startWatchingMovie = function(movieId, episodeIndex = 0) {
-      const movie = moviesDatabase.find(m => m.id === movieId);
-      if (!movie) return;
-
-      currentPlayingMovie = movie;
-      currentPlayingEpisodeIndex = episodeIndex;
-
-      watchHistory = watchHistory.filter(h => h.movieId !== movieId);
-      watchHistory.unshift({ movieId, epIdx: episodeIndex, timestamp: Date.now() });
-      localStorage.setItem('medidrama_history', JSON.stringify(watchHistory));
-
-      window.switchView('player');
-
-      document.getElementById('playerMovieTitle').innerText = movie.title;
-      document.getElementById('playerCategoryBadge').innerText = movie.category;
-      document.getElementById('playerMovieSynopsis').innerText = movie.description || 'Tidak ada sinopsis.';
-      document.getElementById('playerTotalEpsCount').innerText = `Total ${movie.episodes ? movie.episodes.length : 0} Episode`;
-      document.getElementById('watermarkUserId').innerText = currentUser.id;
-
-      const statusPill = document.getElementById('movieStatusPill');
-      if (statusPill) {
-        if (movie.status === 'completed') {
-          statusPill.className = "text-[10px] bg-green-600/20 text-green-400 border border-green-500/40 px-2 py-0.5 rounded-full font-bold uppercase";
-          statusPill.innerText = "TAMAT (END)";
-        } else {
-          statusPill.className = "text-[10px] bg-blue-600/20 text-blue-400 border border-blue-500/40 px-2 py-0.5 rounded-full font-bold uppercase";
-          statusPill.innerText = "ONGOING";
-        }
-      }
-
-      window.updateFavoriteButtonUI();
-      window.renderEpisodeBlocks();
-      window.loadEpisodeVideo(episodeIndex);
-      window.initGuestWatchTimer();
-    };
-
-    window.renderEpisodeBlocks = function() {
-      const grid = document.getElementById('episodeBlocksGrid');
-      if (!grid || !currentPlayingMovie || !currentPlayingMovie.episodes) return;
-      grid.innerHTML = '';
-
-      currentPlayingMovie.episodes.forEach((ep, idx) => {
-        const episodeNumber = idx + 1;
-        const episodeKey = `${currentPlayingMovie.id}_${ep.epId}`;
-        const isFree = ep.cost === 0;
-        const isUnlocked = isFree || unlockedEpisodes[episodeKey];
-        const isActive = idx === currentPlayingEpisodeIndex;
-
-        const blockBtn = document.createElement('button');
-        blockBtn.type = "button";
-        
-        let blockStyle = "bg-[#181B26] border-gray-700 text-gray-300 hover:border-red-500";
-        if (isActive) {
-          blockStyle = "bg-red-600 border-red-500 text-white font-extrabold shadow-lg shadow-red-600/40 ring-2 ring-red-400";
-        } else if (!isUnlocked) {
-          blockStyle = "bg-[#10121A] border-amber-500/30 text-amber-300 hover:border-amber-400";
-        }
-
-        blockBtn.className = `flex flex-col items-center justify-center p-2 rounded-xl border transition transform active:scale-95 ${blockStyle}`;
-        blockBtn.innerHTML = `
-          <span class="text-xs sm:text-sm font-bold">${episodeNumber}</span>
-          <span class="text-[8px] sm:text-[9px] mt-0.5 ${isActive ? 'text-white' : isUnlocked ? 'text-green-400' : 'text-amber-400'}">
-            ${isUnlocked ? (isFree ? 'FREE' : '✓') : `<i class="fa-solid fa-lock text-[8px]"></i> ${ep.cost}`}
-          </span>
-        `;
-
-        blockBtn.onclick = () => {
-          if (isUnlocked) {
-            currentPlayingEpisodeIndex = idx;
-            window.renderEpisodeBlocks();
-            window.loadEpisodeVideo(idx);
-          } else {
-            window.promptUnlockEpisode(idx);
-          }
-        };
-
-        grid.appendChild(blockBtn);
-      });
-    };
-
-    window.loadEpisodeVideo = function(index) {
-      if (!currentPlayingMovie || !currentPlayingMovie.episodes) return;
-      const episode = currentPlayingMovie.episodes[index];
-      if (!episode) return;
-
-      const videoEl = document.getElementById('theaterVideo');
-      document.getElementById('playerActiveEpBadge').innerText = `Episode ${index + 1}`;
-      document.getElementById('playerEpisodeTitle').innerText = `${episode.title} (${episode.duration || '20 Min'})`;
-
-      videoEl.src = episode.videoUrl;
-      videoEl.load();
-      videoEl.play().catch(() => {});
-    };
-
-    window.promptUnlockEpisode = function(index) {
-      const episode = currentPlayingMovie.episodes[index];
-      const cost = episode.cost;
-
-      if (currentUser.coins >= cost) {
-        currentUser.coins -= cost;
-        const episodeKey = `${currentPlayingMovie.id}_${episode.epId}`;
-        unlockedEpisodes[episodeKey] = true;
-        localStorage.setItem('medidrama_unlocked', JSON.stringify(unlockedEpisodes));
-
-        window.syncUserToCloud();
-        window.updateAuthUI();
-        window.showToast(`Episode ${index + 1} terbuka! Sisa koin: ${currentUser.coins}`, "success");
-        window.renderEpisodeBlocks();
-        window.loadEpisodeVideo(index);
-      } else {
-        window.showToast(`Poin tidak cukup (${cost} koin). Klaim koin gratis sekarang!`, "error");
-        window.openRewardModal();
-      }
-    };
-
-    window.initGuestWatchTimer = function() {
-      const timerBadge = document.getElementById('guestTimerBadge');
-      const countdownText = document.getElementById('guestTimerCountdown');
-      const videoEl = document.getElementById('theaterVideo');
-
-      if (guestWatchTimer) clearInterval(guestWatchTimer);
-
-      if (currentUser.role === 'guest') {
-        guestTimeRemaining = 120;
-        timerBadge.classList.remove('hidden');
-        timerBadge.classList.add('flex');
-
-        guestWatchTimer = setInterval(() => {
-          if (videoEl && !videoEl.paused) {
-            guestTimeRemaining--;
-            const mins = Math.floor(guestTimeRemaining / 60);
-            const secs = guestTimeRemaining % 60;
-            countdownText.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-
-            if (guestTimeRemaining <= 0) {
-              clearInterval(guestWatchTimer);
-              videoEl.pause();
-              window.openAuthModal('login');
-              document.getElementById('authSubTitleNotice').innerText = "Waktu preview nonton tamu (2 menit) habis. Masuk untuk lanjut nonton!";
-            }
-          }
-        }, 1000);
-      } else {
-        timerBadge.classList.add('hidden');
-      }
-    };
-
-    window.toggleFavoriteCurrentMovie = function() {
-      if (!currentPlayingMovie) return;
-      const idx = favoritesList.indexOf(currentPlayingMovie.id);
-      if (idx > -1) {
-        favoritesList.splice(idx, 1);
-        window.showToast("Dihapus dari favorit.", "info");
-      } else {
-        favoritesList.push(currentPlayingMovie.id);
-        window.showToast("Disimpan ke favorit!", "success");
-      }
-      localStorage.setItem('medidrama_favorites', JSON.stringify(favoritesList));
-      window.updateFavoriteButtonUI();
-    };
-
-    window.updateFavoriteButtonUI = function() {
-      if (!currentPlayingMovie) return;
-      const isFav = favoritesList.includes(currentPlayingMovie.id);
-      const icon = document.getElementById('likeIcon');
-      const text = document.getElementById('likeCountText');
-
-      if (isFav) {
-        icon.className = "fa-solid fa-heart text-red-500 text-base scale-110";
-        text.innerText = "Tersimpan";
-        text.className = "text-[8px] font-bold text-red-400";
-      } else {
-        icon.className = "fa-regular fa-heart text-gray-200 text-base";
-        text.innerText = "Suka";
-        text.className = "text-[8px] font-bold text-gray-300";
-      }
-    };
-
-    window.shareCurrentMovie = function() {
-      if (!currentPlayingMovie) return;
-      if (navigator.share) {
-        navigator.share({
-          title: currentPlayingMovie.title,
-          text: `Ayo tonton ${currentPlayingMovie.title} di MediDrama!`,
-          url: window.location.href
-        }).catch(() => {});
-      } else {
-        try {
-          navigator.clipboard.writeText(window.location.href);
-          window.showToast("Tautan disalin ke papan klip!", "success");
-        } catch (e) {
-          window.showToast("Gagal menyalin tautan.", "error");
-        }
-      }
-    };
-
-    window.toggleVideoSettingsMenu = function() {
-      document.getElementById('videoSettingsDropdown').classList.toggle('hidden');
-    };
-
-    window.setPlaybackSpeed = function(speed) {
-      const videoEl = document.getElementById('theaterVideo');
-      if (videoEl) videoEl.playbackRate = speed;
-      window.toggleVideoSettingsMenu();
-      window.showToast(`Kecepatan putar ${speed}x`, "info");
-    };
-
-    window.reportIssuePrompt = function() {
-      window.toggleVideoSettingsMenu();
-      window.showToast("Laporan terkirim ke Studio Founder.", "info");
-    };
-
-    window.renderFavoritesSection = function() {
-      const grid = document.getElementById('favoritesGridContainer');
-      const badge = document.getElementById('favoritesCountBadge');
-      if (badge) badge.innerText = `${favoritesList.length} Tersimpan`;
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      if (favoritesList.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-16 text-center space-y-2">
-            <i class="fa-solid fa-heart-crack text-3xl text-gray-600 block"></i>
-            <h3 class="text-sm font-bold text-white">Belum Ada Serial Favorit</h3>
-          </div>
-        `;
-        return;
-      }
-
-      favoritesList.forEach(id => {
-        const movie = moviesDatabase.find(m => m.id === id);
-        if (movie) {
-          const card = document.createElement('div');
-          card.className = "bg-[#12141D] rounded-xl overflow-hidden border border-gray-800 hover:border-red-500 transition group flex flex-col";
-          card.innerHTML = `
-            <div class="relative aspect-[2/3] overflow-hidden bg-gray-950 cursor-pointer" onclick="window.startWatchingMovie('${movie.id}', 0)">
-              <img src="${movie.cover}" alt="${movie.title}" class="w-full h-full object-cover group-hover:scale-105 transition">
-            </div>
-            <div class="p-2 flex-1 flex flex-col justify-between">
-              <h4 class="text-xs font-bold text-white truncate">${movie.title}</h4>
-              <button onclick="window.startWatchingMovie('${movie.id}', 0)" class="mt-2 w-full py-1 bg-red-600 text-white text-[10px] font-bold rounded">
-                Tonton
-              </button>
-            </div>
-          `;
-          grid.appendChild(card);
-        }
-      });
-    };
-
-    window.renderHistorySection = function() {
-      const grid = document.getElementById('historyGridContainer');
-      if (!grid) return;
-      grid.innerHTML = '';
-
-      if (watchHistory.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full py-16 text-center space-y-2">
-            <i class="fa-solid fa-clock-rotate-left text-3xl text-gray-600 block"></i>
-            <h3 class="text-sm font-bold text-white">Belum Ada Riwayat</h3>
-          </div>
-        `;
-        return;
-      }
-
-      watchHistory.forEach(item => {
-        const movie = moviesDatabase.find(m => m.id === item.movieId);
-        if (movie) {
-          const card = document.createElement('div');
-          card.className = "bg-[#12141D] rounded-xl border border-gray-800 p-2.5 flex gap-2.5 items-center";
-          card.innerHTML = `
-            <img src="${movie.cover}" alt="${movie.title}" class="w-12 h-16 object-cover rounded flex-none cursor-pointer" onclick="window.startWatchingMovie('${movie.id}', ${item.epIdx})">
-            <div class="flex-1 overflow-hidden">
-              <h4 class="text-xs font-bold text-white truncate">${movie.title}</h4>
-              <span class="text-[10px] text-amber-400 block mt-0.5">Terakhir: Episode ${item.epIdx + 1}</span>
-            </div>
-          `;
-          grid.appendChild(card);
-        }
-      });
-    };
-
-    window.clearAllWatchHistory = function() {
-      watchHistory = [];
-      localStorage.removeItem('medidrama_history');
-      window.renderHistorySection();
-      window.showToast("Riwayat dibersihkan.", "info");
-    };
-
-    window.openAuthModal = function(defaultTab = 'login') {
-      window.switchAuthTab(defaultTab);
+    // Ubah Nama Pribadi
+    function saveUserName(newName) {
+      currentUser.name = newName.trim() || 'Pengguna';
+      localStorage.setItem('medidrama_current_user', JSON.stringify(currentUser));
+      updateUserUI();
+      alert('Nama akun berhasil diperbarui!');
+    }
+
+    // Auth Modal Handlers
+    function handleNavAuthClick() {
+      openAuthModal();
+    }
+
+    function openAuthModal() {
       document.getElementById('authModal').classList.remove('hidden');
-      document.getElementById('authModal').classList.add('flex');
-    };
+    }
 
-    window.closeAuthModal = function() {
+    function closeAuthModal() {
       document.getElementById('authModal').classList.add('hidden');
-      document.getElementById('authModal').classList.remove('flex');
-    };
+    }
 
-    window.switchAuthTab = function(tab) {
-      currentAuthTab = tab;
-      const tabL = document.getElementById('tabLoginBtn');
-      const tabR = document.getElementById('tabRegisterBtn');
-      const nameGroup = document.getElementById('registerNameGroup');
-      const confirmGroup = document.getElementById('registerConfirmPassGroup');
+    function setAuthTab(mode) {
+      authMode = mode;
+      const regBox = document.getElementById('regNameBox');
+      const title = document.getElementById('authModalTitle');
       const submitBtn = document.getElementById('authSubmitBtn');
+      const tabLog = document.getElementById('btnAuthTabLogin');
+      const tabReg = document.getElementById('btnAuthTabRegister');
 
-      if (tab === 'login') {
-        tabL.className = "w-1/2 pb-2 text-xs font-bold text-red-500 border-b-2 border-red-500";
-        tabR.className = "w-1/2 pb-2 text-xs font-bold text-gray-400 border-b-2 border-transparent";
-        nameGroup.classList.add('hidden');
-        confirmGroup.classList.add('hidden');
-        submitBtn.innerText = "Masuk ke MediDrama";
+      if (mode === 'register') {
+        regBox.classList.remove('hidden');
+        title.innerText = 'Daftar Akun Baru';
+        submitBtn.innerText = 'Buat Akun MediDrama';
+        tabReg.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
+        tabLog.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
       } else {
-        tabR.className = "w-1/2 pb-2 text-xs font-bold text-red-500 border-b-2 border-red-500";
-        tabL.className = "w-1/2 pb-2 text-xs font-bold text-gray-400 border-b-2 border-transparent";
-        nameGroup.classList.remove('hidden');
-        confirmGroup.classList.remove('hidden');
-        submitBtn.innerText = "Daftar Akun Baru";
+        regBox.classList.add('hidden');
+        title.innerText = 'Masuk ke MediDrama';
+        submitBtn.innerText = 'Masuk ke MediDrama';
+        tabLog.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
+        tabReg.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
       }
-    };
+    }
 
-    window.handleAuthSubmit = function(e) {
+    function handleAuthSubmit(e) {
       e.preventDefault();
-      const email = document.getElementById('authEmailInput').value.trim();
-      const password = document.getElementById('authPasswordInput').value.trim();
-      const name = document.getElementById('authNameInput').value.trim() || "Penonton";
-      const emLower = email.toLowerCase();
+      const email = document.getElementById('authEmail').value;
+      const pass = document.getElementById('authPassword').value;
 
-      const isMasterAdmin = (emLower === "adminmedidrama@gmail.com" && (password === "harussukses" || password === "8888")) ||
-                            (emLower === "admin@mediadrama.com" && password === "8888");
-
-      if (isMasterAdmin) {
-        currentUser = {
-          id: "FOUNDER-SUPER",
-          name: "Founder MediDrama",
-          email: emLower,
-          phone: "0811008888",
-          photoURL: "",
-          role: "founder",
-          coins: 9999,
-          phoneRewardClaimed: true
+      if (authMode === 'register') {
+        const name = document.getElementById('authName').value || 'Penonton Baru';
+        const newUser = {
+          id: Date.now(),
+          name,
+          email,
+          role: email.includes('adminmedidrama') ? 'Founder' : 'Penonton',
+          coins: 100
         };
-        window.syncUserToCloud();
-        window.updateAuthUI();
-        window.closeAuthModal();
-        window.showToast("Selamat datang Founder! Panel kontrol aktif.", "success");
-        window.openFounderBackendModal();
-        return;
-      }
-
-      if (firebaseAuth) {
-        if (currentAuthTab === 'register') {
-          firebaseAuth.createUserWithEmailAndPassword(email, password).then(cred => {
-            const user = cred.user;
-            user.updateProfile({ displayName: name });
-            currentUser = {
-              id: user.uid,
-              name: name,
-              email: email,
-              phone: "-",
-              photoURL: "",
-              role: checkIsFounderEmail(email) ? "founder" : "user",
-              coins: 150,
-              phoneRewardClaimed: false
-            };
-            window.syncUserToCloud();
-            window.updateAuthUI();
-            window.closeAuthModal();
-            window.showToast(`Akun ${name} siap digunakan!`, "success");
-          }).catch(err => window.showToast(err.message, "error"));
+        registeredUsers.push(newUser);
+        localStorage.setItem('medidrama_users', JSON.stringify(registeredUsers));
+        currentUser = newUser;
+      } else {
+        const found = registeredUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+        if (found) {
+          currentUser = found;
         } else {
-          firebaseAuth.signInWithEmailAndPassword(email, password).then(cred => {
-            const user = cred.user;
-            currentUser = {
-              id: user.uid,
-              name: user.displayName || email.split('@')[0],
-              email: email,
-              phone: "-",
-              photoURL: user.photoURL || "",
-              role: checkIsFounderEmail(email) ? "founder" : "user",
-              coins: 150,
-              phoneRewardClaimed: false
-            };
-            window.syncUserToCloud();
-            window.updateAuthUI();
-            window.closeAuthModal();
-            window.showToast(`Selamat datang, ${currentUser.name}!`, "success");
-          }).catch(err => window.showToast("Email atau kata sandi tidak cocok.", "error"));
+          currentUser = {
+            id: Date.now(),
+            name: email.split('@')[0],
+            email,
+            role: email.includes('adminmedidrama') ? 'Founder' : 'Penonton',
+            coins: 100
+          };
+          registeredUsers.push(currentUser);
+          localStorage.setItem('medidrama_users', JSON.stringify(registeredUsers));
         }
       }
-    };
 
-    window.openForgotPasswordModal = function() {
-      const emailInput = document.getElementById('authEmailInput');
-      const forgotEmail = document.getElementById('forgotEmailInput');
-      if (emailInput && forgotEmail) forgotEmail.value = emailInput.value.trim();
-      document.getElementById('forgotPasswordModal').classList.remove('hidden');
-      document.getElementById('forgotPasswordModal').classList.add('flex');
-    };
+      localStorage.setItem('medidrama_current_user', JSON.stringify(currentUser));
+      updateUserUI();
+      renderFounderUserTable();
+      closeAuthModal();
+      alert('Selamat datang, ' + currentUser.name + '!');
+    }
 
-    window.closeForgotPasswordModal = function() {
-      document.getElementById('forgotPasswordModal').classList.add('hidden');
-      document.getElementById('forgotPasswordModal').classList.remove('flex');
-    };
-
-    window.handleForgotPasswordSubmit = function(e) {
-      e.preventDefault();
-      const email = document.getElementById('forgotEmailInput').value.trim();
-      if (!email) return;
-
-      if (firebaseAuth) {
-        firebaseAuth.sendPasswordResetEmail(email).then(() => {
-          window.closeForgotPasswordModal();
-          window.showToast(`Tautan reset dikirim ke ${email}!`, "success");
-        }).catch(err => window.showToast(err.message, "error"));
-      }
-    };
-
-    window.syncUserToCloud = function() {
-      if (currentUser.role === 'guest') return;
-      const userData = {
-        id: currentUser.id,
-        name: currentUser.name,
-        email: currentUser.email,
-        phone: currentUser.phone || "-",
-        coins: currentUser.coins,
-        role: currentUser.role,
-        lastActive: "Baru saja",
-        updatedAt: new Date().toISOString()
-      };
-      if (isFirebaseConnected && firebaseDb) {
-        firebaseDb.collection('users').doc(currentUser.id).set(userData, { merge: true });
-      }
-    };
-
-    window.updateAuthUI = function() {
-      const container = document.getElementById('authNavContainer');
-      const coinsDisplay = document.getElementById('userCoinsDisplay');
-      const playerCoins = document.getElementById('playerViewerCoins');
-      const founderBtn = document.getElementById('founderPortalNavBtn');
-      const cloudBadge = document.getElementById('firebaseCloudBadge');
-
-      if (coinsDisplay) coinsDisplay.innerText = currentUser.coins;
-      if (playerCoins) playerCoins.innerText = `🪙 ${currentUser.coins} Poin`;
-
-      if (currentUser.role === 'founder') {
-        founderBtn.classList.remove('hidden');
-        founderBtn.classList.add('flex');
-        if (cloudBadge) {
-          cloudBadge.classList.remove('hidden');
-          cloudBadge.classList.add('flex');
-        }
-      } else {
-        founderBtn.classList.add('hidden');
-        if (cloudBadge) cloudBadge.classList.add('hidden');
-      }
-
-      if (currentUser.role === 'guest') {
-        container.innerHTML = `
-          <button onclick="window.openAuthModal('login')" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3 py-1.5 rounded-full shadow">
-            Masuk
-          </button>
-        `;
-      } else {
-        container.innerHTML = `
-          <div onclick="window.openProfileModal()" class="w-8 h-8 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center font-bold text-white text-xs cursor-pointer shadow">
-            ${currentUser.name.charAt(0).toUpperCase()}
-          </div>
-        `;
-      }
-    };
-
-    window.openProfileModal = function() {
-      const guestView = document.getElementById('profileGuestView');
-      const userView = document.getElementById('profileUserView');
-
-      if (currentUser.role === 'guest') {
-        guestView.classList.remove('hidden');
-        userView.classList.add('hidden');
-      } else {
-        guestView.classList.add('hidden');
-        userView.classList.remove('hidden');
-        document.getElementById('profileFullNameDisplay').innerText = currentUser.name;
-        document.getElementById('profileIdDisplay').innerText = `ID: ${currentUser.id}`;
-        document.getElementById('profileCoinsDisplay').innerText = `🪙 ${currentUser.coins} Poin`;
-      }
-      document.getElementById('profileModal').classList.remove('hidden');
-      document.getElementById('profileModal').classList.add('flex');
-    };
-
-    window.closeProfileModal = function() {
-      document.getElementById('profileModal').classList.add('hidden');
-      document.getElementById('profileModal').classList.remove('flex');
-    };
-
-    window.saveUserPhoneNumber = function() {
-      const phone = document.getElementById('profilePhoneInput').value.trim();
-      if (!phone || phone.length < 8) {
-        window.showToast("Nomor HP tidak valid!", "error");
-        return;
-      }
-      currentUser.phone = phone;
-      if (!currentUser.phoneRewardClaimed) {
-        currentUser.phoneRewardClaimed = true;
-        currentUser.coins += 50;
-        window.showToast("Nomor tersimpan! Bonus +50 Poin!", "success");
-      }
-      window.syncUserToCloud();
-      window.updateAuthUI();
-      window.openProfileModal();
-    };
-
-    window.logoutCurrentUser = function() {
-      if (firebaseAuth) firebaseAuth.signOut();
+    function loginWithGoogle() {
       currentUser = {
-        id: "GUEST-" + Math.floor(1000 + Math.random() * 9000),
-        name: "Tamu Penonton",
-        email: "",
-        phone: "",
-        photoURL: "",
-        role: "guest",
-        coins: 100,
-        phoneRewardClaimed: false
+        id: Date.now(),
+        name: "Furianto",
+        email: "adminmedidrama@gmail.com",
+        role: "Founder",
+        coins: 250
       };
-      window.updateAuthUI();
-      window.closeProfileModal();
-      window.showToast("Anda telah keluar.", "info");
-    };
+      localStorage.setItem('medidrama_current_user', JSON.stringify(currentUser));
+      updateUserUI();
+      closeAuthModal();
+      alert('Berhasil masuk via Google sebagai Founder!');
+    }
 
-    window.openRewardModal = function() {
-      document.getElementById('rewardModal').classList.remove('hidden');
-      document.getElementById('rewardModal').classList.add('flex');
-    };
+    // Modal Studio Founder & Pengguna Terdaftar
+    function openFounderModal() {
+      renderFounderUserTable();
+      document.getElementById('founderModal').classList.remove('hidden');
+    }
 
-    window.closeRewardModal = function() {
-      document.getElementById('rewardModal').classList.add('hidden');
-      document.getElementById('rewardModal').classList.remove('flex');
-    };
+    function closeFounderModal() {
+      document.getElementById('founderModal').classList.add('hidden');
+    }
 
-    window.claimDailyReward = function() {
-      currentUser.coins += 50;
-      window.syncUserToCloud();
-      window.updateAuthUI();
-      window.closeRewardModal();
-      window.showToast("+50 Poin Harian berhasil diklaim!", "success");
-    };
-
-    let adInterval = null;
-    window.startAdRewardFlow = function() {
-      window.closeRewardModal();
-      const modal = document.getElementById('adRewardModal');
-      const progressBar = document.getElementById('adProgressBar');
-      const timerText = document.getElementById('adTimerText');
-      const closeBtn = document.getElementById('closeAdBtn');
-
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-
-      let timeLeft = 5;
-      progressBar.style.width = '0%';
-      closeBtn.disabled = true;
-      closeBtn.innerText = `Menonton Sponsor (${timeLeft}s)...`;
-
-      if (adInterval) clearInterval(adInterval);
-      adInterval = setInterval(() => {
-        timeLeft--;
-        progressBar.style.width = `${((5 - timeLeft) / 5) * 100}%`;
-        timerText.innerText = `${timeLeft}s`;
-        closeBtn.innerText = `Menonton Sponsor (${timeLeft}s)...`;
-
-        if (timeLeft <= 0) {
-          clearInterval(adInterval);
-          closeBtn.disabled = false;
-          closeBtn.className = "mt-4 w-full py-2 rounded-xl font-bold text-xs bg-amber-500 text-black cursor-pointer shadow";
-          closeBtn.innerText = "Klaim +25 Poin";
-        }
-      }, 1000);
-    };
-
-    window.finishAdReward = function() {
-      document.getElementById('adRewardModal').classList.add('hidden');
-      currentUser.coins += 25;
-      window.syncUserToCloud();
-      window.updateAuthUI();
-      window.showToast("+25 Poin Sponsor masuk!", "success");
-    };
-
-    window.openFounderBackendModal = function(defaultTab = 'movies') {
-      if (currentUser.role !== 'founder') {
-        window.showToast("Akses khusus Super Admin Founder!", "error");
-        return;
+    function switchFounderTab(tab) {
+      if (tab === 'upload') {
+        document.getElementById('founderUploadSection').classList.remove('hidden');
+        document.getElementById('founderUsersSection').classList.add('hidden');
+        document.getElementById('fTabUpload').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+        document.getElementById('fTabUsers').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+      } else {
+        document.getElementById('founderUploadSection').classList.add('hidden');
+        document.getElementById('founderUsersSection').classList.remove('hidden');
+        document.getElementById('fTabUpload').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+        document.getElementById('fTabUsers').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
       }
-      window.updateFounderStats();
-      window.renderFounderMoviesTable();
-      window.switchFounderTab(defaultTab);
-      document.getElementById('founderBackendModal').classList.remove('hidden');
-      document.getElementById('founderBackendModal').classList.add('flex');
-    };
+    }
 
-    window.closeFounderBackendModal = function() {
-      document.getElementById('founderBackendModal').classList.add('hidden');
-    };
-
-    window.switchFounderTab = function(tab) {
-      const bM = document.getElementById('adminTabMoviesBtn');
-      const bU = document.getElementById('adminTabUsersBtn');
-      const bF = document.getElementById('adminTabFirebaseBtn');
-      const bA = document.getElementById('adminTabAdsBtn');
-      
-      const cM = document.getElementById('founderMoviesTabContent');
-      const cU = document.getElementById('founderUsersTabContent');
-      const cF = document.getElementById('founderFirebaseTabContent');
-      const cA = document.getElementById('founderAdsTabContent');
-
-      [bM, bU, bF, bA].forEach(b => {
-        if (b) b.className = "py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 flex-none";
-      });
-      [cM, cU, cF, cA].forEach(c => {
-        if (c) c.classList.add('hidden');
-      });
-
-      if (tab === 'movies') {
-        bM.className = "py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 flex-none";
-        cM.classList.remove('hidden');
-      } else if (tab === 'users') {
-        bU.className = "py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 flex-none";
-        cU.classList.remove('hidden');
-        window.renderRegisteredUsersTable();
-      } else if (tab === 'firebase') {
-        bF.className = "py-3 px-4 text-xs font-bold text-amber-500 border-b-2 border-amber-500 flex items-center gap-2 flex-none";
-        cF.classList.remove('hidden');
-      } else if (tab === 'ads') {
-        bA.className = "py-3 px-4 text-xs font-bold text-amber-400 border-b-2 border-amber-400 flex items-center gap-2 flex-none";
-        cA.classList.remove('hidden');
-      }
-    };
-
-    window.updateFounderStats = function() {
-      document.getElementById('statTotalMovies').innerText = moviesDatabase.length;
-      const totalEps = moviesDatabase.reduce((acc, m) => acc + (m.episodes ? m.episodes.length : 0), 0);
-      document.getElementById('statTotalEpisodes').innerText = totalEps;
-    };
-
-    window.renderFounderMoviesTable = function() {
-      const tbody = document.getElementById('founderMoviesTableBody');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      moviesDatabase.forEach(movie => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-800/40";
-        tr.innerHTML = `
-          <td class="p-3 font-bold text-white">${movie.title}</td>
-          <td class="p-3 text-red-400">${movie.category}</td>
-          <td class="p-3">${movie.status.toUpperCase()}</td>
-          <td class="p-3 text-amber-400">${movie.episodes ? movie.episodes.length : 0} Eps</td>
-          <td class="p-3 text-right">
-            <button onclick="window.deleteMovieAsFounder('${movie.id}')" class="px-2 py-1 bg-red-600/20 text-red-400 rounded text-xs">Hapus</button>
+    function renderFounderUserTable() {
+      const tbody = document.getElementById('userTableBody');
+      document.getElementById('userCountBadge').innerText = registeredUsers.length;
+      tbody.innerHTML = registeredUsers.map(u => `
+        <tr class="hover:bg-gray-800/30">
+          <td class="py-2.5 px-3 font-semibold text-white flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-gray-800 text-amber-400 flex items-center justify-center font-bold text-[10px]">
+              ${u.name.charAt(0)}
+            </span>
+            ${u.name}
           </td>
-        `;
-        tbody.appendChild(tr);
+          <td class="py-2.5 px-3 text-gray-400 font-mono text-[11px]">${u.email}</td>
+          <td class="py-2.5 px-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Founder' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-gray-800 text-gray-300'}">
+              ${u.role}
+            </span>
+          </td>
+          <td class="py-2.5 px-3 font-bold text-amber-400">${u.coins} Koin</td>
+          <td class="py-2.5 px-3 text-right">
+            <button onclick="rewardCoins(${u.id})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-2 py-1 rounded text-[10px] font-bold">
+              +50 Koin
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function rewardCoins(userId) {
+      registeredUsers = registeredUsers.map(u => {
+        if (u.id === userId) u.coins += 50;
+        return u;
       });
-    };
+      localStorage.setItem('medidrama_users', JSON.stringify(registeredUsers));
+      renderFounderUserTable();
+      alert('Bonus koin berhasil dikirimkan!');
+    }
 
-    window.deleteMovieAsFounder = function(movieId) {
-      if (currentUser.role !== 'founder') return;
-      if (isFirebaseConnected && firebaseDb) {
-        firebaseDb.collection('movies').doc(movieId).delete();
-      }
-      moviesDatabase = moviesDatabase.filter(m => m.id !== movieId);
-      localStorage.setItem('medidrama_movies', JSON.stringify(moviesDatabase));
-      window.renderMovieCatalog();
-      window.renderFounderMoviesTable();
-      window.updateFounderStats();
-      window.showToast("Serial dihapus.", "info");
-    };
-
-    window.renderRegisteredUsersTable = function() {
-      const tbody = document.getElementById('registeredUsersTableBody');
-      const badge = document.getElementById('statRegisteredUsersBadge');
-      if (badge) badge.innerText = registeredUsersList.length;
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      registeredUsersList.forEach(u => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-gray-800/40";
-        tr.innerHTML = `
-          <td class="p-3 font-bold text-white">${u.name}<br><span class="text-[9px] text-gray-500 font-mono">${u.id}</span></td>
-          <td class="p-3 text-gray-300">${u.email}<br><span class="text-amber-400 text-[10px]"><i class="fa-solid fa-phone"></i> ${u.phone}</span></td>
-          <td class="p-3 text-amber-400 font-bold">🪙 ${u.coins}</td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded text-[9px] font-bold ${u.role === 'founder' ? 'bg-red-950 text-red-300 border border-red-800' : 'bg-gray-800 text-gray-300'}">${(u.role || 'user').toUpperCase()}</span></td>
-          <td class="p-3 text-right text-gray-400 text-[10px]">${u.lastActive || 'Baru saja'}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    };
-
-    window.refreshUsersRegistry = function() {
-      if (isFirebaseConnected && firebaseDb) {
-        firebaseDb.collection('users').get().then(snap => {
-          const list = [];
-          snap.forEach(d => list.push({ id: d.id, ...d.data() }));
-          registeredUsersList = list;
-          window.renderRegisteredUsersTable();
-          window.showToast("Data pengguna diperbarui!", "success");
-        }).catch(() => window.renderRegisteredUsersTable());
-      } else {
-        window.renderRegisteredUsersTable();
-      }
-    };
-
-    window.openUploadVideoModal = function(movieIdToEdit = null) {
-      if (currentUser.role !== 'founder') return;
-      const modal = document.getElementById('uploadMovieModal');
-      const form = document.getElementById('movieUploadForm');
-      form.reset();
-      currentUploadedCoverData = "";
-      document.getElementById('coverPreviewContainer').classList.add('hidden');
-      document.getElementById('episodeFieldsContainer').innerHTML = '';
-
-      if (movieIdToEdit) {
-        const movie = moviesDatabase.find(m => m.id === movieIdToEdit);
-        if (movie) {
-          document.getElementById('uploadModalTitle').innerText = `Edit: ${movie.title}`;
-          document.getElementById('editingMovieId').value = movie.id;
-          document.getElementById('uploadTitle').value = movie.title;
-          document.getElementById('uploadCategory').value = movie.category;
-          document.getElementById('uploadStatus').value = movie.status || 'ongoing';
-          document.getElementById('uploadNextEpNote').value = movie.nextEpNote || '';
-          document.getElementById('uploadCoverUrl').value = movie.cover;
-          window.previewCoverFromUrl(movie.cover);
-          document.getElementById('uploadDescription').value = movie.description || '';
-
-          if (movie.episodes) {
-            movie.episodes.forEach(ep => {
-              window.addNewEpisodeField(ep.title, ep.cost, ep.duration, ep.videoUrl);
-            });
-          }
-        }
-      } else {
-        document.getElementById('uploadModalTitle').innerText = "Upload Serial Film & Episode Baru";
-        document.getElementById('editingMovieId').value = "";
-        window.addNewEpisodeField("Episode 1: Awal Mula", 0, "18 Min", "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4");
-      }
-
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    };
-
-    window.closeUploadVideoModal = function() {
-      document.getElementById('uploadMovieModal').classList.add('hidden');
-      document.getElementById('uploadMovieModal').classList.remove('flex');
-    };
-
-    window.previewCoverFromUrl = function(url) {
-      if (!url) return;
-      currentUploadedCoverData = url;
-      document.getElementById('coverPreviewImg').src = url;
-      document.getElementById('coverPreviewContainer').classList.remove('hidden');
-      document.getElementById('coverPreviewContainer').classList.add('flex');
-    };
-
-    window.handleCoverFileSelected = function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        currentUploadedCoverData = evt.target.result;
-        document.getElementById('coverPreviewImg').src = currentUploadedCoverData;
-        document.getElementById('coverPreviewContainer').classList.remove('hidden');
-        document.getElementById('coverPreviewContainer').classList.add('flex');
-      };
-      reader.readAsDataURL(file);
-    };
-
-    window.addNewEpisodeField = function(title = "", cost = 30, duration = "20 Min", videoUrl = "") {
-      const container = document.getElementById('episodeFieldsContainer');
-      const idx = container.children.length + 1;
-
-      const box = document.createElement('div');
-      box.className = "bg-[#161824] p-3 rounded-xl border border-gray-800 space-y-2 relative";
-      box.innerHTML = `
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-gray-300">Episode ${idx}</span>
-          <button type="button" onclick="this.closest('.bg-\\[\\#161824\\]').remove()" class="text-gray-500 hover:text-red-400 text-xs">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-          <input type="text" placeholder="Judul Episode" value="${title || `Episode ${idx}`}" class="ep-title sm:col-span-2 bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
-          <div class="flex gap-1.5">
-            <input type="number" placeholder="Koin (0=Free)" value="${cost}" class="ep-cost w-1/2 bg-[#12141D] border border-gray-700 rounded-lg px-2 py-1 text-xs text-amber-300" />
-            <input type="text" placeholder="Durasi" value="${duration}" class="ep-duration w-1/2 bg-[#12141D] border border-gray-700 rounded-lg px-2 py-1 text-xs text-gray-300" />
-          </div>
-        </div>
-        <input type="url" placeholder="Link Video MP4 Cloud (Supabase / Cloudinary)" value="${videoUrl}" class="ep-url w-full bg-[#12141D] border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white" />
-      `;
-      container.appendChild(box);
-    };
-
-    window.handleSaveMovieForm = function(e) {
-      e.preventDefault();
-      if (currentUser.role !== 'founder') return;
-
-      const editingId = document.getElementById('editingMovieId').value;
-      const title = document.getElementById('uploadTitle').value.trim();
-      const category = document.getElementById('uploadCategory').value;
-      const status = document.getElementById('uploadStatus').value;
-      const nextEpNote = document.getElementById('uploadNextEpNote').value.trim();
-      const description = document.getElementById('uploadDescription').value.trim();
-
-      let cover = currentUploadedCoverData || document.getElementById('uploadCoverUrl').value.trim();
-      if (!cover) cover = "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80";
-
-      const epBoxes = document.querySelectorAll('#episodeFieldsContainer > div');
-      const episodes = [];
-
-      epBoxes.forEach((box, i) => {
-        const epTitle = box.querySelector('.ep-title').value.trim() || `Episode ${i + 1}`;
-        const epCost = parseInt(box.querySelector('.ep-cost').value) || 0;
-        const epDuration = box.querySelector('.ep-duration').value.trim() || '20 Min';
-        const epUrl = box.querySelector('.ep-url').value.trim() || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
-
-        episodes.push({ epId: `e${i + 1}`, title: epTitle, duration: epDuration, cost: epCost, videoUrl: epUrl });
-      });
-
-      const targetId = editingId ? editingId : "mov_" + Date.now();
-      const movieObj = { id: targetId, title, category, status, nextEpNote, cover, description, episodes, updatedAt: new Date().toISOString() };
-
-      if (isFirebaseConnected && firebaseDb) {
-        firebaseDb.collection('movies').doc(targetId).set(movieObj, { merge: true });
-      }
-
-      if (editingId) {
-        const idx = moviesDatabase.findIndex(m => m.id === editingId);
-        if (idx !== -1) moviesDatabase[idx] = movieObj;
-      } else {
-        moviesDatabase.unshift(movieObj);
-      }
-
-      localStorage.setItem('medidrama_movies', JSON.stringify(moviesDatabase));
-      window.renderMovieCatalog();
-      window.renderFounderMoviesTable();
-      window.updateFounderStats();
-      window.closeUploadVideoModal();
-      window.showToast(`Serial "${title}" disimpan!`, "success");
-    };
-
-    window.exportDatabaseJSON = function() {
-      if (currentUser.role !== 'founder') return;
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(moviesDatabase, null, 2));
-      const dl = document.createElement('a');
-      dl.setAttribute("href", dataStr);
-      dl.setAttribute("download", `medidrama_backup_${new Date().toISOString().slice(0, 10)}.json`);
-      document.body.appendChild(dl);
-      dl.click();
-      dl.remove();
-    };
-
-    window.restoreDatabaseJSON = function(event) {
-      if (currentUser.role !== 'founder') return;
+    // Kompresi Foto Profil WebP (< 30 KB)
+    function compressAndUploadAvatar(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        try {
-          const imported = JSON.parse(e.target.result);
-          if (Array.isArray(imported)) {
-            moviesDatabase = imported;
-            localStorage.setItem('medidrama_movies', JSON.stringify(moviesDatabase));
-            window.renderMovieCatalog();
-            window.renderFounderMoviesTable();
-            window.updateFounderStats();
-            window.showToast("Database dipulihkan!", "success");
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_SIZE = 300;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
           }
-        } catch (err) {
-          window.showToast("Gagal membaca berkas JSON!", "error");
-        }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          const compressedDataUrl = canvas.toDataURL('image/webp', 0.7);
+          document.getElementById('profileImagePreview').src = compressedDataUrl;
+          document.getElementById('navAvatar').src = compressedDataUrl;
+          localStorage.setItem('user_avatar', compressedDataUrl);
+          alert('Foto profil berhasil dikompresi (<25 KB) & disimpan!');
+        };
+        img.src = e.target.result;
       };
-      reader.readAsText(file);
-    };
+      reader.readAsDataURL(file);
+    }
 
-    window.saveFounderAdSettings = function() {
-      if (currentUser.role !== 'founder') return;
-      const title = document.getElementById('adSettingTitle').value.trim();
-      const url = document.getElementById('adSettingUrl').value.trim();
-      if (title) document.getElementById('homeAdLink').innerText = title;
-      if (url) document.getElementById('homeAdLink').href = url;
-      window.showToast("Pengaturan sponsor disimpan!", "success");
-    };
+    // Slider Otomatis & Katalog
+    function renderHeroSlider() {
+      heroItems = dramaData.slice(0, 4);
+      const track = document.getElementById('heroTrack');
+      const dots = document.getElementById('slideDots');
+      track.innerHTML = '';
+      dots.innerHTML = '';
 
-    window.openAboutModal = function() {
-      document.getElementById('aboutModal').classList.remove('hidden');
-      document.getElementById('aboutModal').classList.add('flex');
-    };
+      heroItems.forEach((item, idx) => {
+        track.innerHTML += `
+          <div class="relative w-full flex-shrink-0 h-full">
+            <img src="${item.cover}" class="w-full h-full object-cover brightness-75" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0B0D14] via-[#0B0D14]/40 to-transparent"></div>
+            <div class="absolute bottom-6 left-4 right-4 space-y-1.5">
+              <span class="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase">${item.category}</span>
+              <h2 class="text-lg md:text-2xl font-black text-white leading-tight">${item.title}</h2>
+              <div class="flex items-center gap-2 pt-1">
+                <button onclick="playDirect('${item.video}')" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg">
+                  <i class="fa-solid fa-play"></i> Putar Sekarang
+                </button>
+                <button onclick="toggleFavorite(${item.id})" class="bg-white/10 backdrop-blur-md text-white text-xs px-3 py-2 rounded-xl border border-white/20">
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
 
-    window.closeAboutModal = function() {
-      document.getElementById('aboutModal').classList.add('hidden');
-      document.getElementById('aboutModal').classList.remove('flex');
-    };
+        dots.innerHTML += `
+          <div class="w-2 h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-red-500 w-5' : 'bg-gray-600'}"></div>
+        `;
+      });
+    }
 
-    window.showToast = function(message, type = "info") {
-      const toast = document.getElementById('toastMessage');
-      const toastText = document.getElementById('toastText');
-      const toastIcon = document.getElementById('toastIcon');
+    function updateSlider() {
+      const track = document.getElementById('heroTrack');
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      const dots = document.getElementById('slideDots').children;
+      for (let i = 0; i < dots.length; i++) {
+        dots[i].className = i === currentSlide ? 'w-5 h-2 rounded-full bg-red-500 transition-all duration-300' : 'w-2 h-2 rounded-full bg-gray-600 transition-all duration-300';
+      }
+    }
 
-      toastText.innerText = message;
-      toastIcon.className = type === "success" ? "fa-solid fa-circle-check text-green-400 text-base" : type === "error" ? "fa-solid fa-circle-exclamation text-red-400 text-base" : "fa-solid fa-circle-info text-amber-400 text-base";
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % heroItems.length;
+      updateSlider();
+    }
 
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + heroItems.length) % heroItems.length;
+      updateSlider();
+    }
 
-      setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-        toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 2500);
-    };
+    function renderTrending() {
+      const trendingContainer = document.getElementById('trendingList');
+      const trendingData = dramaData.filter(d => d.trending);
+      trendingContainer.innerHTML = trendingData.map(d => `
+        <div class="flex-shrink-0 w-32 cursor-pointer group" onclick="playDirect('${d.video}')">
+          <div class="relative rounded-xl overflow-hidden aspect-[2/3] border border-gray-800">
+            <img src="${d.cover}" class="w-full h-full object-cover group-hover:scale-105 transition" />
+            <div class="absolute top-1 left-1 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded shadow">TOP</div>
+            <div class="absolute bottom-1 right-1 bg-black/70 text-amber-400 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
+              <i class="fa-solid fa-star text-[8px]"></i> ${d.rating}
+            </div>
+          </div>
+          <h3 class="text-xs font-bold mt-1.5 truncate text-white">${d.title}</h3>
+          <p class="text-[10px] text-gray-400">${d.category}</p>
+        </div>
+      `).join('');
+    }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      window.initFirebaseSetup();
-      window.updateAuthUI();
-      window.renderMovieCatalog();
-      window.setupAndroidBackButtonHandler();
-      window.setupAntiPiracyGuard();
-    });
+    function renderCatalog() {
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = dramaData.map(d => `
+        <div class="bg-[#121520] border border-gray-800/80 rounded-xl overflow-hidden flex flex-col justify-between">
+          <div class="relative aspect-[2/3] cursor-pointer" onclick="playDirect('${d.video}')">
+            <img src="${d.cover}" class="w-full h-full object-cover" />
+            <button onclick="event.stopPropagation(); toggleFavorite(${d.id})" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md text-red-500 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-heart"></i>
+            </button>
+          </div>
+          <div class="p-2.5">
+            <h4 class="text-xs font-bold truncate text-white">${d.title}</h4>
+            <div class="flex items-center justify-between mt-1 text-[10px] text-gray-400">
+              <span>${d.category}</span>
+              <span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-[8px]"></i> ${d.rating}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderCategories() {
+      const chips = document.getElementById('categoryChips');
+      const cats = ['Semua', ...new Set(dramaData.map(d => d.category))];
+      chips.innerHTML = cats.map((cat, idx) => `
+        <button class="flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold ${idx === 0 ? 'bg-red-600 text-white' : 'bg-gray-900 border border-gray-800 text-gray-300'}">
+          ${cat}
+        </button>
+      `).join('');
+    }
+
+    function checkCustomCategory(val) {
+      const customBox = document.getElementById('customCategoryBox');
+      if (val === 'custom') {
+        customBox.classList.remove('hidden');
+      } else {
+        customBox.classList.add('hidden');
+      }
+    }
+
+    function handleUploadSerial(e) {
+      e.preventDefault();
+      const title = document.getElementById('fTitle').value;
+      const selectCat = document.getElementById('fCategorySelect').value;
+      const customCat = document.getElementById('fCustomCategory').value;
+      const category = selectCat === 'custom' ? (customCat || 'Eksklusif') : selectCat;
+      const cover = document.getElementById('fCover').value;
+      const video = document.getElementById('fVideo').value;
+      const trending = document.getElementById('fTrending').value === 'true';
+
+      const newDrama = {
+        id: Date.now(),
+        title,
+        category,
+        cover,
+        video,
+        trending,
+        rating: 5.0
+      };
+
+      dramaData.unshift(newDrama);
+      localStorage.setItem('medidrama_catalog', JSON.stringify(dramaData));
+
+      alert('Serial berhasil diterbitkan!');
+      closeFounderModal();
+      location.reload();
+    }
+
+    function toggleFavorite(id) {
+      let favs = JSON.parse(localStorage.getItem('user_favs')) || [];
+      if (favs.includes(id)) {
+        favs = favs.filter(item => item !== id);
+      } else {
+        favs.push(id);
+      }
+      localStorage.setItem('user_favs', JSON.stringify(favs));
+      renderFavorites();
+    }
+
+    function renderFavorites() {
+      const favs = JSON.parse(localStorage.getItem('user_favs')) || [];
+      const favList = document.getElementById('favoriteList');
+      const filtered = dramaData.filter(d => favs.includes(d.id));
+      if (filtered.length === 0) {
+        favList.innerHTML = '<p class="text-xs text-gray-500 col-span-2 py-4 text-center">Belum ada serial favorit yang disukai.</p>';
+        return;
+      }
+      favList.innerHTML = filtered.map(d => `
+        <div class="bg-[#121520] border border-gray-800 rounded-xl overflow-hidden p-2 flex gap-2">
+          <img src="${d.cover}" class="w-12 h-16 object-cover rounded-lg" />
+          <div class="flex-1 overflow-hidden">
+            <h5 class="text-xs font-bold text-white truncate">${d.title}</h5>
+            <p class="text-[10px] text-gray-400">${d.category}</p>
+            <button onclick="playDirect('${d.video}')" class="mt-2 text-[10px] bg-red-600 px-2 py-0.5 rounded text-white font-bold">Tonton</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function switchProfileTab(tab) {
+      if (tab === 'fav') {
+        document.getElementById('favoriteList').classList.remove('hidden');
+        document.getElementById('historyList').classList.add('hidden');
+        document.getElementById('tabFavBtn').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+        document.getElementById('tabHistBtn').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+      } else {
+        document.getElementById('favoriteList').classList.add('hidden');
+        document.getElementById('historyList').classList.remove('hidden');
+        document.getElementById('tabFavBtn').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+        document.getElementById('tabHistBtn').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+      }
+    }
+
+    function switchTab(tab) {
+      if (tab === 'home') {
+        document.getElementById('view-home').classList.remove('hidden');
+        document.getElementById('view-profile').classList.add('hidden');
+        document.getElementById('navHomeBtn').className = 'flex flex-col items-center text-red-500 text-xs';
+        document.getElementById('navProfileBtn').className = 'flex flex-col items-center text-gray-400 text-xs';
+      } else {
+        document.getElementById('view-home').classList.add('hidden');
+        document.getElementById('view-profile').classList.remove('hidden');
+        document.getElementById('navHomeBtn').className = 'flex flex-col items-center text-gray-400 text-xs';
+        document.getElementById('navProfileBtn').className = 'flex flex-col items-center text-red-500 text-xs';
+      }
+    }
+
+    function playDirect(url) {
+      window.open(url, '_blank');
+    }
   </script>
 </body>
 </html>
