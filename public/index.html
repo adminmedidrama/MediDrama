@@ -10,8 +10,15 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+  <!-- Tailwind CSS & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Firebase Web SDK Compat (v10) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
 
   <style>
     * {
@@ -49,12 +56,12 @@
     </div>
 
     <div class="flex items-center space-x-2">
-      <!-- Tombol Akses Founder -->
-      <button id="adminBtn" onclick="openFounderModal()" class="bg-gradient-to-r from-amber-500 to-red-600 text-[11px] font-bold px-2.5 py-1.5 rounded-lg text-white shadow-md flex items-center gap-1">
+      <!-- Tombol Founder: HANYA MUNCUL JIKA LOGIN SEBAGAI FOUNDER -->
+      <button id="adminBtn" onclick="openFounderModal()" class="hidden bg-gradient-to-r from-amber-500 to-red-600 text-[11px] font-bold px-2.5 py-1.5 rounded-lg text-white shadow-md flex items-center gap-1">
         <i class="fa-solid fa-crown text-[10px]"></i> Studio Founder
       </button>
 
-      <!-- Tombol Masuk / Status Akun Navigasi -->
+      <!-- Tombol Masuk / Profil Ringkas -->
       <div id="navUserBadge" onclick="handleNavAuthClick()" class="cursor-pointer flex items-center space-x-1.5 bg-gray-900 border border-gray-800 px-2.5 py-1 rounded-full hover:border-gray-700 transition">
         <img id="navAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-6 h-6 rounded-full object-cover border border-amber-500/50" />
         <span id="navAuthLabel" class="text-xs font-bold text-gray-200">Masuk</span>
@@ -113,7 +120,6 @@
       <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-red-600/10 rounded-full blur-2xl"></div>
       
       <div class="flex items-start space-x-4">
-        <!-- Foto Profil dengan Pengompres WebP Otomatis -->
         <div class="relative flex-shrink-0">
           <img id="profileImagePreview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="w-16 h-16 rounded-full object-cover border-2 border-amber-500 shadow-md" />
           <label for="avatarInput" class="absolute bottom-0 right-0 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-[10px] cursor-pointer shadow hover:bg-red-500 text-white">
@@ -123,23 +129,22 @@
         </div>
 
         <div class="flex-1 space-y-1">
-          <!-- Ubah Nama Pribadi Langsung -->
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-1.5">
-              <input id="profileNameInput" type="text" value="Furianto" onchange="saveUserName(this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-white font-bold text-base outline-none w-36 px-1" />
+              <input id="profileNameInput" type="text" value="Tamu" onchange="updateProfileName(this.value)" class="bg-transparent border-b border-gray-700 focus:border-red-500 text-white font-bold text-base outline-none w-36 px-1" />
               <i class="fa-solid fa-pen-to-square text-xs text-gray-400"></i>
             </div>
-            <span id="userRoleBadge" class="text-[10px] px-2 py-0.5 rounded bg-red-600/20 text-red-400 border border-red-500/30 font-bold">Founder</span>
+            <span id="userRoleBadge" class="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300 font-bold">Tamu</span>
           </div>
 
-          <p id="profileEmail" class="text-xs text-gray-400">adminmedidrama@gmail.com</p>
+          <p id="profileEmail" class="text-xs text-gray-400">Belum masuk</p>
           
           <div class="flex items-center gap-2 pt-2">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
-              <i class="fa-solid fa-coins"></i> <span id="profileCoins">250</span> Koin
+              <i class="fa-solid fa-coins"></i> <span id="profileCoins">0</span> Koin
             </div>
-            <button id="authActionBtn" onclick="openAuthModal()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1 rounded-full border border-gray-700">
-              Ganti Akun
+            <button id="authActionBtn" onclick="openAuthModal()" class="text-xs bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1 rounded-full shadow">
+              Masuk / Daftar
             </button>
           </div>
         </div>
@@ -169,11 +174,11 @@
       
       <div class="text-center space-y-1">
         <h3 id="authModalTitle" class="font-black text-lg text-white">Masuk ke MediDrama</h3>
-        <p class="text-xs text-gray-400">Akses koleksi serial lengkap & simpan favorit Anda</p>
+        <p class="text-xs text-gray-400">Sinkronkan koin & favorit Anda di Cloud Firestore</p>
       </div>
 
-      <!-- Tombol Masuk Cepat Google -->
-      <button onclick="loginWithGoogle()" class="w-full bg-white text-gray-900 font-bold text-xs py-2.5 rounded-xl shadow flex items-center justify-center gap-2 hover:bg-gray-100 transition">
+      <!-- Masuk Cepat Google -->
+      <button onclick="handleGoogleSignIn()" class="w-full bg-white text-gray-900 font-bold text-xs py-2.5 rounded-xl shadow flex items-center justify-center gap-2 hover:bg-gray-100 transition">
         <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
         Masuk Cepat dengan Akun Google
       </button>
@@ -212,7 +217,7 @@
     </div>
   </div>
 
-  <!-- MODAL: STUDIO FOUNDER (UPLOAD + PENGGUNA TERDAFTAR) -->
+  <!-- MODAL: STUDIO FOUNDER (UPLOAD + MANAJEMEN SERIAL + USER REAL FIRESTORE) -->
   <div id="founderModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-2xl p-5 space-y-4 max-h-[90vh] overflow-y-auto no-scrollbar">
       <div class="flex items-center justify-between border-b border-gray-800 pb-3">
@@ -226,10 +231,13 @@
       <!-- Navigasi Menu Founder -->
       <div class="flex border-b border-gray-800 text-xs font-bold">
         <button onclick="switchFounderTab('upload')" id="fTabUpload" class="pb-2 border-b-2 border-red-500 text-white flex-1 text-center">
-          <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Film Baru
+          <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Serial
+        </button>
+        <button onclick="switchFounderTab('manage')" id="fTabManage" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
+          <i class="fa-solid fa-layer-group mr-1"></i> Manajemen Serial
         </button>
         <button onclick="switchFounderTab('users')" id="fTabUsers" class="pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center">
-          <i class="fa-solid fa-users mr-1"></i> Daftar Pengguna Terdaftar (<span id="userCountBadge">3</span>)
+          <i class="fa-solid fa-users mr-1"></i> Pengguna Terdaftar (<span id="userCountBadge">0</span>)
         </button>
       </div>
 
@@ -238,7 +246,7 @@
         <form onsubmit="handleUploadSerial(event)" class="space-y-3 text-xs">
           <div>
             <label class="block mb-1 text-gray-300 font-semibold">Judul Serial Film</label>
-            <input id="fTitle" required type="text" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="Contoh: Janji Musim Gugur di Seoul" />
+            <input id="fTitle" required type="text" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="Contoh: Dendam Sang Pewaris" />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -263,26 +271,31 @@
 
           <div id="customCategoryBox" class="hidden">
             <label class="block mb-1 text-amber-400 font-semibold">Ketik Kategori Baru</label>
-            <input id="fCustomCategory" type="text" class="w-full bg-gray-900 border border-amber-500/50 rounded-lg p-2.5 text-white focus:border-amber-400 outline-none" placeholder="Contoh: Drama Kolosal, Slice of Life..." />
+            <input id="fCustomCategory" type="text" class="w-full bg-gray-900 border border-amber-500/50 rounded-lg p-2.5 text-white focus:border-amber-400 outline-none" placeholder="Contoh: Horor Religi, Kolosal..." />
           </div>
 
           <div>
             <label class="block mb-1 text-gray-300 font-semibold">URL Cover Poster (2:3)</label>
-            <input id="fCover" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://..." />
+            <input id="fCover" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://images.unsplash.com/..." />
           </div>
 
           <div>
-            <label class="block mb-1 text-gray-300 font-semibold">URL Video Episode 1 (.mp4 Direct Cloud)</label>
+            <label class="block mb-1 text-gray-300 font-semibold">URL Video Episode 1 (.mp4)</label>
             <input id="fVideo" required type="url" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2.5 text-white focus:border-red-500 outline-none" placeholder="https://...mp4" />
           </div>
 
           <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold py-2.5 rounded-xl shadow-lg hover:opacity-90 transition mt-2">
-            Terbitkan Serial Sekarang
+            Terbitkan ke Firestore Sekarang
           </button>
         </form>
       </div>
 
-      <!-- SUB-TAB 2: TABEL PENGGUNA TERDAFTAR -->
+      <!-- SUB-TAB 2: MANAJEMEN SERIAL (HAPUS / KELOLA) -->
+      <div id="founderManageSection" class="hidden space-y-3">
+        <div id="founderDramaList" class="space-y-2"></div>
+      </div>
+
+      <!-- SUB-TAB 3: TABEL PENGGUNA TERDAFTAR (REAL FIRESTORE) -->
       <div id="founderUsersSection" class="hidden space-y-3">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
@@ -296,7 +309,7 @@
               </tr>
             </thead>
             <tbody id="userTableBody" class="divide-y divide-gray-800/50 text-gray-300">
-              <!-- Render otomatis dari localStorage -->
+              <!-- Render otomatis dari Firestore -->
             </tbody>
           </table>
         </div>
@@ -316,260 +329,170 @@
     </button>
   </nav>
 
+  <!-- FIREBASE CONFIG & APPLICATION SCRIPT -->
   <script>
-    // State Pengguna Terdaftar (Disimpan di LocalStorage)
-    let registeredUsers = JSON.parse(localStorage.getItem('medidrama_users')) || [
-      { id: 1, name: "Furianto (Founder)", email: "adminmedidrama@gmail.com", role: "Founder", coins: 999 },
-      { id: 2, name: "Cyntia Rahma", email: "cyntia.ai@gmail.com", role: "Penonton", coins: 150 },
-      { id: 3, name: "Budi Santoso", email: "budisantoso99@gmail.com", role: "Penonton", coins: 80 }
-    ];
-
-    let currentUser = JSON.parse(localStorage.getItem('medidrama_current_user')) || {
-      name: "Furianto",
-      email: "adminmedidrama@gmail.com",
-      role: "Founder",
-      coins: 250
+    // Konfigurasi Kredensial Firebase Asli MediDrama
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQj4SI_Z9ZptP4UjPga2d_mV0z211CV7k",
+      authDomain: "medidrama-bd5a2.firebaseapp.com",
+      projectId: "medidrama-bd5a2",
+      storageBucket: "medidrama-bd5a2.firebasestorage.app",
+      messagingSenderId: "378411394876",
+      appId: "1:378411394876:web:198f7d801bbb0f7e5e2039",
+      measurementId: "G-77E0XGBY6D"
     };
 
-    let authMode = 'login'; // 'login' atau 'register'
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    if (typeof firebase.analytics === 'function') {
+      firebase.analytics();
+    }
 
-    // Data Katalog Film
-    let dramaData = JSON.parse(localStorage.getItem('medidrama_catalog')) || [
-      {
-        id: 1,
-        title: "Garuda Hitam: Lembah Kematian",
-        category: "Action & Laga",
-        cover: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
-        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-        trending: true,
-        rating: 4.9
-      },
-      {
-        id: 2,
-        title: "Cinta Tersembunyi Chaebol",
-        category: "Drama Romantis",
-        cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600",
-        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        trending: true,
-        rating: 4.8
-      },
-      {
-        id: 3,
-        title: "Kutukan Kamar 404",
-        category: "Misteri & Thriller",
-        cover: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600",
-        video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-        trending: false,
-        rating: 4.6
-      }
-    ];
-
+    // Variabel Global
+    let currentUser = null;
+    let authMode = 'login';
+    let dramaData = [];
     let currentSlide = 0;
     let heroItems = [];
 
-    // Inisialisasi Tampilan
-    window.addEventListener('DOMContentLoaded', () => {
-      renderHeroSlider();
-      renderCatalog();
-      renderTrending();
-      renderCategories();
-      renderFavorites();
-      updateUserUI();
-      renderFounderUserTable();
+    // Pantau Status Autentikasi Firebase
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        currentUser = user;
+        const userDocRef = db.collection('users').doc(user.uid);
+        const doc = await userDocRef.get();
 
-      setInterval(nextSlide, 4500);
+        const isFounderEmail = user.email.toLowerCase() === 'adminmedidrama@gmail.com';
+
+        if (!doc.exists) {
+          const initialData = {
+            name: user.displayName || user.email.split('@')[0],
+            email: user.email,
+            role: isFounderEmail ? 'Founder' : 'Penonton',
+            coins: isFounderEmail ? 9999 : 100,
+            photoURL: user.photoURL || '',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+          await userDocRef.set(initialData);
+          updateUIWithUserData(initialData);
+        } else {
+          const data = doc.data();
+          if (isFounderEmail && data.role !== 'Founder') {
+            await userDocRef.update({ role: 'Founder' });
+            data.role = 'Founder';
+          }
+          updateUIWithUserData(data);
+        }
+      } else {
+        currentUser = null;
+        resetUIToGuest();
+      }
     });
 
-    // Perbarui Tampilan Akun Sesuai State
-    function updateUserUI() {
-      document.getElementById('profileNameInput').value = currentUser.name;
-      document.getElementById('profileEmail').innerText = currentUser.email;
-      document.getElementById('profileCoins').innerText = currentUser.coins;
-      document.getElementById('userRoleBadge').innerText = currentUser.role;
-      document.getElementById('navAuthLabel').innerText = currentUser.name.split(' ')[0];
+    function updateUIWithUserData(data) {
+      document.getElementById('profileNameInput').value = data.name || 'Pengguna';
+      document.getElementById('profileEmail').innerText = data.email;
+      document.getElementById('profileCoins').innerText = data.coins || 0;
+      document.getElementById('userRoleBadge').innerText = data.role;
+      document.getElementById('navAuthLabel').innerText = (data.name || 'User').split(' ')[0];
+      document.getElementById('authActionBtn').innerText = 'Keluar';
+      document.getElementById('authActionBtn').onclick = handleSignOut;
 
-      const savedAvatar = localStorage.getItem('user_avatar');
-      if (savedAvatar) {
-        document.getElementById('profileImagePreview').src = savedAvatar;
-        document.getElementById('navAvatar').src = savedAvatar;
+      if (data.photoURL) {
+        document.getElementById('profileImagePreview').src = data.photoURL;
+        document.getElementById('navAvatar').src = data.photoURL;
       }
 
-      if (currentUser.role === 'Founder') {
+      if (data.role === 'Founder' || data.email.toLowerCase() === 'adminmedidrama@gmail.com') {
         document.getElementById('adminBtn').classList.remove('hidden');
       } else {
         document.getElementById('adminBtn').classList.add('hidden');
       }
     }
 
-    // Ubah Nama Pribadi
-    function saveUserName(newName) {
-      currentUser.name = newName.trim() || 'Pengguna';
-      localStorage.setItem('medidrama_current_user', JSON.stringify(currentUser));
-      updateUserUI();
-      alert('Nama akun berhasil diperbarui!');
+    function resetUIToGuest() {
+      document.getElementById('profileNameInput').value = 'Tamu';
+      document.getElementById('profileEmail').innerText = 'Belum masuk';
+      document.getElementById('profileCoins').innerText = '0';
+      document.getElementById('userRoleBadge').innerText = 'Tamu';
+      document.getElementById('userRoleBadge').className = 'text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300 font-bold';
+      document.getElementById('navAuthLabel').innerText = 'Masuk';
+      document.getElementById('authActionBtn').innerText = 'Masuk / Daftar';
+      document.getElementById('authActionBtn').onclick = openAuthModal;
+      document.getElementById('adminBtn').classList.add('hidden');
+      document.getElementById('profileImagePreview').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100";
+      document.getElementById('navAvatar').src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100";
     }
 
-    // Auth Modal Handlers
-    function handleNavAuthClick() {
-      openAuthModal();
-    }
+    // Inisialisasi Tampilan & Data Firestore
+    window.addEventListener('DOMContentLoaded', () => {
+      loadDramasFromFirestore();
+      renderFavorites();
+      setInterval(nextSlide, 4500);
+    });
 
-    function openAuthModal() {
-      document.getElementById('authModal').classList.remove('hidden');
-    }
-
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.add('hidden');
-    }
-
-    function setAuthTab(mode) {
-      authMode = mode;
-      const regBox = document.getElementById('regNameBox');
-      const title = document.getElementById('authModalTitle');
-      const submitBtn = document.getElementById('authSubmitBtn');
-      const tabLog = document.getElementById('btnAuthTabLogin');
-      const tabReg = document.getElementById('btnAuthTabRegister');
-
-      if (mode === 'register') {
-        regBox.classList.remove('hidden');
-        title.innerText = 'Daftar Akun Baru';
-        submitBtn.innerText = 'Buat Akun MediDrama';
-        tabReg.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
-        tabLog.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
-      } else {
-        regBox.classList.add('hidden');
-        title.innerText = 'Masuk ke MediDrama';
-        submitBtn.innerText = 'Masuk ke MediDrama';
-        tabLog.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
-        tabReg.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
-      }
-    }
-
-    function handleAuthSubmit(e) {
-      e.preventDefault();
-      const email = document.getElementById('authEmail').value;
-      const pass = document.getElementById('authPassword').value;
-
-      if (authMode === 'register') {
-        const name = document.getElementById('authName').value || 'Penonton Baru';
-        const newUser = {
-          id: Date.now(),
-          name,
-          email,
-          role: email.includes('adminmedidrama') ? 'Founder' : 'Penonton',
-          coins: 100
-        };
-        registeredUsers.push(newUser);
-        localStorage.setItem('medidrama_users', JSON.stringify(registeredUsers));
-        currentUser = newUser;
-      } else {
-        const found = registeredUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
-        if (found) {
-          currentUser = found;
+    // Ambil Data Serial dari Koleksi Firestore
+    function loadDramasFromFirestore() {
+      db.collection('dramas').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          dramaData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         } else {
-          currentUser = {
-            id: Date.now(),
-            name: email.split('@')[0],
-            email,
-            role: email.includes('adminmedidrama') ? 'Founder' : 'Penonton',
-            coins: 100
-          };
-          registeredUsers.push(currentUser);
-          localStorage.setItem('medidrama_users', JSON.stringify(registeredUsers));
+          // Data cadangan jika Firestore masih kosong
+          dramaData = [
+            {
+              id: 'd1',
+              title: "Garuda Hitam: Lembah Kematian",
+              category: "Action & Laga",
+              cover: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
+              video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+              trending: true,
+              rating: 4.9
+            },
+            {
+              id: 'd2',
+              title: "Cinta Tersembunyi Chaebol",
+              category: "Drama Romantis",
+              cover: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600",
+              video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+              trending: true,
+              rating: 4.8
+            }
+          ];
         }
-      }
-
-      localStorage.setItem('medidrama_current_user', JSON.stringify(currentUser));
-      updateUserUI();
-      renderFounderUserTable();
-      closeAuthModal();
-      alert('Selamat datang, ' + currentUser.name + '!');
-    }
-
-    function loginWithGoogle() {
-      currentUser = {
-        id: Date.now(),
-        name: "Furianto",
-        email: "adminmedidrama@gmail.com",
-        role: "Founder",
-        coins: 250
-      };
-      localStorage.setItem('medidrama_current_user', JSON.stringify(currentUser));
-      updateUserUI();
-      closeAuthModal();
-      alert('Berhasil masuk via Google sebagai Founder!');
-    }
-
-    // Modal Studio Founder & Pengguna Terdaftar
-    function openFounderModal() {
-      renderFounderUserTable();
-      document.getElementById('founderModal').classList.remove('hidden');
-    }
-
-    function closeFounderModal() {
-      document.getElementById('founderModal').classList.add('hidden');
-    }
-
-    function switchFounderTab(tab) {
-      if (tab === 'upload') {
-        document.getElementById('founderUploadSection').classList.remove('hidden');
-        document.getElementById('founderUsersSection').classList.add('hidden');
-        document.getElementById('fTabUpload').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
-        document.getElementById('fTabUsers').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
-      } else {
-        document.getElementById('founderUploadSection').classList.add('hidden');
-        document.getElementById('founderUsersSection').classList.remove('hidden');
-        document.getElementById('fTabUpload').className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
-        document.getElementById('fTabUsers').className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
-      }
-    }
-
-    function renderFounderUserTable() {
-      const tbody = document.getElementById('userTableBody');
-      document.getElementById('userCountBadge').innerText = registeredUsers.length;
-      tbody.innerHTML = registeredUsers.map(u => `
-        <tr class="hover:bg-gray-800/30">
-          <td class="py-2.5 px-3 font-semibold text-white flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-gray-800 text-amber-400 flex items-center justify-center font-bold text-[10px]">
-              ${u.name.charAt(0)}
-            </span>
-            ${u.name}
-          </td>
-          <td class="py-2.5 px-3 text-gray-400 font-mono text-[11px]">${u.email}</td>
-          <td class="py-2.5 px-3">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Founder' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-gray-800 text-gray-300'}">
-              ${u.role}
-            </span>
-          </td>
-          <td class="py-2.5 px-3 font-bold text-amber-400">${u.coins} Koin</td>
-          <td class="py-2.5 px-3 text-right">
-            <button onclick="rewardCoins(${u.id})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-2 py-1 rounded text-[10px] font-bold">
-              +50 Koin
-            </button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function rewardCoins(userId) {
-      registeredUsers = registeredUsers.map(u => {
-        if (u.id === userId) u.coins += 50;
-        return u;
+        renderHeroSlider();
+        renderCatalog();
+        renderTrending();
+        renderCategories();
+        renderFounderDramaList();
       });
-      localStorage.setItem('medidrama_users', JSON.stringify(registeredUsers));
-      renderFounderUserTable();
-      alert('Bonus koin berhasil dikirimkan!');
     }
 
-    // Kompresi Foto Profil WebP (< 30 KB)
+    // Ubah Nama Pribadi ke Firestore
+    async function updateProfileName(newName) {
+      if (!currentUser) return alert('Silakan login terlebih dahulu.');
+      try {
+        await db.collection('users').doc(currentUser.uid).update({
+          name: newName.trim()
+        });
+        document.getElementById('navAuthLabel').innerText = newName.trim().split(' ')[0];
+        alert('Nama berhasil disimpan ke Cloud Firestore!');
+      } catch (err) {
+        alert('Gagal update nama: ' + err.message);
+      }
+    }
+
+    // Kompresi Foto Profil WebP (<25 KB) & Upload ke Firestore
     function compressAndUploadAvatar(event) {
+      if (!currentUser) return alert('Silakan login terlebih dahulu.');
       const file = event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = function(e) {
         const img = new Image();
-        img.onload = function() {
+        img.onload = async function() {
           const canvas = document.createElement('canvas');
           const MAX_SIZE = 300;
           let width = img.width;
@@ -592,15 +515,251 @@
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
 
-          const compressedDataUrl = canvas.toDataURL('image/webp', 0.7);
-          document.getElementById('profileImagePreview').src = compressedDataUrl;
-          document.getElementById('navAvatar').src = compressedDataUrl;
-          localStorage.setItem('user_avatar', compressedDataUrl);
-          alert('Foto profil berhasil dikompresi (<25 KB) & disimpan!');
+          const compressedWebP = canvas.toDataURL('image/webp', 0.7);
+
+          try {
+            await db.collection('users').doc(currentUser.uid).update({
+              photoURL: compressedWebP
+            });
+            document.getElementById('profileImagePreview').src = compressedWebP;
+            document.getElementById('navAvatar').src = compressedWebP;
+            alert('Foto profil berhasil dikompresi (<25 KB) & disimpan!');
+          } catch (err) {
+            alert('Gagal menyimpan foto: ' + err.message);
+          }
         };
         img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    }
+
+    // Autentikasi Pengguna
+    function handleNavAuthClick() {
+      if (!currentUser) {
+        openAuthModal();
+      } else {
+        switchTab('profile');
+      }
+    }
+
+    function openAuthModal() {
+      document.getElementById('authModal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.add('hidden');
+    }
+
+    function setAuthTab(mode) {
+      authMode = mode;
+      const regBox = document.getElementById('regNameBox');
+      const title = document.getElementById('authModalTitle');
+      const submitBtn = document.getElementById('authSubmitBtn');
+      const tabLog = document.getElementById('btnAuthTabLogin');
+      const tabReg = document.getElementById('btnAuthTabRegister');
+
+      if (mode === 'register') {
+        regBox.classList.remove('hidden');
+        title.innerText = 'Daftar Akun Baru';
+        submitBtn.innerText = 'Daftar Sekarang';
+        tabReg.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
+        tabLog.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
+      } else {
+        regBox.classList.add('hidden');
+        title.innerText = 'Masuk ke MediDrama';
+        submitBtn.innerText = 'Masuk ke MediDrama';
+        tabLog.className = 'pb-2 border-b-2 border-red-500 text-white flex-1';
+        tabReg.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1';
+      }
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value;
+      const pass = document.getElementById('authPassword').value;
+
+      try {
+        if (authMode === 'register') {
+          const name = document.getElementById('authName').value || email.split('@')[0];
+          const cred = await auth.createUserWithEmailAndPassword(email, pass);
+          await db.collection('users').doc(cred.user.uid).set({
+            name,
+            email,
+            role: email.toLowerCase() === 'adminmedidrama@gmail.com' ? 'Founder' : 'Penonton',
+            coins: 100,
+            photoURL: '',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          alert('Akun berhasil dibuat!');
+        } else {
+          await auth.signInWithEmailAndPassword(email, pass);
+          alert('Berhasil masuk!');
+        }
+        closeAuthModal();
+      } catch (err) {
+        alert('Gagal autentikasi: ' + err.message);
+      }
+    }
+
+    async function handleGoogleSignIn() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+        closeAuthModal();
+      } catch (err) {
+        alert('Gagal Google Sign-In: ' + err.message);
+      }
+    }
+
+    async function handleSignOut() {
+      await auth.signOut();
+      alert('Anda telah keluar akun.');
+    }
+
+    // Panel Founder: Upload & Manajemen
+    function openFounderModal() {
+      loadRegisteredUsersRealtime();
+      document.getElementById('founderModal').classList.remove('hidden');
+    }
+
+    function closeFounderModal() {
+      document.getElementById('founderModal').classList.add('hidden');
+    }
+
+    function switchFounderTab(tab) {
+      const upSec = document.getElementById('founderUploadSection');
+      const manSec = document.getElementById('founderManageSection');
+      const usrSec = document.getElementById('founderUsersSection');
+      const tUp = document.getElementById('fTabUpload');
+      const tMan = document.getElementById('fTabManage');
+      const tUsr = document.getElementById('fTabUsers');
+
+      upSec.classList.add('hidden');
+      manSec.classList.add('hidden');
+      usrSec.classList.add('hidden');
+      tUp.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+      tMan.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+      tUsr.className = 'pb-2 border-b-2 border-transparent text-gray-400 flex-1 text-center';
+
+      if (tab === 'upload') {
+        upSec.classList.remove('hidden');
+        tUp.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+      } else if (tab === 'manage') {
+        manSec.classList.remove('hidden');
+        tMan.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+      } else {
+        usrSec.classList.remove('hidden');
+        tUsr.className = 'pb-2 border-b-2 border-red-500 text-white flex-1 text-center';
+      }
+    }
+
+    function checkCustomCategory(val) {
+      const box = document.getElementById('customCategoryBox');
+      box.className = val === 'custom' ? 'block' : 'hidden';
+    }
+
+    async function handleUploadSerial(e) {
+      e.preventDefault();
+      const title = document.getElementById('fTitle').value;
+      const selectCat = document.getElementById('fCategorySelect').value;
+      const customCat = document.getElementById('fCustomCategory').value;
+      const category = selectCat === 'custom' ? (customCat || 'Eksklusif') : selectCat;
+      const cover = document.getElementById('fCover').value;
+      const video = document.getElementById('fVideo').value;
+      const trending = document.getElementById('fTrending').value === 'true';
+
+      try {
+        await db.collection('dramas').add({
+          title,
+          category,
+          cover,
+          video,
+          trending,
+          rating: 5.0,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert('Serial berhasil diterbitkan ke Cloud Firestore!');
+        closeFounderModal();
+      } catch (err) {
+        alert('Gagal mengupload serial: ' + err.message);
+      }
+    }
+
+    function renderFounderDramaList() {
+      const list = document.getElementById('founderDramaList');
+      if (!list) return;
+      list.innerHTML = dramaData.map(d => `
+        <div class="bg-gray-900 border border-gray-800 p-2.5 rounded-xl flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <img src="${d.cover}" class="w-10 h-14 object-cover rounded-md" />
+            <div>
+              <h5 class="font-bold text-white text-xs">${d.title}</h5>
+              <p class="text-[10px] text-gray-400">${d.category} • ${d.trending ? 'Trending' : 'Biasa'}</p>
+            </div>
+          </div>
+          <button onclick="deleteDrama('${d.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 bg-red-950/40 rounded border border-red-800/40">
+            <i class="fa-solid fa-trash mr-1"></i> Hapus
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function deleteDrama(id) {
+      if (confirm('Yakin ingin menghapus serial ini?')) {
+        try {
+          await db.collection('dramas').doc(id).delete();
+          alert('Serial berhasil dihapus!');
+        } catch (err) {
+          alert('Gagal menghapus serial: ' + err.message);
+        }
+      }
+    }
+
+    // Ambil Pengguna Asli Terdaftar dari Koleksi Firestore
+    function loadRegisteredUsersRealtime() {
+      db.collection('users').onSnapshot((snapshot) => {
+        const tbody = document.getElementById('userTableBody');
+        document.getElementById('userCountBadge').innerText = snapshot.size;
+        tbody.innerHTML = '';
+
+        snapshot.forEach((doc) => {
+          const u = doc.data();
+          const uid = doc.id;
+          tbody.innerHTML += `
+            <tr class="hover:bg-gray-800/30">
+              <td class="py-2.5 px-3 font-semibold text-white flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-gray-800 text-amber-400 flex items-center justify-center font-bold text-[10px]">
+                  ${(u.name || 'U').charAt(0)}
+                </span>
+                ${u.name || 'User'}
+              </td>
+              <td class="py-2.5 px-3 text-gray-400 font-mono text-[11px]">${u.email}</td>
+              <td class="py-2.5 px-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${u.role === 'Founder' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-gray-800 text-gray-300'}">
+                  ${u.role || 'Penonton'}
+                </span>
+              </td>
+              <td class="py-2.5 px-3 font-bold text-amber-400">${u.coins || 0} Koin</td>
+              <td class="py-2.5 px-3 text-right">
+                <button onclick="rewardCoinsFirestore('${uid}', ${u.coins || 0})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-2 py-1 rounded text-[10px] font-bold">
+                  +50 Koin
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      });
+    }
+
+    async function rewardCoinsFirestore(uid, currentCoins) {
+      try {
+        await db.collection('users').doc(uid).update({
+          coins: currentCoins + 50
+        });
+        alert('Bonus 50 koin berhasil ditambahkan ke saldo cloud pengguna!');
+      } catch (err) {
+        alert('Gagal menambah koin: ' + err.message);
+      }
     }
 
     // Slider Otomatis & Katalog
@@ -623,7 +782,7 @@
                 <button onclick="playDirect('${item.video}')" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg">
                   <i class="fa-solid fa-play"></i> Putar Sekarang
                 </button>
-                <button onclick="toggleFavorite(${item.id})" class="bg-white/10 backdrop-blur-md text-white text-xs px-3 py-2 rounded-xl border border-white/20">
+                <button onclick="toggleFavorite('${item.id}')" class="bg-white/10 backdrop-blur-md text-white text-xs px-3 py-2 rounded-xl border border-white/20">
                   <i class="fa-solid fa-heart"></i>
                 </button>
               </div>
@@ -639,6 +798,7 @@
 
     function updateSlider() {
       const track = document.getElementById('heroTrack');
+      if (!track) return;
       track.style.transform = `translateX(-${currentSlide * 100}%)`;
       const dots = document.getElementById('slideDots').children;
       for (let i = 0; i < dots.length; i++) {
@@ -647,11 +807,13 @@
     }
 
     function nextSlide() {
+      if (heroItems.length === 0) return;
       currentSlide = (currentSlide + 1) % heroItems.length;
       updateSlider();
     }
 
     function prevSlide() {
+      if (heroItems.length === 0) return;
       currentSlide = (currentSlide - 1 + heroItems.length) % heroItems.length;
       updateSlider();
     }
@@ -665,7 +827,7 @@
             <img src="${d.cover}" class="w-full h-full object-cover group-hover:scale-105 transition" />
             <div class="absolute top-1 left-1 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded shadow">TOP</div>
             <div class="absolute bottom-1 right-1 bg-black/70 text-amber-400 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
-              <i class="fa-solid fa-star text-[8px]"></i> ${d.rating}
+              <i class="fa-solid fa-star text-[8px]"></i> ${d.rating || 5.0}
             </div>
           </div>
           <h3 class="text-xs font-bold mt-1.5 truncate text-white">${d.title}</h3>
@@ -680,7 +842,7 @@
         <div class="bg-[#121520] border border-gray-800/80 rounded-xl overflow-hidden flex flex-col justify-between">
           <div class="relative aspect-[2/3] cursor-pointer" onclick="playDirect('${d.video}')">
             <img src="${d.cover}" class="w-full h-full object-cover" />
-            <button onclick="event.stopPropagation(); toggleFavorite(${d.id})" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md text-red-500 flex items-center justify-center text-xs">
+            <button onclick="event.stopPropagation(); toggleFavorite('${d.id}')" class="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 backdrop-blur-md text-red-500 flex items-center justify-center text-xs">
               <i class="fa-solid fa-heart"></i>
             </button>
           </div>
@@ -688,7 +850,7 @@
             <h4 class="text-xs font-bold truncate text-white">${d.title}</h4>
             <div class="flex items-center justify-between mt-1 text-[10px] text-gray-400">
               <span>${d.category}</span>
-              <span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-[8px]"></i> ${d.rating}</span>
+              <span class="text-amber-400 font-bold"><i class="fa-solid fa-star text-[8px]"></i> ${d.rating || 5.0}</span>
             </div>
           </div>
         </div>
@@ -703,43 +865,6 @@
           ${cat}
         </button>
       `).join('');
-    }
-
-    function checkCustomCategory(val) {
-      const customBox = document.getElementById('customCategoryBox');
-      if (val === 'custom') {
-        customBox.classList.remove('hidden');
-      } else {
-        customBox.classList.add('hidden');
-      }
-    }
-
-    function handleUploadSerial(e) {
-      e.preventDefault();
-      const title = document.getElementById('fTitle').value;
-      const selectCat = document.getElementById('fCategorySelect').value;
-      const customCat = document.getElementById('fCustomCategory').value;
-      const category = selectCat === 'custom' ? (customCat || 'Eksklusif') : selectCat;
-      const cover = document.getElementById('fCover').value;
-      const video = document.getElementById('fVideo').value;
-      const trending = document.getElementById('fTrending').value === 'true';
-
-      const newDrama = {
-        id: Date.now(),
-        title,
-        category,
-        cover,
-        video,
-        trending,
-        rating: 5.0
-      };
-
-      dramaData.unshift(newDrama);
-      localStorage.setItem('medidrama_catalog', JSON.stringify(dramaData));
-
-      alert('Serial berhasil diterbitkan!');
-      closeFounderModal();
-      location.reload();
     }
 
     function toggleFavorite(id) {
