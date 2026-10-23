@@ -122,7 +122,7 @@
 
   <!-- Dynamic Screen Watermark -->
   <div id="screenWatermark" class="fixed pointer-events-none z-50 text-[10px] font-mono tracking-widest text-white/10 uppercase select-none transition-all duration-1000">
-    MEDIDRAMA • <span id="watermarkUser">TAMU</span>
+    MEDIDRAMA ORIGINAL
   </div>
 
   <!-- HEADER NAVBAR -->
@@ -290,15 +290,48 @@
 
   <!-- VIEW 2: POIN & KOIN -->
   <main id="viewPoints" class="hidden px-4 py-5 space-y-4 max-w-xl mx-auto">
+    <!-- Card Saldo Koin -->
     <div class="bg-gradient-to-br from-[#1A1829] to-[#121520] border border-amber-500/30 rounded-2xl p-5 text-center space-y-3 relative overflow-hidden shadow-2xl">
       <div class="absolute -right-12 -top-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
       <span class="inline-block text-3xl">🪙</span>
       <h2 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Saldo Koin MediDrama</h2>
-      <div class="text-3xl font-black text-amber-400"><span id="pointsPageCoinCount">0</span> <span class="text-sm font-semibold text-gray-300">Koin</span></div>
-      <p class="text-xs text-gray-400 max-w-xs mx-auto">Gunakan koin untuk membuka episode serial premium favorit Anda tanpa jeda.</p>
-      <div class="pt-2 flex justify-center gap-2">
+      <div class="text-3xl font-black text-amber-400"><span id="pointsPageCoinCount">0</span> <span class="text-sm font-semibold text-gray-300">Total Koin</span></div>
+      
+      <!-- Rincian Poin Harian vs Promo -->
+      <div class="grid grid-cols-2 gap-2 text-[11px] pt-1 max-w-xs mx-auto">
+        <div class="bg-[#161928] border border-amber-500/20 p-2 rounded-xl">
+          <span class="text-gray-400 block text-[9px] uppercase font-bold">Koin Harian</span>
+          <span id="pointsPageDailyCoin" class="font-bold text-amber-300">0</span>
+          <span class="text-[8px] text-gray-500 block">Reset harian</span>
+        </div>
+        <div class="bg-[#161928] border border-amber-500/20 p-2 rounded-xl">
+          <span class="text-gray-400 block text-[9px] uppercase font-bold">Koin Promo & VIP</span>
+          <span id="pointsPagePromoCoin" class="font-bold text-emerald-400">0</span>
+          <span class="text-[8px] text-gray-500 block">Permanen/Tidak hangus</span>
+        </div>
+      </div>
+
+      <div class="pt-2 flex flex-wrap justify-center gap-2">
         <button onclick="claimDailyRewardCoins()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-black text-xs rounded-xl shadow-lg active:scale-95 transition">
-          <i class="fa-solid fa-gift mr-1"></i> Klaim Bonus Harian (+20 Koin)
+          <i class="fa-solid fa-gift mr-1"></i> Klaim Bonus Harian (+<span id="dailyBonusClaimAmountText">20</span> Koin)
+        </button>
+        <button onclick="openCoinShopModal()" class="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-600 text-white font-black text-xs rounded-xl shadow-lg active:scale-95 transition">
+          <i class="fa-solid fa-cart-shopping mr-1"></i> Top-up & Paket Langganan
+        </button>
+      </div>
+    </div>
+
+    <!-- Box Redeem Voucher Promo -->
+    <div class="bg-[#161928] border border-gray-800 rounded-2xl p-4 space-y-2.5">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-ticket text-amber-400 text-sm"></i>
+        <h4 class="text-xs font-black text-white uppercase tracking-wider">Klaim Tiket / Voucher Promo</h4>
+      </div>
+      <p class="text-[11px] text-gray-400">Punya kode tiket promo khusus mitra/sponsor? Masukkan untuk mendapatkan bonus koin permanen!</p>
+      <div class="flex gap-2">
+        <input type="text" id="voucherCodeInput" placeholder="Contoh: MEDISULTAN" class="flex-1 bg-[#10121D] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white uppercase font-mono font-bold tracking-wider outline-none focus:border-amber-500" />
+        <button onclick="redeemPromoVoucher()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs rounded-xl shadow transition active:scale-95">
+          Tukarkan
         </button>
       </div>
     </div>
@@ -361,9 +394,24 @@
         </div>
       </div>
 
+      <!-- Status VIP Langganan -->
+      <div id="userVipStatusBanner" class="p-3 bg-gradient-to-r from-amber-500/10 via-red-500/10 to-amber-500/10 border border-amber-500/30 rounded-xl flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-crown text-amber-400"></i>
+          <div>
+            <span class="font-bold text-white block">Status Langganan: <span id="profileVipText" class="text-amber-400">Reguler</span></span>
+            <span id="profileVipExpiry" class="text-[10px] text-gray-400 block">Klaim langganan VIP untuk nonton gratis tanpa batas.</span>
+          </div>
+        </div>
+        <button onclick="openCoinShopModal()" class="px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-[11px] rounded-lg shadow">
+          Upgrade VIP
+        </button>
+      </div>
+
+      <!-- Preferensi Gender -->
       <div class="pt-3 border-t border-gray-800">
         <label class="block text-xs font-bold text-gray-300 mb-1.5 flex items-center gap-1.5">
-          <i class="fa-solid fa-venus-mars text-rose-400"></i> Jenis Kelamin (Untuk Personalisasi Rekomendasi Film)
+          <i class="fa-solid fa-venus-mars text-rose-400"></i> Jenis Kelamin (Personalisasi Rekomendasi Film)
         </label>
         <div class="grid grid-cols-2 gap-2 text-xs">
           <button type="button" id="genderBtnMale" onclick="saveUserGender('Laki-laki')" class="py-2 px-3 rounded-xl border border-gray-700 bg-gray-900 text-gray-300 flex items-center justify-center gap-2 transition hover:border-blue-500">
@@ -377,9 +425,7 @@
     </div>
   </main>
 
-  <!-- ========================================================== -->
-  <!-- VERTICAL THEATER PLAYER (TIKTOK STYLE)                     -->
-  <!-- ========================================================== -->
+  <!-- VERTICAL THEATER PLAYER (TIKTOK STYLE) -->
   <div id="playerModal" class="hidden fixed inset-0 z-50 bg-black flex flex-col justify-between overflow-hidden select-none">
     
     <!-- Top Bar Minimalis -->
@@ -394,8 +440,9 @@
         <span id="playerModalEpBadge" class="text-[10px] text-amber-400 font-bold drop-shadow">Episode 1</span>
       </div>
 
-      <div class="flex items-center gap-1.5 text-xs text-amber-400 font-bold bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-amber-500/20">
+      <div onclick="openCoinShopModal()" class="cursor-pointer flex items-center gap-1.5 text-xs text-amber-400 font-bold bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-amber-500/20 active:scale-95 transition">
         🪙 <span id="playerCoinStatus">0</span>
+        <i class="fa-solid fa-circle-plus text-amber-400 text-[10px]"></i>
       </div>
     </div>
 
@@ -489,15 +536,12 @@
 
     <!-- Tombol Samping Kanan Ringkas Ala TikTok -->
     <div class="absolute right-3 bottom-14 flex flex-col items-center space-y-3 z-40 pointer-events-auto">
-      
-      <!-- Tombol Prev Episode -->
       <button onclick="goToPrevEpisodeSwipe()" class="flex flex-col items-center text-white group active:scale-90 transition" title="Episode Sebelumnya">
         <div class="w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-amber-300 text-xs shadow-lg">
           <i class="fa-solid fa-chevron-up"></i>
         </div>
       </button>
 
-      <!-- Tombol Love -->
       <button onclick="toggleVideoLove()" class="flex flex-col items-center text-white group active:scale-90 transition">
         <div id="playerLoveIconWrap" class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-red-500 text-base shadow-lg group-hover:scale-105 transition">
           <i id="playerModalFavIcon" class="fa-regular fa-heart"></i>
@@ -505,7 +549,6 @@
         <span id="playerLoveCount" class="text-[9px] font-bold mt-0.5 text-gray-200 drop-shadow">1.2K</span>
       </button>
 
-      <!-- Tombol Pilih Episode Drawer -->
       <button onclick="openEpisodeDrawer()" class="flex flex-col items-center text-white group active:scale-90 transition">
         <div class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-amber-400 text-sm shadow-lg group-hover:scale-105 transition">
           <i class="fa-solid fa-list-ol"></i>
@@ -513,14 +556,12 @@
         <span class="text-[9px] font-bold mt-0.5 text-gray-200 drop-shadow">Episode</span>
       </button>
 
-      <!-- Tombol Swipe Down / Next Episode -->
       <button onclick="goToNextEpisodeSwipe()" class="flex flex-col items-center text-white group active:scale-90 transition" title="Episode Selanjutnya">
         <div class="w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-amber-300 text-xs shadow-lg">
           <i class="fa-solid fa-chevron-down"></i>
         </div>
       </button>
 
-      <!-- Tombol Bagikan -->
       <button onclick="shareActiveDrama()" class="flex flex-col items-center text-white group active:scale-90 transition">
         <div class="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md border border-white/15 flex items-center justify-center text-sky-400 text-sm shadow-lg group-hover:scale-105 transition">
           <i class="fa-solid fa-share"></i>
@@ -548,9 +589,12 @@
     <!-- Episode Drawer -->
     <div id="episodeDrawer" class="hidden absolute inset-x-0 bottom-0 max-h-[50vh] bg-[#121522]/95 backdrop-blur-xl border-t border-gray-800 p-4 rounded-t-3xl z-50 space-y-3 overflow-y-auto pointer-events-auto">
       <div class="flex items-center justify-between pb-2 border-b border-gray-800">
-        <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
-          <i class="fa-solid fa-layer-group text-red-500"></i> Pilih Episode Serial
-        </h4>
+        <div>
+          <h4 class="text-xs font-bold text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-red-500"></i> Pilih Episode Serial
+          </h4>
+          <p class="text-[9px] text-amber-400 font-semibold mt-0.5">Episode harus dibuka dan ditonton secara berurutan.</p>
+        </div>
         <button onclick="closeEpisodeDrawer()" class="text-gray-400 hover:text-white text-base">
           <i class="fa-solid fa-xmark"></i>
         </button>
@@ -579,7 +623,6 @@
           <button onclick="changeVideoQuality('720p')" id="qBtn720" class="quality-btn p-1.5 rounded-lg bg-gray-800 text-gray-300">720p</button>
           <button onclick="changeVideoQuality('Auto')" id="qBtnAuto" class="quality-btn p-1.5 rounded-lg bg-gray-800 text-gray-300">Auto</button>
         </div>
-        <p class="text-[8px] text-gray-400 mt-1">Pilih 240p/360p jika sinyal seluler Anda naik-turun agar video berputar lancar tanpa buffering audio.</p>
       </div>
 
       <div>
@@ -605,11 +648,59 @@
     </div>
   </div>
 
-  <!-- ========================================================== -->
-  <!-- MODAL: STUDIO FOUNDER                                      -->
-  <!-- ========================================================== -->
+  <!-- POP-UP BELI KOIN & PAKET LANGGANAN VIP (HYBRID GATEWAY) -->
+  <div id="coinShopModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-[#121522] border border-amber-500/40 rounded-2xl w-full max-w-lg max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-[#161928]">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🪙</span>
+          <div>
+            <h3 class="text-sm font-black text-white">Isi Ulang Koin & Langganan VIP</h3>
+            <p class="text-[10px] text-gray-400">Saldo saat ini: <strong class="text-amber-400"><span id="shopModalUserCoin">0</span> Koin</strong></p>
+          </div>
+        </div>
+        <button onclick="closeCoinShopModal()" class="text-gray-400 hover:text-white text-base">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Informasi Saluran Pembayaran Aktif -->
+      <div id="paymentChannelNoticeBox" class="bg-gradient-to-r from-amber-500/10 via-red-500/10 to-amber-500/10 border-b border-amber-500/20 px-4 py-2 flex items-center justify-between text-[11px]">
+        <span id="activePaymentBadge" class="text-amber-300 font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-wallet text-amber-400"></i> Mode: Lynk.id / QRIS Web
+        </span>
+        <span class="text-[9px] text-gray-400">Aman & Terverifikasi</span>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-4 space-y-5 text-xs">
+        <!-- Paket Langganan VIP -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-crown"></i> Paket Langganan VIP (Bebas Nonton Sepuasnya)
+            </span>
+            <span class="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold">HEMAT</span>
+          </div>
+          <div id="vipPackagesList" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+        </div>
+
+        <!-- Paket Top-Up Koin -->
+        <div class="space-y-2.5 border-t border-gray-800 pt-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-coins text-amber-400"></i> Pilihan Top-up Koin
+            </span>
+            <span class="text-[9px] text-gray-400">Koin Promo & Top-up Permanen</span>
+          </div>
+          <div id="coinTopupPackagesList" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STUDIO FOUNDER (5 TABS LENGKAP) -->
   <div id="founderModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
-    <div class="bg-[#0F111A] border border-red-600/40 rounded-2xl w-full max-w-4xl max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
+    <div class="bg-[#0F111A] border border-red-600/40 rounded-2xl w-full max-w-5xl max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="p-3.5 sm:p-4 border-b border-gray-800 flex items-center justify-between bg-[#141622]">
         <div class="flex items-center gap-2">
           <div class="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center text-xs font-bold shadow">
@@ -625,18 +716,22 @@
         </button>
       </div>
 
+      <!-- 5 TABS FOUNDER -->
       <div class="flex border-b border-gray-800 bg-[#0B0D14] px-3 overflow-x-auto">
-        <button id="adminTabMoviesBtn" onclick="switchFounderTab('movies')" class="py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 transition flex-none">
-          <i class="fa-solid fa-film"></i> Manajemen Serial Film ( <span id="statTotalMovies">0</span> )
+        <button id="adminTabMoviesBtn" onclick="switchFounderTab('movies')" class="py-3 px-3.5 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-1.5 transition flex-none">
+          <i class="fa-solid fa-film"></i> Serial Film (<span id="statTotalMovies">0</span>)
         </button>
-        <button id="adminTabUsersBtn" onclick="switchFounderTab('users')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
-          <i class="fa-solid fa-users"></i> Pemantauan Penonton ( <span id="statRegisteredUsersBadge">0</span> )
+        <button id="adminTabEconomyBtn" onclick="switchFounderTab('economy')" class="py-3 px-3.5 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-1.5 hover:text-white transition flex-none">
+          <i class="fa-solid fa-coins text-amber-400"></i> Pengaturan Koin, Tamu, VIP & Gateway
         </button>
-        <button id="adminTabFirebaseBtn" onclick="switchFounderTab('firebase')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
-          <i class="fa-solid fa-fire text-amber-500"></i> Koneksi Firebase Cloud
+        <button id="adminTabVouchersBtn" onclick="switchFounderTab('vouchers')" class="py-3 px-3.5 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-1.5 hover:text-white transition flex-none">
+          <i class="fa-solid fa-ticket text-emerald-400"></i> Mesin Tiket & Promo (<span id="statTotalVouchers">0</span>)
         </button>
-        <button id="adminTabAdsBtn" onclick="switchFounderTab('ads')" class="py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 hover:text-white transition flex-none">
-          <i class="fa-solid fa-rectangle-ad"></i> Pengaturan Iklan & AdSense
+        <button id="adminTabUsersBtn" onclick="switchFounderTab('users')" class="py-3 px-3.5 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-1.5 hover:text-white transition flex-none">
+          <i class="fa-solid fa-users"></i> Penonton (<span id="statRegisteredUsersBadge">0</span>)
+        </button>
+        <button id="adminTabAdsBtn" onclick="switchFounderTab('ads')" class="py-3 px-3.5 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-1.5 hover:text-white transition flex-none">
+          <i class="fa-solid fa-rectangle-ad"></i> Iklan & Sesi
         </button>
       </div>
 
@@ -645,7 +740,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h3 class="text-sm font-bold text-white">Daftar Serial Film Tersimpan</h3>
-            <p class="text-xs text-gray-400">Total <span id="statTotalEpisodes" class="text-amber-400 font-bold">0</span> episode aktif di katalog koleksi <code class="text-amber-300">movies</code>.</p>
+            <p class="text-xs text-gray-400">Total <span id="statTotalEpisodes" class="text-amber-400 font-bold">0</span> episode aktif di koleksi <code class="text-amber-300">movies</code>.</p>
           </div>
           <div class="flex flex-wrap gap-2">
             <button onclick="openUploadVideoModal()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
@@ -677,21 +772,154 @@
         </div>
       </div>
 
-      <!-- TAB 2: PEMANTAUAN PENONTON -->
+      <!-- TAB 2: PENGATURAN KOIN, TAMU, VIP & GATEWAY PEMBAYARAN -->
+      <div id="founderEconomyTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-5">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          
+          <!-- Box 1: Saluran & Link Pembayaran (Web, Lynk.id, WhatsApp & Google Play) -->
+          <div class="bg-[#141622] border border-amber-500/40 rounded-2xl p-4 space-y-3.5 shadow-xl">
+            <h4 class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-credit-card"></i> Pintu Pembayaran (Web vs Play Store)
+            </h4>
+
+            <div>
+              <label class="block text-gray-300 text-xs font-bold mb-1">Metode Pembayaran Aktif di Toko Penonton</label>
+              <select id="economySettingPaymentMethod" onchange="handlePaymentMethodChange(this.value)" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2.5 text-amber-300 font-bold outline-none focus:border-amber-500">
+                <option value="external_link">Lynk.id / Web Payment Gateway (QRIS, GoPay, OVO, Virtual Account)</option>
+                <option value="whatsapp_admin">WhatsApp Konfirmasi Manual Admin (Transfer Bank / Pulsa)</option>
+                <option value="google_play_billing">Google Play Store In-App Billing (Wajib untuk APK Android Play Store)</option>
+              </select>
+              <p class="text-[10px] text-gray-400 mt-1">Pilih sesuai tempat aplikasi Anda dibuka (Web Browser atau APK Play Store).</p>
+            </div>
+
+            <!-- Bagian A: Pengaturan Link Lynk.id / Gateway Web -->
+            <div id="paymentGroupExternalLink" class="space-y-2 p-3 bg-[#0D0F17] border border-gray-800 rounded-xl">
+              <label class="block text-gray-300 text-xs font-bold">URL Pembayaran Global / Lynk.id</label>
+              <input type="url" id="economySettingLynkUrl" placeholder="https://lynk.id/medidrama atau https://trakteer.id/medidrama" class="w-full bg-[#161928] border border-gray-700 rounded-xl p-2.5 text-xs text-white" />
+              <p class="text-[10px] text-gray-400">Sistem otomatis menyematkan ID Penonton & Jenis Paket ke tautan Lynk.id Anda.</p>
+            </div>
+
+            <!-- Bagian B: Pengaturan WhatsApp Konfirmasi -->
+            <div id="paymentGroupWhatsApp" class="hidden space-y-2 p-3 bg-[#0D0F17] border border-gray-800 rounded-xl">
+              <label class="block text-gray-300 text-xs font-bold">Nomor WhatsApp Admin Konfirmasi</label>
+              <input type="text" id="economySettingWhatsappNum" placeholder="Contoh: 6281234567890 (Awali kode 62)" class="w-full bg-[#161928] border border-gray-700 rounded-xl p-2.5 text-xs text-white font-mono" />
+              <p class="text-[10px] text-gray-400">Format chat transaksi akan otomatis dibuat saat penonton menekan tombol beli.</p>
+            </div>
+
+            <!-- Bagian C: Pengaturan Google Play SKU -->
+            <div id="paymentGroupGooglePlay" class="hidden space-y-2 p-3 bg-[#0D0F17] border border-gray-800 rounded-xl">
+              <label class="block text-gray-300 text-xs font-bold">Awalan ID Produk / SKU Play Store Console</label>
+              <input type="text" id="economySettingPlaySkuPrefix" placeholder="Contoh: com.medidrama.coin_" class="w-full bg-[#161928] border border-gray-700 rounded-xl p-2.5 text-xs text-amber-400 font-mono" />
+              <p class="text-[10px] text-gray-400">Cocokkan dengan SKU In-app Products di konsol Google Play Anda.</p>
+            </div>
+          </div>
+
+          <!-- Box 2: Batasan Tamu & Koin Default -->
+          <div class="bg-[#141622] border border-gray-800 rounded-2xl p-4 space-y-3.5">
+            <h4 class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-halved"></i> Batasan Tamu & Tarif Koin Default
+            </h4>
+
+            <div>
+              <label class="block text-gray-300 text-xs font-bold mb-1">Maksimal Episode Gratis untuk Tamu (Belum Login)</label>
+              <input type="number" id="economySettingGuestFreeLimit" min="0" max="100" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2.5 text-white font-bold" />
+              <p class="text-[10px] text-gray-400 mt-1">Jika disetel 5, tamu hanya bisa menonton 5 episode gratis sebelum wajib masuk/daftar akun.</p>
+            </div>
+
+            <div>
+              <label class="block text-gray-300 text-xs font-bold mb-1">Biaya Koin Default per Episode Baru</label>
+              <input type="number" id="economySettingDefaultEpisodeCost" min="0" max="1000" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2.5 text-amber-400 font-bold" />
+            </div>
+
+            <div>
+              <label class="block text-gray-300 text-xs font-bold mb-1">Bonus Klaim Koin Harian Penonton</label>
+              <input type="number" id="economySettingDailyBonus" min="0" max="1000" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2.5 text-amber-400 font-bold" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 3: Pengaturan Harga Langganan VIP & Tombol Simpan -->
+        <div class="bg-[#141622] border border-gray-800 rounded-2xl p-4 space-y-3">
+          <h4 class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-crown"></i> Tarif Paket Langganan VIP (Bebas Nonton)
+          </h4>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">1 Minggu (Rp)</label>
+              <input type="number" id="economySettingPriceWeek" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2 text-white font-bold" />
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">1 Bulan (Rp)</label>
+              <input type="number" id="economySettingPriceMonth" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2 text-white font-bold" />
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">6 Bulan (Rp)</label>
+              <input type="number" id="economySettingPrice6Month" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2 text-white font-bold" />
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">1 Tahun (Rp)</label>
+              <input type="number" id="economySettingPriceYear" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-2 text-white font-bold" />
+            </div>
+          </div>
+
+          <button onclick="saveEconomySettings()" class="w-full mt-3 px-4 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-black font-black text-xs rounded-xl shadow-lg transition active:scale-95">
+            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Pengaturan Koin, Tamu, VIP & Gateway Pembayaran
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 3: MESIN TIKET & VOUCHER PROMO -->
+      <div id="founderVouchersTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="bg-[#141622] border border-gray-800 rounded-2xl p-4 space-y-3">
+          <h4 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i class="fa-solid fa-ticket"></i> Buat Tiket / Voucher Promo Baru
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">Kode Tiket (Huruf Besar)</label>
+              <input type="text" id="newVoucherCode" placeholder="Contoh: MEDISULTAN" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white font-mono uppercase font-bold" />
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">Hadiah Koin Promo</label>
+              <input type="number" id="newVoucherReward" value="10000" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-amber-400 font-bold" />
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-1 font-semibold">Keterangan / Sponsor</label>
+              <input type="text" id="newVoucherDesc" placeholder="Contoh: Promo Spesial TikTok" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-gray-300" />
+            </div>
+          </div>
+          <button onclick="createNewPromoVoucher()" class="px-5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-black font-black text-xs rounded-xl shadow transition active:scale-95">
+            + Terbitkan Tiket Promo Sekarang
+          </button>
+        </div>
+
+        <div class="overflow-x-auto border border-gray-800 rounded-xl">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-[#141622] text-gray-400 border-b border-gray-800">
+              <tr>
+                <th class="p-3">Kode Tiket</th>
+                <th class="p-3">Bonus Koin</th>
+                <th class="p-3">Keterangan</th>
+                <th class="p-3">Total Diklaim</th>
+                <th class="p-3 text-right">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="vouchersTableBody" class="divide-y divide-gray-800/80 text-gray-300"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 4: PENONTON -->
       <div id="founderUsersTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h3 class="text-sm font-bold text-white">Buku Induk Pendaftaran Pengguna</h3>
             <p class="text-xs text-gray-400">Sinkronisasi langsung dengan Firebase Cloud Firestore koleksi <code class="text-emerald-400">users</code>.</p>
           </div>
-          <div class="flex gap-2">
-            <button onclick="openCreateUserModal()" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-xs font-bold text-white rounded-xl shadow flex items-center gap-1.5">
-              <i class="fa-solid fa-user-plus"></i> + Tambah Akun Pengguna Baru
-            </button>
-            <button onclick="refreshUsersRegistry()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-bold text-white rounded-xl">
-              <i class="fa-solid fa-rotate-right"></i> Segarkan Data
-            </button>
-          </div>
+          <button onclick="refreshUsersRegistry()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-bold text-white rounded-xl">
+            <i class="fa-solid fa-rotate-right"></i> Segarkan Data
+          </button>
         </div>
 
         <div class="overflow-x-auto border border-gray-800 rounded-xl">
@@ -700,10 +928,10 @@
               <tr>
                 <th class="p-3">Nama & ID Pengguna</th>
                 <th class="p-3">Email & No. HP</th>
-                <th class="p-3">Gender</th>
-                <th class="p-3">Saldo Koin</th>
+                <th class="p-3">Saldo (Harian / Promo)</th>
+                <th class="p-3">Status VIP</th>
                 <th class="p-3">Peran (Role)</th>
-                <th class="p-3 text-right">Aksi & Koin</th>
+                <th class="p-3 text-right">Aksi Koin</th>
               </tr>
             </thead>
             <tbody id="registeredUsersTableBody" class="divide-y divide-gray-800/80 text-gray-300"></tbody>
@@ -711,37 +939,12 @@
         </div>
       </div>
 
-      <!-- TAB 3: KONEKSI FIREBASE -->
-      <div id="founderFirebaseTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-4">
-        <div class="bg-[#141622] border border-gray-800 rounded-xl p-3.5 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-white">Status Koneksi:</span>
-            <span id="firebaseStatusBadgeDetail" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-green-950 text-green-300 border border-green-800">Terhubung ke Firestore Cloud ✓</span>
-          </div>
-
-          <div>
-            <label class="block text-xs text-gray-400 mb-1">Objek JSON Konfigurasi Firebase</label>
-            <textarea id="firebaseConfigInput" rows="7" readonly class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl p-3 text-xs text-amber-300 font-mono focus:outline-none"></textarea>
-          </div>
-
-          <div class="flex flex-wrap gap-2">
-            <button onclick="testFirebaseConnection()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs rounded-xl shadow transition">
-              <i class="fa-solid fa-vial"></i> Uji Ping Koneksi Cloud
-            </button>
-            <button onclick="syncInitialMoviesToCloud()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white font-semibold text-xs rounded-xl transition">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Katalog Demo ke Cloud
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 4: PENGATURAN IKLAN -->
+      <!-- TAB 5: IKLAN -->
       <div id="founderAdsTabContent" class="hidden flex-1 overflow-y-auto p-4 space-y-5">
         <div class="bg-[#141622] border border-gray-800 rounded-xl p-4 space-y-3 max-w-xl">
           <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
             <i class="fa-solid fa-bullhorn"></i> Informasi Materi Iklan Sponsor (Banner & Video)
           </h4>
-          
           <div>
             <label class="block text-xs text-gray-400 mb-1 font-semibold">Teks / Judul Sponsor Banner</label>
             <input type="text" id="adSettingTitle" class="w-full bg-[#0D0F17] border border-gray-700 rounded-xl px-3 py-2 text-xs text-white" value="Disponsori oleh Google AdSense & Mitra MediDrama" />
@@ -762,10 +965,8 @@
 
         <div class="bg-[#141622] border border-gray-800 rounded-xl p-4 space-y-3 max-w-xl">
           <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5 uppercase tracking-wider">
-            <i class="fa-solid fa-sliders"></i> Pengaturan Posisi, Pemicu & Frekuensi Sesi Iklan
+            <i class="fa-solid fa-sliders"></i> Pengaturan Posisi & Frekuensi Sesi Iklan
           </h4>
-          <p class="text-[11px] text-gray-400">Atur batasan sesi agar penonton tidak terganggu oleh iklan yang terlalu sering:</p>
-
           <div class="space-y-3 text-xs text-gray-200">
             <div class="p-3 rounded-lg bg-[#0D0F17] border border-gray-800 space-y-2">
               <label class="flex items-center justify-between cursor-pointer">
@@ -776,12 +977,8 @@
                 <input type="checkbox" id="adTriggerPlay" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
               </label>
               <div class="flex items-center justify-between pt-1 border-t border-gray-800/60">
-                <span class="text-[11px] text-gray-400">Munculkan tiap berapa kali klik putar?</span>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] text-gray-500">Tiap</span>
-                  <input type="number" id="adFreqPlay" value="10" min="1" max="100" class="w-14 bg-gray-900 border border-gray-700 rounded-lg px-2 py-0.5 text-center text-amber-400 font-bold" />
-                  <span class="text-[10px] text-gray-500">kali</span>
-                </div>
+                <span class="text-[11px] text-gray-400">Tiap berapa kali klik putar?</span>
+                <input type="number" id="adFreqPlay" value="10" min="1" max="100" class="w-14 bg-gray-900 border border-gray-700 rounded-lg px-2 py-0.5 text-center text-amber-400 font-bold" />
               </div>
             </div>
 
@@ -789,46 +986,34 @@
               <label class="flex items-center justify-between cursor-pointer">
                 <span class="flex items-center gap-2 font-semibold">
                   <i class="fa-solid fa-forward-step text-amber-400 text-xs"></i>
-                  Picu Iklan Saat Penonton Mengganti Episode
+                  Picu Iklan Saat Ganti Episode
                 </span>
                 <input type="checkbox" id="adTriggerEpisode" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
               </label>
               <div class="flex items-center justify-between pt-1 border-t border-gray-800/60">
-                <span class="text-[11px] text-gray-400">Munculkan tiap berapa kali ganti episode?</span>
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] text-gray-500">Tiap</span>
-                  <input type="number" id="adFreqEpisode" value="3" min="1" max="50" class="w-14 bg-gray-900 border border-gray-700 rounded-lg px-2 py-0.5 text-center text-amber-400 font-bold" />
-                  <span class="text-[10px] text-gray-500">episode</span>
-                </div>
+                <span class="text-[11px] text-gray-400">Tiap berapa kali ganti episode?</span>
+                <input type="number" id="adFreqEpisode" value="3" min="1" max="50" class="w-14 bg-gray-900 border border-gray-700 rounded-lg px-2 py-0.5 text-center text-amber-400 font-bold" />
               </div>
             </div>
 
-            <label class="flex items-center justify-between p-2.5 rounded-lg bg-[#0D0F17] border border-gray-800 hover:border-gray-700 cursor-pointer">
+            <label class="flex items-center justify-between p-2.5 rounded-lg bg-[#0D0F17] border border-gray-800 cursor-pointer">
               <span class="flex items-center gap-2">
                 <i class="fa-solid fa-rectangle-ad text-sky-400 text-xs"></i>
-                Tampilkan Bilah Banner Iklan di Halaman Beranda
+                Tampilkan Banner Iklan di Beranda
               </span>
               <input type="checkbox" id="adTriggerHomeBanner" checked class="accent-red-600 w-4 h-4 cursor-pointer" />
             </label>
-
-            <label class="flex items-center justify-between p-2.5 rounded-lg bg-[#0D0F17] border border-gray-800 hover:border-gray-700 cursor-pointer">
-              <span class="flex items-center gap-2">
-                <i class="fa-solid fa-window-maximize text-emerald-400 text-xs"></i>
-                Tampilkan Pop-up Iklan saat Aplikasi Pertama Dibuka
-              </span>
-              <input type="checkbox" id="adTriggerStartup" class="accent-red-600 w-4 h-4 cursor-pointer" />
-            </label>
           </div>
 
-          <button onclick="saveFounderAdSettings()" class="w-full mt-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-xs rounded-xl shadow-lg transition active:scale-95">
-            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Pengaturan Iklan & Frekuensi Sesi
+          <button onclick="saveFounderAdSettings()" class="w-full mt-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold text-xs rounded-xl shadow-lg transition active:scale-95">
+            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Pengaturan Iklan
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: UPLOAD & EDIT SERIAL FILM -->
+  <!-- MODAL: UPLOAD & EDIT SERIAL FILM (MASSAL FITUR) -->
   <div id="uploadMovieModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4">
     <div class="bg-[#11131C] border border-gray-800 rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
       <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-[#141624]">
@@ -861,20 +1046,20 @@
 
         <div id="customCategoryInputGroup" class="hidden bg-amber-950/20 border border-amber-500/30 rounded-xl p-3">
           <label class="block mb-1 text-amber-300 font-bold">Nama Kategori Baru Anda</label>
-          <input id="founderCustomCategoryText" type="text" placeholder="Contoh: Horor Religi, Kolosal..." class="w-full bg-[#161928] border border-amber-500/50 rounded-lg px-3 py-1.5 text-white focus:outline-none" />
+          <input id="founderCustomCategoryText" type="text" placeholder="Contoh: Horor Religi..." class="w-full bg-[#161928] border border-amber-500/50 rounded-lg px-3 py-1.5 text-white" />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-gray-400 mb-1 font-bold">Status Rilis Cerita</label>
             <select id="uploadStatus" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
-              <option value="ongoing">BERJALAN (Ongoing / Episode Selanjutnya Segera)</option>
+              <option value="ongoing">BERJALAN (Ongoing)</option>
               <option value="coming_soon">SEGERA HADIR (Coming Soon)</option>
               <option value="completed">TAMAT (Completed / END)</option>
             </select>
           </div>
           <div>
-            <label class="block text-gray-400 mb-1 font-bold">Trending & Rekomendasi</label>
+            <label class="block text-gray-400 mb-1 font-bold">Trending</label>
             <select id="uploadTrending" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
               <option value="true">Jadikan Trending (Top 10)</option>
               <option value="false">Katalog Reguler</option>
@@ -883,16 +1068,16 @@
         </div>
 
         <div>
-          <label class="block text-gray-400 mb-1 font-bold">Target Rekomendasi Gender Penonton</label>
+          <label class="block text-gray-400 mb-1 font-bold">Target Gender Penonton</label>
           <select id="uploadGenderTarget" class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white">
             <option value="all">Semua Penonton (Universal)</option>
-            <option value="male">Spesial Cowok (Action, Laga, Misteri)</option>
-            <option value="female">Spesial Cewek (Romantis, Drama Korea, Emosional)</option>
+            <option value="male">Spesial Cowok</option>
+            <option value="female">Spesial Cewek</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-gray-400 mb-1 font-bold">Poster Cover Film (Link Gambar Direct / Google Drive)</label>
+          <label class="block text-gray-400 mb-1 font-bold">Poster Cover Film</label>
           <input type="url" id="uploadCoverUrl" required placeholder="https://pub-...r2.dev/... atau https://..." class="w-full bg-[#161824] border border-gray-700 rounded-xl px-3 py-2 text-white" />
         </div>
 
@@ -901,14 +1086,31 @@
           <textarea id="uploadDescription" rows="2" placeholder="Ceritakan ringkasan drama..." class="w-full bg-[#161824] border border-gray-700 rounded-xl p-2.5 text-white"></textarea>
         </div>
 
+        <!-- FITUR MASSAL ATUR EPISODE GRATIS -->
+        <div class="p-3 bg-[#181a2b] border border-amber-500/30 rounded-xl space-y-2">
+          <span class="font-bold text-amber-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Pengaturan Massal Koin & Gembok Episode
+          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-gray-300">Buka gratis</span>
+            <input type="number" id="bulkFreeEpisodeCount" value="5" min="1" max="100" class="w-16 bg-[#0D0F17] border border-gray-700 rounded-lg px-2 py-1 text-center font-bold text-amber-400" />
+            <span class="text-gray-300">episode pertama, sisanya kenakan:</span>
+            <input type="number" id="bulkRestCostAmount" value="30" min="0" max="500" class="w-16 bg-[#0D0F17] border border-gray-700 rounded-lg px-2 py-1 text-center font-bold text-amber-400" />
+            <span class="text-gray-300">koin</span>
+            <button type="button" onclick="applyBulkEpisodePricing()" class="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-lg ml-auto">
+              Terapkan Massal
+            </button>
+          </div>
+        </div>
+
         <!-- Episode Builder -->
         <div class="border-t border-gray-800 pt-3 space-y-3">
           <div class="flex items-center justify-between">
             <div>
               <span class="font-bold text-white flex items-center gap-1.5">
-                <i class="fa-solid fa-list-ol text-red-500"></i> Kelola & Tambah Episode
+                <i class="fa-solid fa-list-ol text-red-500"></i> Kelola Daftar Episode
               </span>
-              <p class="text-[10px] text-gray-400">Cukup salin link dari Cloudflare R2 (pub-...), sistem otomatis mengubahnya ke domain Worker Anda.</p>
+              <p class="text-[10px] text-gray-400">Atur koin per episode (Koin 0 = GRATIS / Tidak digembok).</p>
             </div>
             <button type="button" onclick="addNewEpisodeField()" class="px-2.5 py-1 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-lg font-bold">
               + Tambah Episode
@@ -937,7 +1139,6 @@
   <div id="authModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#121520] border border-gray-800 rounded-2xl w-full max-w-sm p-6 space-y-4 relative shadow-2xl">
       <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">&times;</button>
-
       <div class="text-center space-y-1">
         <h3 id="authModalTitle" class="font-black text-lg text-white">Masuk ke MediDrama</h3>
         <p class="text-xs text-gray-400">Sinkronkan koin, favorit & riwayat tontonan Anda</p>
@@ -964,17 +1165,14 @@
           <label class="block mb-1 text-gray-300 font-semibold">Nama Lengkap</label>
           <input id="authName" type="text" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" placeholder="Nama Anda" />
         </div>
-
         <div>
           <label class="block mb-1 text-gray-300 font-semibold">Alamat Email</label>
           <input id="authEmail" required type="email" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" placeholder="nama@email.com" />
         </div>
-
         <div>
           <label class="block mb-1 text-gray-300 font-semibold">Kata Sandi / PIN</label>
           <input id="authPassword" required type="password" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-2.5 text-white outline-none focus:border-red-500" placeholder="Masukkan kata sandi / PIN" />
         </div>
-
         <button type="submit" id="authSubmitBtn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-xl transition mt-2 shadow-lg shadow-red-600/30">
           Masuk ke MediDrama
         </button>
@@ -1033,11 +1231,38 @@
       phone: "-",
       gender: "Belum disetel",
       role: "guest",
+      dailyCoins: 0,
+      promoCoins: 0,
       coins: 0,
+      lastDailyClaimDate: "",
+      vipUntil: null,
+      claimedVouchers: [],
       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
       favorites: [],
-      history: []
+      history: [],
+      unlockedEpisodes: {},
+      watchedEpisodeCount: 0
     };
+
+    // Pengaturan Ekonomi & Kontrol Founder dengan Multi-Channel Gateway
+    let economySettings = {
+      guestFreeLimit: 5,
+      defaultEpisodeCost: 30,
+      dailyBonusAmount: 20,
+      priceWeek: 19000,
+      priceMonth: 49000,
+      price6Month: 199000,
+      priceYear: 299000,
+      paymentMethod: "external_link", // "external_link" (Lynk.id), "whatsapp_admin", "google_play_billing"
+      lynkUrl: "https://lynk.id",
+      whatsappNumber: "6281200000000",
+      playSkuPrefix: "com.medidrama."
+    };
+
+    let promoVouchers = [
+      { code: "MEDISULTAN", coins: 10000, desc: "Bonus Spesial Sultan MediDrama", claimedCount: 0 },
+      { code: "PROMO20K", coins: 20000, desc: "Tiket Kemitraan VIP", claimedCount: 0 }
+    ];
 
     let moviesCatalog = [
       {
@@ -1092,8 +1317,7 @@
       triggerEpisode: true,
       freqEpisode: 3,
       epSwitchCount: 0,
-      triggerHomeBanner: true,
-      triggerStartup: false
+      triggerHomeBanner: true
     };
 
     let touchStartY = 0;
@@ -1112,6 +1336,7 @@
       renderCategoryChips();
       renderTrendingRow();
       renderCatalogGrid();
+      populateCoinShopUI();
     });
 
     function extractGoogleDriveId(url) {
@@ -1131,13 +1356,11 @@
       return url;
     }
 
-    // KONVERSI OTOMATIS: Cloudflare R2 Dev Subdomain (pub-...) -> Cloudflare Worker Sakti
     function formatCloudflareWorkerVideoUrl(url) {
       if (!url) return '';
       const cleanUrl = url.trim();
       const workerDomain = "https://lihat-videokumedidrama.adminmedidrama.workers.dev";
 
-      // Jika user menempel link r2.dev (misal: https://pub-71d9d5d991...r2.dev/path/file.mp4)
       if (cleanUrl.includes('.r2.dev/')) {
         const pathPart = cleanUrl.split('.r2.dev/')[1];
         if (pathPart) {
@@ -1151,35 +1374,19 @@
       window.addEventListener('popstate', () => {
         const playerSettings = document.getElementById('playerSettingsMenu');
         const episodeDrawer = document.getElementById('episodeDrawer');
+        const coinShopModal = document.getElementById('coinShopModal');
         const playerModal = document.getElementById('playerModal');
         const uploadModal = document.getElementById('uploadMovieModal');
         const founderModal = document.getElementById('founderModal');
         const authModal = document.getElementById('authModal');
 
-        if (playerSettings && !playerSettings.classList.contains('hidden')) {
-          playerSettings.classList.add('hidden');
-          return;
-        }
-        if (episodeDrawer && !episodeDrawer.classList.contains('hidden')) {
-          episodeDrawer.classList.add('hidden');
-          return;
-        }
-        if (playerModal && !playerModal.classList.contains('hidden')) {
-          closePlayerModal(false);
-          return;
-        }
-        if (uploadModal && !uploadModal.classList.contains('hidden')) {
-          uploadModal.classList.add('hidden');
-          return;
-        }
-        if (founderModal && !founderModal.classList.contains('hidden')) {
-          founderModal.classList.add('hidden');
-          return;
-        }
-        if (authModal && !authModal.classList.contains('hidden')) {
-          authModal.classList.add('hidden');
-          return;
-        }
+        if (playerSettings && !playerSettings.classList.contains('hidden')) { playerSettings.classList.add('hidden'); return; }
+        if (coinShopModal && !coinShopModal.classList.contains('hidden')) { coinShopModal.classList.add('hidden'); return; }
+        if (episodeDrawer && !episodeDrawer.classList.contains('hidden')) { episodeDrawer.classList.add('hidden'); return; }
+        if (playerModal && !playerModal.classList.contains('hidden')) { closePlayerModal(false); return; }
+        if (uploadModal && !uploadModal.classList.contains('hidden')) { uploadModal.classList.add('hidden'); return; }
+        if (founderModal && !founderModal.classList.contains('hidden')) { founderModal.classList.add('hidden'); return; }
+        if (authModal && !authModal.classList.contains('hidden')) { authModal.classList.add('hidden'); return; }
       });
     }
 
@@ -1198,9 +1405,85 @@
         listenAuthState();
         listenMoviesRealtime();
         listenBroadcastNotification();
+        listenEconomySettings();
+        listenPromoVouchers();
       } catch (e) {
         console.warn("Init Firebase:", e);
       }
+    }
+
+    function listenEconomySettings() {
+      if (!db) return;
+      db.collection('settings').doc('economy').onSnapshot((doc) => {
+        if (doc.exists) {
+          economySettings = { ...economySettings, ...doc.data() };
+          applyEconomySettingsUI();
+        }
+      });
+    }
+
+    function applyEconomySettingsUI() {
+      const gLimitInput = document.getElementById('economySettingGuestFreeLimit');
+      const defCostInput = document.getElementById('economySettingDefaultEpisodeCost');
+      const dBonusInput = document.getElementById('economySettingDailyBonus');
+      const pWeekInput = document.getElementById('economySettingPriceWeek');
+      const pMonthInput = document.getElementById('economySettingPriceMonth');
+      const p6MonthInput = document.getElementById('economySettingPrice6Month');
+      const pYearInput = document.getElementById('economySettingPriceYear');
+      const dailyBonusText = document.getElementById('dailyBonusClaimAmountText');
+      const pMethodSelect = document.getElementById('economySettingPaymentMethod');
+      const lynkInput = document.getElementById('economySettingLynkUrl');
+      const waInput = document.getElementById('economySettingWhatsappNum');
+      const skuInput = document.getElementById('economySettingPlaySkuPrefix');
+
+      if (gLimitInput) gLimitInput.value = economySettings.guestFreeLimit;
+      if (defCostInput) defCostInput.value = economySettings.defaultEpisodeCost;
+      if (dBonusInput) dBonusInput.value = economySettings.dailyBonusAmount;
+      if (dailyBonusText) dailyBonusText.innerText = economySettings.dailyBonusAmount;
+
+      if (pWeekInput) pWeekInput.value = economySettings.priceWeek;
+      if (pMonthInput) pMonthInput.value = economySettings.priceMonth;
+      if (p6MonthInput) p6MonthInput.value = economySettings.price6Month;
+      if (pYearInput) pYearInput.value = economySettings.priceYear;
+
+      if (pMethodSelect) pMethodSelect.value = economySettings.paymentMethod || "external_link";
+      if (lynkInput) lynkInput.value = economySettings.lynkUrl || "https://lynk.id";
+      if (waInput) waInput.value = economySettings.whatsappNumber || "6281200000000";
+      if (skuInput) skuInput.value = economySettings.playSkuPrefix || "com.medidrama.";
+
+      handlePaymentMethodChange(economySettings.paymentMethod || "external_link");
+      populateCoinShopUI();
+    }
+
+    function handlePaymentMethodChange(method) {
+      const gLynk = document.getElementById('paymentGroupExternalLink');
+      const gWA = document.getElementById('paymentGroupWhatsApp');
+      const gPlay = document.getElementById('paymentGroupGooglePlay');
+
+      if (gLynk) gLynk.classList.add('hidden');
+      if (gWA) gWA.classList.add('hidden');
+      if (gPlay) gPlay.classList.add('hidden');
+
+      if (method === 'external_link' && gLynk) gLynk.classList.remove('hidden');
+      else if (method === 'whatsapp_admin' && gWA) gWA.classList.remove('hidden');
+      else if (method === 'google_play_billing' && gPlay) gPlay.classList.remove('hidden');
+
+      const badge = document.getElementById('activePaymentBadge');
+      if (badge) {
+        if (method === 'external_link') badge.innerHTML = `<i class="fa-solid fa-wallet text-amber-400"></i> Mode: Lynk.id / QRIS Web`;
+        else if (method === 'whatsapp_admin') badge.innerHTML = `<i class="fa-brands fa-whatsapp text-green-400"></i> Mode: WhatsApp Konfirmasi Admin`;
+        else badge.innerHTML = `<i class="fa-brands fa-google-play text-sky-400"></i> Mode: Google Play In-App Billing`;
+      }
+    }
+
+    function listenPromoVouchers() {
+      if (!db) return;
+      db.collection('vouchers').onSnapshot((snap) => {
+        if (!snap.empty) {
+          promoVouchers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        }
+        renderVouchersTable();
+      });
     }
 
     function listenAuthState() {
@@ -1224,33 +1507,79 @@
               if (doc.exists) {
                 const data = doc.data();
                 currentUser.name = data.name || currentUser.name;
-                currentUser.coins = data.coins !== undefined ? data.coins : 50;
+                currentUser.dailyCoins = data.dailyCoins !== undefined ? data.dailyCoins : 0;
+                currentUser.promoCoins = data.promoCoins !== undefined ? data.promoCoins : 50;
+                currentUser.coins = currentUser.dailyCoins + currentUser.promoCoins;
                 currentUser.gender = data.gender || "Belum disetel";
                 currentUser.role = isFounderEmail ? 'FOUNDER-SUPER' : (data.role || 'user');
                 currentUser.phone = data.phone || '-';
                 currentUser.avatar = data.photoURL || currentUser.avatar;
                 currentUser.favorites = data.favorites || [];
                 currentUser.history = data.history || [];
+                currentUser.unlockedEpisodes = data.unlockedEpisodes || {};
+                currentUser.lastDailyClaimDate = data.lastDailyClaimDate || "";
+                currentUser.claimedVouchers = data.claimedVouchers || [];
+                currentUser.vipUntil = data.vipUntil || null;
               }
             }
           } catch (err) {
             console.error("Sync error:", err);
           }
+          checkAndResetDailyCoins();
           updateAuthUI(true);
         } else {
+          currentUser.coins = (currentUser.dailyCoins || 0) + (currentUser.promoCoins || 0);
           updateAuthUI(false);
         }
       });
+    }
+
+    function checkAndResetDailyCoins() {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      if (currentUser.lastDailyClaimDate && currentUser.lastDailyClaimDate !== todayStr) {
+        currentUser.dailyCoins = 0;
+        currentUser.coins = currentUser.dailyCoins + currentUser.promoCoins;
+        syncUserDataToFirestore();
+      }
+    }
+
+    function isUserVipActive() {
+      if (currentUser.role === 'FOUNDER-SUPER') return true;
+      if (!currentUser.vipUntil) return false;
+      return new Date(currentUser.vipUntil) > new Date();
     }
 
     function updateAuthUI(isLoggedIn) {
       const navSlot = document.getElementById('navUserSlot');
       const founderBtn = document.getElementById('founderPortalNavBtn');
       const navCoin = document.getElementById('navCoinCount');
-      const watermarkUser = document.getElementById('watermarkUser');
+      const playerCoin = document.getElementById('playerCoinStatus');
+      const profileCoin = document.getElementById('profileCardCoin');
+      const pointsCoin = document.getElementById('pointsPageCoinCount');
+      const pointsDailyCoin = document.getElementById('pointsPageDailyCoin');
+      const pointsPromoCoin = document.getElementById('pointsPagePromoCoin');
+      const shopUserCoin = document.getElementById('shopModalUserCoin');
+      const vipText = document.getElementById('profileVipText');
+      const vipExpiry = document.getElementById('profileVipExpiry');
 
-      if (navCoin) navCoin.innerText = currentUser.coins;
-      if (watermarkUser) watermarkUser.innerText = (currentUser.name || 'TAMU').toUpperCase();
+      const totalCoins = (currentUser.dailyCoins || 0) + (currentUser.promoCoins || 0);
+      currentUser.coins = totalCoins;
+
+      if (navCoin) navCoin.innerText = totalCoins;
+      if (playerCoin) playerCoin.innerText = totalCoins;
+      if (profileCoin) profileCoin.innerText = totalCoins;
+      if (pointsCoin) pointsCoin.innerText = totalCoins;
+      if (pointsDailyCoin) pointsDailyCoin.innerText = currentUser.dailyCoins || 0;
+      if (pointsPromoCoin) pointsPromoCoin.innerText = currentUser.promoCoins || 0;
+      if (shopUserCoin) shopUserCoin.innerText = totalCoins;
+
+      const isVip = isUserVipActive();
+      if (vipText) vipText.innerText = isVip ? "VIP AKTIF (Bebas Nonton)" : "Reguler";
+      if (vipExpiry) {
+        if (currentUser.role === 'FOUNDER-SUPER') vipExpiry.innerText = "Super Founder: Akses Selamanya.";
+        else if (isVip) vipExpiry.innerText = `Aktif s/d: ${new Date(currentUser.vipUntil).toLocaleDateString('id-ID')}`;
+        else vipExpiry.innerText = "Klaim langganan VIP untuk nonton gratis tanpa batas.";
+      }
 
       const isFounder = 
         currentUser.role === 'FOUNDER-SUPER' || 
@@ -1496,12 +1825,89 @@
       window.open(url, '_blank');
     }
 
+    function isEpisodeUnlocked(dramaId, epIdx) {
+      if (epIdx === 0) return true;
+      if (isUserVipActive()) return true;
+
+      const unlockedList = (currentUser.unlockedEpisodes && currentUser.unlockedEpisodes[dramaId]) || [];
+      return unlockedList.includes(epIdx);
+    }
+
+    function canUnlockEpisode(dramaId, epIdx) {
+      if (epIdx === 0) return true;
+      return isEpisodeUnlocked(dramaId, epIdx - 1);
+    }
+
+    function unlockEpisodeWithCoins(dramaId, epIdx, cost) {
+      if (currentUser.coins < cost) {
+        showToast(`Koin tidak cukup! Butuh ${cost} koin.`, "error");
+        openCoinShopModal();
+        return false;
+      }
+
+      let remainingCost = cost;
+      if (currentUser.dailyCoins >= remainingCost) {
+        currentUser.dailyCoins -= remainingCost;
+      } else {
+        remainingCost -= currentUser.dailyCoins;
+        currentUser.dailyCoins = 0;
+        currentUser.promoCoins -= remainingCost;
+      }
+
+      currentUser.coins = currentUser.dailyCoins + currentUser.promoCoins;
+
+      if (!currentUser.unlockedEpisodes) currentUser.unlockedEpisodes = {};
+      if (!currentUser.unlockedEpisodes[dramaId]) currentUser.unlockedEpisodes[dramaId] = [0];
+
+      if (!currentUser.unlockedEpisodes[dramaId].includes(epIdx)) {
+        currentUser.unlockedEpisodes[dramaId].push(epIdx);
+      }
+
+      syncUserDataToFirestore();
+      updateAuthUI(!!currentUser.uid);
+      showToast(`Berhasil membuka Episode ${epIdx + 1}! (-${cost} Koin)`, "success");
+      return true;
+    }
+
     function openPlayerModal(dramaId, episodeIndex = 0) {
       const drama = moviesCatalog.find(d => d.id === dramaId);
       if (!drama) return;
 
+      if (!currentUser.uid) {
+        const guestWatched = currentUser.watchedEpisodeCount || 0;
+        if (guestWatched >= economySettings.guestFreeLimit && episodeIndex > 0) {
+          showToast(`Batas gratis tamu (${economySettings.guestFreeLimit} episode) tercapai. Silakan masuk/daftar akun!`, "info");
+          openAuthModal();
+          return;
+        }
+      }
+
       activePlayingDrama = drama;
+      
+      if (!currentUser.unlockedEpisodes) currentUser.unlockedEpisodes = {};
+      if (!currentUser.unlockedEpisodes[drama.id]) currentUser.unlockedEpisodes[drama.id] = [0];
+
+      if (!isEpisodeUnlocked(drama.id, episodeIndex)) {
+        if (!canUnlockEpisode(drama.id, episodeIndex)) {
+          showToast(`Episode harus dibuka berurutan! Buka Episode ${episodeIndex} terlebih dahulu.`, "error");
+          episodeIndex = 0;
+        } else {
+          const epData = (drama.episodes || [])[episodeIndex];
+          const cost = (epData && epData.cost !== undefined) ? epData.cost : economySettings.defaultEpisodeCost;
+          if (cost > 0) {
+            const confirmed = confirm(`Episode ${episodeIndex + 1} terkunci! Buka kunci sekarang dengan ${cost} koin? (Saldo Anda: ${currentUser.coins} Koin)`);
+            if (!confirmed || !unlockEpisodeWithCoins(drama.id, episodeIndex, cost)) {
+              return;
+            }
+          } else {
+            currentUser.unlockedEpisodes[drama.id].push(episodeIndex);
+            syncUserDataToFirestore();
+          }
+        }
+      }
+
       activeEpisodeIndex = episodeIndex;
+      currentUser.watchedEpisodeCount = (currentUser.watchedEpisodeCount || 0) + 1;
 
       if (!currentUser.history.includes(dramaId)) {
         currentUser.history.unshift(dramaId);
@@ -1530,7 +1936,6 @@
       const subTrack = document.getElementById('videoSubTrack');
 
       if (progressBar) progressBar.style.width = '0%';
-
       showVideoLoading(true, "MEMUAT SERIAL...");
 
       if (currentEp.subtitleUrl && subTrack) {
@@ -1603,6 +2008,9 @@
     }
 
     function openEpisodeDrawer() {
+      if (activePlayingDrama && activePlayingDrama.episodes) {
+        renderEpisodeDrawerList(activePlayingDrama.episodes);
+      }
       const drawer = document.getElementById('episodeDrawer');
       if (drawer) drawer.classList.remove('hidden');
       const meta = document.getElementById('playerMetaWrapper');
@@ -1641,38 +2049,19 @@
       if (html5Video) {
         html5Video.loop = false;
 
-        html5Video.addEventListener('loadstart', () => {
-          showVideoLoading(true, "MEMUAT SERIAL...");
-        });
-
-        html5Video.addEventListener('waiting', () => {
-          showVideoLoading(true, "MENSTABILKAN BUFFER...");
-        });
-
-        html5Video.addEventListener('playing', () => {
-          showVideoLoading(false);
-        });
+        html5Video.addEventListener('loadstart', () => showVideoLoading(true, "MEMUAT SERIAL..."));
+        html5Video.addEventListener('waiting', () => showVideoLoading(true, "MENSTABILKAN BUFFER..."));
+        html5Video.addEventListener('playing', () => showVideoLoading(false));
 
         html5Video.addEventListener('canplay', () => {
           showVideoLoading(false);
           const totalEl = document.getElementById('videoTimeTotal');
-          if (totalEl && html5Video.duration) {
-            totalEl.innerText = formatTimeDuration(html5Video.duration);
-          }
+          if (totalEl && html5Video.duration) totalEl.innerText = formatTimeDuration(html5Video.duration);
         });
 
         html5Video.addEventListener('loadedmetadata', () => {
           const totalEl = document.getElementById('videoTimeTotal');
-          if (totalEl && html5Video.duration) {
-            totalEl.innerText = formatTimeDuration(html5Video.duration);
-          }
-        });
-
-        html5Video.addEventListener('durationchange', () => {
-          const totalEl = document.getElementById('videoTimeTotal');
-          if (totalEl && html5Video.duration) {
-            totalEl.innerText = formatTimeDuration(html5Video.duration);
-          }
+          if (totalEl && html5Video.duration) totalEl.innerText = formatTimeDuration(html5Video.duration);
         });
 
         html5Video.addEventListener('timeupdate', () => {
@@ -1701,10 +2090,14 @@
           
           if (isAutoNext && activePlayingDrama && activePlayingDrama.episodes) {
             if (activeEpisodeIndex + 1 < activePlayingDrama.episodes.length) {
-              showToast("Melanjutkan ke episode berikutnya...", "info");
-              setTimeout(() => {
-                goToNextEpisodeSwipe();
-              }, 400);
+              const nextIdx = activeEpisodeIndex + 1;
+              if (isEpisodeUnlocked(activePlayingDrama.id, nextIdx) || canUnlockEpisode(activePlayingDrama.id, nextIdx)) {
+                showToast("Melanjutkan ke episode berikutnya...", "info");
+                setTimeout(() => switchEpisode(nextIdx), 400);
+              } else {
+                showToast("Buka kunci episode berikutnya untuk melanjutkan.", "info");
+                openEpisodeDrawer();
+              }
             } else {
               showToast("Ini adalah episode terakhir.", "info");
             }
@@ -1728,11 +2121,8 @@
             const deltaTime = Date.now() - touchStartTime;
 
             if (Math.abs(deltaY) > 40 && Math.abs(deltaY) > Math.abs(deltaX) && deltaTime < 600) {
-              if (deltaY < 0) {
-                goToNextEpisodeSwipe();
-              } else {
-                goToPrevEpisodeSwipe();
-              }
+              if (deltaY < 0) goToNextEpisodeSwipe();
+              else goToPrevEpisodeSwipe();
               return;
             }
 
@@ -1801,8 +2191,6 @@
       if (!activePlayingDrama || !activePlayingDrama.episodes) return;
       if (activeEpisodeIndex + 1 < activePlayingDrama.episodes.length) {
         const nextIdx = activeEpisodeIndex + 1;
-        const nextTitle = activePlayingDrama.episodes[nextIdx].title || `Episode ${nextIdx + 1}`;
-        showSwipeIndicator(`${nextTitle}`, "up");
         switchEpisode(nextIdx);
       } else {
         showSwipeIndicator("Ini Episode Terakhir", "info");
@@ -1861,16 +2249,51 @@
 
     function renderEpisodeDrawerList(episodes) {
       const container = document.getElementById('playerEpisodesRow');
-      if (!container) return;
-      container.innerHTML = episodes.map((ep, idx) => `
-        <button onclick="switchEpisode(${idx})" class="p-2.5 rounded-xl border text-left flex flex-col justify-between transition ${idx === activeEpisodeIndex ? 'bg-red-600/30 border-red-500 text-white' : 'bg-[#161928] border-gray-800 text-gray-300 hover:border-gray-700'}">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-xs truncate">Ep ${idx + 1}</span>
-            <span class="text-[9px] ${ep.cost === 0 ? 'text-green-400 font-bold' : 'text-amber-400 font-mono'}">${ep.cost === 0 ? 'FREE' : `🪙 ${ep.cost}`}</span>
-          </div>
-          <span class="text-[9px] text-gray-400 truncate mt-1">${ep.title || `Bagian ${idx + 1}`}</span>
-        </button>
-      `).join('');
+      if (!container || !activePlayingDrama) return;
+
+      const dramaId = activePlayingDrama.id;
+      const isVip = isUserVipActive();
+
+      container.innerHTML = episodes.map((ep, idx) => {
+        const isCurrent = idx === activeEpisodeIndex;
+        const isUnlocked = isEpisodeUnlocked(dramaId, idx);
+        const canUnlock = canUnlockEpisode(dramaId, idx);
+
+        let badgeHtml = '';
+        let statusClass = '';
+
+        if (idx === 0 || ep.cost === 0) {
+          badgeHtml = `<span class="text-[9px] text-green-400 font-bold">GRATIS</span>`;
+        } else if (isVip) {
+          badgeHtml = `<span class="text-[9px] text-amber-400 font-bold flex items-center gap-1"><i class="fa-solid fa-crown text-[8px]"></i> VIP</span>`;
+        } else if (isUnlocked) {
+          badgeHtml = `<span class="text-[9px] text-emerald-400 font-bold flex items-center gap-1"><i class="fa-solid fa-lock-open text-[8px]"></i> DIBUKA</span>`;
+        } else if (canUnlock) {
+          badgeHtml = `<span class="text-[9px] text-amber-400 font-mono font-bold">🪙 ${ep.cost}</span>`;
+        } else {
+          badgeHtml = `<span class="text-[9px] text-gray-500 font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[8px]"></i> KUNCI</span>`;
+        }
+
+        if (isCurrent) {
+          statusClass = 'bg-red-600/30 border-red-500 text-white';
+        } else if (isUnlocked || isVip) {
+          statusClass = 'bg-[#161928] border-gray-700 text-gray-200 hover:border-gray-500';
+        } else if (canUnlock) {
+          statusClass = 'bg-[#1a1824] border-amber-500/40 text-amber-300 hover:border-amber-400';
+        } else {
+          statusClass = 'bg-[#11131c] border-gray-800 text-gray-600 opacity-60 cursor-not-allowed';
+        }
+
+        return `
+          <button onclick="switchEpisode(${idx})" class="p-2.5 rounded-xl border text-left flex flex-col justify-between transition ${statusClass}">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-xs truncate">Ep ${idx + 1}</span>
+              ${badgeHtml}
+            </div>
+            <span class="text-[9px] ${canUnlock || isUnlocked || isVip ? 'text-gray-400' : 'text-gray-600'} truncate mt-1">${ep.title || `Bagian ${idx + 1}`}</span>
+          </button>
+        `;
+      }).join('');
     }
 
     function switchEpisode(idx) {
@@ -1879,9 +2302,31 @@
       const targetEp = episodes[idx];
       if (!targetEp) return;
 
-      if (targetEp.cost > 0 && currentUser.coins < targetEp.cost && currentUser.role !== 'FOUNDER-SUPER') {
-        showToast(`Koin tidak cukup! Butuh ${targetEp.cost} koin.`, "error");
+      const dramaId = activePlayingDrama.id;
+
+      if (!currentUser.uid && idx >= economySettings.guestFreeLimit) {
+        showToast(`Batas gratis tamu tercapai. Masuk akun untuk lanjut episode berikutnya!`, "info");
+        openAuthModal();
         return;
+      }
+
+      if (!canUnlockEpisode(dramaId, idx)) {
+        showToast(`Episode harus berurutan! Tonton & buka Episode ${idx} terlebih dahulu.`, "error");
+        return;
+      }
+
+      if (!isEpisodeUnlocked(dramaId, idx)) {
+        const cost = targetEp.cost !== undefined ? targetEp.cost : economySettings.defaultEpisodeCost;
+        if (cost > 0) {
+          const confirmed = confirm(`Episode ${idx + 1} terkunci seharga ${cost} koin.\nBuka kunci sekarang? (Saldo Anda: ${currentUser.coins} Koin)`);
+          if (!confirmed) return;
+
+          if (!unlockEpisodeWithCoins(dramaId, idx, cost)) return;
+        } else {
+          if (!currentUser.unlockedEpisodes[dramaId]) currentUser.unlockedEpisodes[dramaId] = [0];
+          currentUser.unlockedEpisodes[dramaId].push(idx);
+          syncUserDataToFirestore();
+        }
       }
 
       activeEpisodeIndex = idx;
@@ -1895,9 +2340,7 @@
       const html5Video = document.getElementById('mainVideoPlayer');
       const subTrack = document.getElementById('videoSubTrack');
 
-      if (targetEp.subtitleUrl && subTrack) {
-        subTrack.src = targetEp.subtitleUrl;
-      }
+      if (targetEp.subtitleUrl && subTrack) subTrack.src = targetEp.subtitleUrl;
 
       if (html5Video) {
         html5Video.src = rawUrl;
@@ -1945,9 +2388,7 @@
 
     function setPlaySpeed(speed) {
       const videoEl = document.getElementById('mainVideoPlayer');
-      if (videoEl) {
-        videoEl.playbackRate = speed;
-      }
+      if (videoEl) videoEl.playbackRate = speed;
       document.querySelectorAll('.speed-btn').forEach(btn => {
         btn.className = btn.innerText.includes(`${speed}x`) ? "speed-btn p-1 rounded bg-red-600 text-white font-bold" : "speed-btn p-1 rounded bg-gray-800 text-gray-300";
       });
@@ -1959,13 +2400,333 @@
       isSubtitleEnabled = checked;
       const subBox = document.getElementById('liveSubtitleText');
       const subTrack = document.getElementById('videoSubTrack');
-      if (subTrack && subTrack.track) {
-        subTrack.track.mode = checked ? "showing" : "disabled";
-      }
-      if (!checked && subBox) {
-        subBox.classList.add('hidden');
-      }
+      if (subTrack && subTrack.track) subTrack.track.mode = checked ? "showing" : "disabled";
+      if (!checked && subBox) subBox.classList.add('hidden');
       showToast(checked ? "Subtitle diaktifkan" : "Subtitle dinonaktifkan", "info");
+    }
+
+    // ========================================================
+    // MESIN KLAIM VOUCHER / TIKET PROMO
+    // ========================================================
+    async function redeemPromoVoucher(source = 'points') {
+      const inputEl = document.getElementById(source === 'profile' ? 'profileVoucherInput' : 'voucherCodeInput');
+      if (!inputEl) return;
+      const code = inputEl.value.trim().toUpperCase();
+
+      if (!code) {
+        showToast("Masukkan kode voucher terlebih dahulu!", "error");
+        return;
+      }
+
+      if (currentUser.claimedVouchers && currentUser.claimedVouchers.includes(code)) {
+        showToast("Kode tiket promo ini sudah pernah Anda klaim!", "error");
+        return;
+      }
+
+      const voucher = promoVouchers.find(v => v.code.toUpperCase() === code);
+      if (!voucher) {
+        showToast("Kode tiket promo tidak valid atau telah berakhir!", "error");
+        return;
+      }
+
+      currentUser.promoCoins = (currentUser.promoCoins || 0) + voucher.coins;
+      currentUser.coins = (currentUser.dailyCoins || 0) + currentUser.promoCoins;
+      if (!currentUser.claimedVouchers) currentUser.claimedVouchers = [];
+      currentUser.claimedVouchers.push(code);
+
+      syncUserDataToFirestore();
+      updateAuthUI(!!currentUser.uid);
+
+      if (db && voucher.id) {
+        db.collection('vouchers').doc(voucher.id).update({
+          claimedCount: firebase.firestore.FieldValue.increment(1)
+        });
+      }
+
+      inputEl.value = '';
+      showToast(`🎉 Selamat! +${voucher.coins.toLocaleString('id-ID')} Koin Promo berhasil diklaim!`, "success");
+    }
+
+    async function createNewPromoVoucher() {
+      const code = document.getElementById('newVoucherCode').value.trim().toUpperCase();
+      const reward = parseInt(document.getElementById('newVoucherReward').value) || 10000;
+      const desc = document.getElementById('newVoucherDesc').value.trim() || "Tiket Promo Khusus";
+
+      if (!code) {
+        showToast("Kode voucher tidak boleh kosong!", "error");
+        return;
+      }
+
+      const payload = {
+        code,
+        coins: reward,
+        desc,
+        claimedCount: 0,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        if (db) {
+          const docRef = await db.collection('vouchers').add(payload);
+          promoVouchers.push({ id: docRef.id, ...payload });
+        } else {
+          promoVouchers.push({ id: 'v_' + Date.now(), ...payload });
+        }
+        renderVouchersTable();
+        document.getElementById('newVoucherCode').value = '';
+        showToast(`Tiket promo "${code}" berhasil diterbitkan!`, "success");
+      } catch (err) {
+        showToast("Gagal membuat voucher: " + err.message, "error");
+      }
+    }
+
+    function renderVouchersTable() {
+      const tbody = document.getElementById('vouchersTableBody');
+      const badge = document.getElementById('statTotalVouchers');
+      if (badge) badge.innerText = promoVouchers.length;
+      if (!tbody) return;
+
+      tbody.innerHTML = promoVouchers.map(v => `
+        <tr class="hover:bg-gray-800/30 transition">
+          <td class="p-3 font-mono font-bold text-amber-400">${v.code}</td>
+          <td class="p-3 text-emerald-400 font-bold">+${(v.coins || 0).toLocaleString('id-ID')}</td>
+          <td class="p-3 text-gray-300">${v.desc || '-'}</td>
+          <td class="p-3 font-mono">${v.claimedCount || 0} kali</td>
+          <td class="p-3 text-right">
+            <button onclick="deleteVoucher('${v.id || v.code}')" class="px-2 py-1 bg-red-600/20 text-red-400 hover:bg-red-600/30 rounded text-[10px] font-bold">
+              Hapus
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function deleteVoucher(id) {
+      if (!confirm("Hapus tiket promo ini?")) return;
+      try {
+        if (db) await db.collection('vouchers').doc(id).delete();
+        promoVouchers = promoVouchers.filter(v => v.id !== id && v.code !== id);
+        renderVouchersTable();
+        showToast("Tiket promo dihapus.", "info");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    // ========================================================
+    // TOKO KOIN & PAKET LANGGANAN VIP (HYBRID GATEWAY EXECUTION)
+    // ========================================================
+    function populateCoinShopUI() {
+      const vipContainer = document.getElementById('vipPackagesList');
+      const topupContainer = document.getElementById('coinTopupPackagesList');
+
+      const currentMethod = economySettings.paymentMethod || "external_link";
+      let btnLabel = "Beli Sekarang";
+      if (currentMethod === "whatsapp_admin") btnLabel = "Pesan via WhatsApp";
+      else if (currentMethod === "google_play_billing") btnLabel = "Google Play Pay";
+      else btnLabel = "Beli via Lynk.id / QRIS";
+
+      if (vipContainer) {
+        const vipPlans = [
+          { skuKey: "vip_week", title: "VIP 1 Minggu", days: 7, price: economySettings.priceWeek, badge: "UJI COBA" },
+          { skuKey: "vip_month", title: "VIP 1 Bulan", days: 30, price: economySettings.priceMonth, badge: "POPULER" },
+          { skuKey: "vip_6month", title: "VIP 6 Bulan", days: 180, price: economySettings.price6Month, badge: "HEMAT 35%" },
+          { skuKey: "vip_year", title: "VIP 1 Tahun", days: 365, price: economySettings.priceYear, badge: "SUPER SULTAN" }
+        ];
+
+        vipContainer.innerHTML = vipPlans.map(plan => `
+          <div class="bg-[#161928] border border-amber-500/30 hover:border-amber-500 p-3 rounded-xl flex flex-col justify-between space-y-2 transition shadow">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-white text-xs">${plan.title}</span>
+              <span class="text-[8px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded font-black">${plan.badge}</span>
+            </div>
+            <div class="text-sm font-black text-amber-400">Rp ${plan.price.toLocaleString('id-ID')}</div>
+            <button onclick="executePaymentCheckout('vip', '${plan.skuKey}', '${plan.title}', ${plan.price}, ${plan.days})" class="w-full py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-black text-[10px] rounded-lg shadow active:scale-95 transition">
+              ${btnLabel}
+            </button>
+          </div>
+        `).join('');
+      }
+
+      if (topupContainer) {
+        const coinPlans = [
+          { skuKey: "coin_100", coins: 100, price: 15000 },
+          { skuKey: "coin_250", coins: 250, price: 35000 },
+          { skuKey: "coin_500", coins: 500, price: 65000 },
+          { skuKey: "coin_1000", coins: 1000, price: 120000 },
+          { skuKey: "coin_2500", coins: 2500, price: 275000 },
+          { skuKey: "coin_5000", coins: 5000, price: 500000 }
+        ];
+
+        topupContainer.innerHTML = coinPlans.map(plan => `
+          <div class="bg-[#161928] border border-gray-800 hover:border-amber-500/50 p-2.5 rounded-xl flex flex-col justify-between text-center space-y-1.5 transition">
+            <span class="text-xs font-black text-amber-400">🪙 ${plan.coins}</span>
+            <span class="text-[10px] text-gray-300 font-semibold">Rp ${plan.price.toLocaleString('id-ID')}</span>
+            <button onclick="executePaymentCheckout('coin', '${plan.skuKey}', 'Top-up ${plan.coins} Koin', ${plan.price}, ${plan.coins})" class="w-full py-1 bg-gray-800 hover:bg-gray-700 text-amber-300 font-bold text-[9px] rounded-lg transition active:scale-95">
+              ${btnLabel}
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function executePaymentCheckout(type, skuKey, packageName, price, value) {
+      if (!currentUser.uid) {
+        showToast("Silakan masuk/daftar akun terlebih dahulu untuk melakukan transaksi!", "info");
+        openAuthModal();
+        return;
+      }
+
+      const method = economySettings.paymentMethod || "external_link";
+      const userIdent = currentUser.email || currentUser.phone || currentUser.name || "Penonton";
+      const uidShort = currentUser.uid.slice(0, 8);
+
+      // JALUR 1: LINK EKSTERNAL / LYNK.ID / QRIS WEB
+      if (method === "external_link") {
+        let baseLynk = (economySettings.lynkUrl || "https://lynk.id").trim();
+        if (!baseLynk.startsWith('http')) baseLynk = 'https://' + baseLynk;
+        
+        const checkoutUrl = `${baseLynk}?package=${encodeURIComponent(packageName)}&user=${encodeURIComponent(userIdent)}&uid=${uidShort}&amount=${price}`;
+        window.open(checkoutUrl, '_blank');
+        showToast("Membuka halaman pembayaran Lynk.id...", "info");
+        return;
+      }
+
+      // JALUR 2: WHATSAPP KONFIRMASI ADMIN
+      if (method === "whatsapp_admin") {
+        const waNumber = (economySettings.whatsappNumber || "6281200000000").replace(/[^0-9]/g, '');
+        const messageText = `Halo Admin MediDrama,\nSaya ingin melakukan transaksi:\n\n` +
+          `• Nama: ${currentUser.name}\n` +
+          `• ID Akun: ${currentUser.uid}\n` +
+          `• Paket: ${packageName}\n` +
+          `• Tagihan: Rp ${price.toLocaleString('id-ID')}\n\n` +
+          `Mohon panduan rekening transfer / QRIS nya. Terima kasih!`;
+
+        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(messageText)}`;
+        window.open(waUrl, '_blank');
+        showToast("Menghubungkan ke WhatsApp Admin...", "success");
+        return;
+      }
+
+      // JALUR 3: GOOGLE PLAY IN-APP BILLING (BRIDGE UNTUK APK ANDROID)
+      if (method === "google_play_billing") {
+        const fullSku = (economySettings.playSkuPrefix || "com.medidrama.") + skuKey;
+        
+        // Pengecekan Android Native Webview JavaScript Interface
+        if (window.AndroidBillingBridge && typeof window.AndroidBillingBridge.launchPurchaseFlow === 'function') {
+          showToast(`Menghubungkan ke Google Play Store Billing...`, "info");
+          window.AndroidBillingBridge.launchPurchaseFlow(fullSku, currentUser.uid);
+        } else {
+          // Simulasi di Web Browser
+          const confirmed = confirm(
+            `[Mode Google Play Active]\n` +
+            `Paket: ${packageName}\n` +
+            `SKU Produk: ${fullSku}\n` +
+            `Harga: Rp ${price.toLocaleString('id-ID')}\n\n` +
+            `Ketika dijalankan di aplikasi APK Android, jendela resmi Google Play akan terbuka otomatis.\n\n` +
+            `Apakah Anda ingin menguji aktivasi paket ini sekarang (Mode Uji Coba)?`
+          );
+
+          if (confirmed) {
+            if (type === 'vip') {
+              buyVipSubscription(value, packageName);
+            } else {
+              buyTopupCoins(value);
+            }
+          }
+        }
+      }
+    }
+
+    function openCoinShopModal() {
+      const modal = document.getElementById('coinShopModal');
+      const userCoin = document.getElementById('shopModalUserCoin');
+      if (userCoin) userCoin.innerText = currentUser.coins;
+      if (modal) {
+        modal.classList.remove('hidden');
+        pushModalState('coinShopModal');
+      }
+    }
+
+    function closeCoinShopModal() {
+      const modal = document.getElementById('coinShopModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function buyVipSubscription(days, title) {
+      if (!currentUser.uid) {
+        showToast("Silakan masuk/daftar akun terlebih dahulu untuk berlangganan!", "info");
+        openAuthModal();
+        return;
+      }
+
+      const currentExpiry = (currentUser.vipUntil && new Date(currentUser.vipUntil) > new Date())
+        ? new Date(currentUser.vipUntil)
+        : new Date();
+
+      currentExpiry.setDate(currentExpiry.getDate() + days);
+      currentUser.vipUntil = currentExpiry.toISOString();
+
+      syncUserDataToFirestore();
+      updateAuthUI(true);
+      closeCoinShopModal();
+      showToast(`🎉 Berhasil mengaktifkan ${title}! Bebas nonton semua episode tanpa koin.`, "success");
+    }
+
+    function buyTopupCoins(coins) {
+      if (!currentUser.uid) {
+        showToast("Silakan masuk akun terlebih dahulu!", "info");
+        openAuthModal();
+        return;
+      }
+
+      currentUser.promoCoins = (currentUser.promoCoins || 0) + coins;
+      currentUser.coins = (currentUser.dailyCoins || 0) + currentUser.promoCoins;
+
+      syncUserDataToFirestore();
+      updateAuthUI(true);
+      closeCoinShopModal();
+      showToast(`🪙 Berhasil top-up ${coins} Koin permanen!`, "success");
+    }
+
+    function applyBulkEpisodePricing() {
+      const freeCount = parseInt(document.getElementById('bulkFreeEpisodeCount').value) || 0;
+      const restCost = parseInt(document.getElementById('bulkRestCostAmount').value) || 0;
+
+      const boxes = document.querySelectorAll('#episodeFieldsContainer > div');
+      boxes.forEach((box, i) => {
+        const costInput = box.querySelector('.ep-cost');
+        if (costInput) {
+          costInput.value = (i < freeCount) ? 0 : restCost;
+        }
+      });
+      showToast(`Berhasil menerapkan: ${freeCount} episode gratis pertama, sisanya ${restCost} koin.`, "success");
+    }
+
+    async function saveEconomySettings() {
+      economySettings.guestFreeLimit = parseInt(document.getElementById('economySettingGuestFreeLimit').value) || 5;
+      economySettings.defaultEpisodeCost = parseInt(document.getElementById('economySettingDefaultEpisodeCost').value) || 30;
+      economySettings.dailyBonusAmount = parseInt(document.getElementById('economySettingDailyBonus').value) || 20;
+
+      economySettings.priceWeek = parseInt(document.getElementById('economySettingPriceWeek').value) || 19000;
+      economySettings.priceMonth = parseInt(document.getElementById('economySettingPriceMonth').value) || 49000;
+      economySettings.price6Month = parseInt(document.getElementById('economySettingPrice6Month').value) || 199000;
+      economySettings.priceYear = parseInt(document.getElementById('economySettingPriceYear').value) || 299000;
+
+      economySettings.paymentMethod = document.getElementById('economySettingPaymentMethod').value;
+      economySettings.lynkUrl = document.getElementById('economySettingLynkUrl').value.trim() || "https://lynk.id";
+      economySettings.whatsappNumber = document.getElementById('economySettingWhatsappNum').value.trim() || "6281200000000";
+      economySettings.playSkuPrefix = document.getElementById('economySettingPlaySkuPrefix').value.trim() || "com.medidrama.";
+
+      try {
+        if (db) {
+          await db.collection('settings').doc('economy').set(economySettings, { merge: true });
+        }
+        applyEconomySettingsUI();
+        showToast("Pengaturan ekonomi & gateway pembayaran berhasil disimpan ke Cloud!", "success");
+      } catch (err) {
+        showToast("Gagal menyimpan: " + err.message, "error");
+      }
     }
 
     function openAuthModal() {
@@ -2020,10 +2781,15 @@
           phone: "0811008888",
           gender: "Laki-laki",
           role: "FOUNDER-SUPER",
-          coins: 9999,
+          dailyCoins: 0,
+          promoCoins: 99999,
+          coins: 99999,
+          vipUntil: "2099-12-31T23:59:59.000Z",
           avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=160&auto=format&fit=crop&q=80",
           favorites: [],
-          history: []
+          history: [],
+          unlockedEpisodes: {},
+          claimedVouchers: []
         };
         localStorage.setItem('md_active_session', JSON.stringify(currentUser));
         updateAuthUI(true);
@@ -2077,12 +2843,18 @@
           name: currentUser.name,
           email: currentUser.email,
           photoURL: currentUser.avatar,
-          coins: currentUser.coins,
+          dailyCoins: currentUser.dailyCoins || 0,
+          promoCoins: currentUser.promoCoins || 0,
+          coins: (currentUser.dailyCoins || 0) + (currentUser.promoCoins || 0),
+          lastDailyClaimDate: currentUser.lastDailyClaimDate || "",
+          claimedVouchers: currentUser.claimedVouchers || [],
+          vipUntil: currentUser.vipUntil || null,
           gender: currentUser.gender || 'Belum disetel',
           phone: currentUser.phone || '-',
           role: currentUser.role,
           favorites: currentUser.favorites,
           history: currentUser.history,
+          unlockedEpisodes: currentUser.unlockedEpisodes || {},
           updatedAt: new Date().toISOString()
         }, { merge: true });
       }
@@ -2131,6 +2903,8 @@
     function openFounderModal() {
       switchFounderTab('movies');
       renderFounderManageTable();
+      renderVouchersTable();
+      applyEconomySettingsUI();
       const modal = document.getElementById('founderModal');
       if (modal) {
         modal.classList.remove('hidden');
@@ -2145,30 +2919,37 @@
 
     function switchFounderTab(tab) {
       const bM = document.getElementById('adminTabMoviesBtn');
+      const bE = document.getElementById('adminTabEconomyBtn');
+      const bV = document.getElementById('adminTabVouchersBtn');
       const bU = document.getElementById('adminTabUsersBtn');
-      const bF = document.getElementById('adminTabFirebaseBtn');
       const bA = document.getElementById('adminTabAdsBtn');
       
       const cM = document.getElementById('founderMoviesTabContent');
+      const cE = document.getElementById('founderEconomyTabContent');
+      const cV = document.getElementById('founderVouchersTabContent');
       const cU = document.getElementById('founderUsersTabContent');
-      const cF = document.getElementById('founderFirebaseTabContent');
       const cA = document.getElementById('founderAdsTabContent');
 
-      [bM, bU, bF, bA].forEach(b => { if (b) b.className = "py-3 px-4 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-2 flex-none"; });
-      [cM, cU, cF, cA].forEach(c => { if (c) c.classList.add('hidden'); });
+      [bM, bE, bV, bU, bA].forEach(b => { if (b) b.className = "py-3 px-3.5 text-xs font-bold text-gray-400 border-b-2 border-transparent flex items-center gap-1.5 flex-none"; });
+      [cM, cE, cV, cU, cA].forEach(c => { if (c) c.classList.add('hidden'); });
 
       if (tab === 'movies') {
-        if (bM) bM.className = "py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 flex-none";
+        if (bM) bM.className = "py-3 px-3.5 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-1.5 flex-none";
         if (cM) cM.classList.remove('hidden');
         renderFounderManageTable();
+      } else if (tab === 'economy') {
+        if (bE) bE.className = "py-3 px-3.5 text-xs font-bold text-amber-400 border-b-2 border-amber-400 flex items-center gap-1.5 flex-none";
+        if (cE) cE.classList.remove('hidden');
+      } else if (tab === 'vouchers') {
+        if (bV) bV.className = "py-3 px-3.5 text-xs font-bold text-emerald-400 border-b-2 border-emerald-400 flex items-center gap-1.5 flex-none";
+        if (cV) cV.classList.remove('hidden');
+        renderVouchersTable();
       } else if (tab === 'users') {
-        if (bU) bU.className = "py-3 px-4 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-2 flex-none";
+        if (bU) bU.className = "py-3 px-3.5 text-xs font-bold text-red-500 border-b-2 border-red-500 flex items-center gap-1.5 flex-none";
         if (cU) cU.classList.remove('hidden');
-      } else if (tab === 'firebase') {
-        if (bF) bF.className = "py-3 px-4 text-xs font-bold text-amber-500 border-b-2 border-amber-500 flex items-center gap-2 flex-none";
-        if (cF) cF.classList.remove('hidden');
+        fetchFirestoreUsers();
       } else if (tab === 'ads') {
-        if (bA) bA.className = "py-3 px-4 text-xs font-bold text-amber-400 border-b-2 border-amber-400 flex items-center gap-2 flex-none";
+        if (bA) bA.className = "py-3 px-3.5 text-xs font-bold text-amber-400 border-b-2 border-amber-400 flex items-center gap-1.5 flex-none";
         if (cA) cA.classList.remove('hidden');
       }
     }
@@ -2251,6 +3032,71 @@
       } catch (err) {
         showToast(err.message, "error");
       }
+    }
+
+    async function fetchFirestoreUsers() {
+      const tbody = document.getElementById('registeredUsersTableBody');
+      const badge = document.getElementById('statRegisteredUsersBadge');
+      if (!db) return;
+
+      try {
+        const snap = await db.collection('users').get();
+        registeredUsersList = snap.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
+        if (badge) badge.innerText = registeredUsersList.length;
+        if (!tbody) return;
+
+        tbody.innerHTML = registeredUsersList.map(u => {
+          const isVip = u.vipUntil && new Date(u.vipUntil) > new Date();
+          return `
+            <tr class="hover:bg-gray-800/30 transition">
+              <td class="p-3 font-bold text-white flex items-center gap-2">
+                <img src="${u.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'}" class="w-6 h-6 rounded-full object-cover" />
+                <div>
+                  <span>${u.name || 'Pengguna'}</span>
+                  <span class="text-[9px] text-gray-500 block font-mono">${u.id || u.uid}</span>
+                </div>
+              </td>
+              <td class="p-3 text-gray-300 font-mono text-[11px]">${u.email || '-'}<br><span class="text-amber-400 text-[10px]">${u.phone || '-'}</span></td>
+              <td class="p-3 font-mono">
+                <span class="text-amber-300 font-bold">${u.dailyCoins || 0}</span> / 
+                <span class="text-emerald-400 font-bold">${u.promoCoins || 0}</span>
+              </td>
+              <td class="p-3">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isVip ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-gray-800 text-gray-400'}">
+                  ${isVip ? 'VIP AKTIF' : 'REGULER'}
+                </span>
+              </td>
+              <td class="p-3 font-bold uppercase text-[10px] text-gray-300">${u.role || 'user'}</td>
+              <td class="p-3 text-right space-x-1 whitespace-nowrap">
+                <button onclick="rewardFirestoreCoins('${u.uid}', 100)" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 px-2 py-1 rounded text-[10px] font-bold border border-amber-500/30">
+                  +100 Koin
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error("Fetch users:", err);
+      }
+    }
+
+    async function rewardFirestoreCoins(uid, amount) {
+      if (!db) return;
+      try {
+        await db.collection('users').doc(uid).update({
+          promoCoins: firebase.firestore.FieldValue.increment(amount),
+          updatedAt: new Date().toISOString()
+        });
+        showToast(`+${amount} Koin promo permanen diberikan!`, "success");
+        fetchFirestoreUsers();
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    }
+
+    function refreshUsersRegistry() {
+      fetchFirestoreUsers();
+      showToast("Data pengguna disinkronkan!", "success");
     }
 
     function openUploadVideoModal() {
@@ -2351,7 +3197,6 @@
         const epCost = parseInt(box.querySelector('.ep-cost').value) || 0;
         const epDuration = box.querySelector('.ep-duration').value.trim() || '20 Min';
         const rawEpUrl = box.querySelector('.ep-url').value.trim();
-        // Konversi otomatis ke Cloudflare Worker
         const epUrl = formatCloudflareWorkerVideoUrl(rawEpUrl) || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
         const epSub = box.querySelector('.ep-sub') ? box.querySelector('.ep-sub').value.trim() : "";
         episodes.push({ epId: `e${i + 1}`, title: epTitle, duration: epDuration, cost: epCost, videoUrl: epUrl, subtitleUrl: epSub });
@@ -2373,11 +3218,11 @@
       try {
         if (editDocId) {
           if (db) await db.collection('movies').doc(editDocId).update(moviePayload);
-          showToast(`Serial "${title}" diperbarui! Link video otomatis dikonversi.`, "success");
+          showToast(`Serial "${title}" diperbarui!`, "success");
         } else {
           moviePayload.createdAt = firebase.firestore.FieldValue.serverTimestamp();
           if (db) await db.collection('movies').add(moviePayload);
-          showToast(`Serial "${title}" disimpan! Link video otomatis dikonversi.`, "success");
+          showToast(`Serial "${title}" disimpan ke koleksi "movies"!`, "success");
         }
 
         if (sendBroadcast && db) {
@@ -2434,7 +3279,6 @@
       adSettings.triggerEpisode = document.getElementById('adTriggerEpisode').checked;
       adSettings.freqEpisode = parseInt(document.getElementById('adFreqEpisode').value) || 3;
       adSettings.triggerHomeBanner = document.getElementById('adTriggerHomeBanner').checked;
-      adSettings.triggerStartup = document.getElementById('adTriggerStartup').checked;
 
       applyAdSettingsUI();
       showToast("Pengaturan iklan berhasil disimpan!", "success");
@@ -2532,10 +3376,20 @@
     }
 
     function claimDailyRewardCoins() {
-      currentUser.coins += 20;
+      const todayStr = new Date().toISOString().slice(0, 10);
+      if (currentUser.lastDailyClaimDate === todayStr) {
+        showToast("Anda sudah mengklaim bonus harian untuk hari ini!", "info");
+        return;
+      }
+
+      const bonus = economySettings.dailyBonusAmount || 20;
+      currentUser.dailyCoins = (currentUser.dailyCoins || 0) + bonus;
+      currentUser.coins = (currentUser.dailyCoins || 0) + (currentUser.promoCoins || 0);
+      currentUser.lastDailyClaimDate = todayStr;
+
       syncUserDataToFirestore();
       updateAuthUI(!!currentUser.uid);
-      showToast("+20 Koin harian berhasil diklaim!", "success");
+      showToast(`+${bonus} Koin harian berhasil diklaim untuk hari ini!`, "success");
     }
 
     function switchNavTab(tab) {
@@ -2604,7 +3458,7 @@
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
         toast.classList.add('translate-y-24', 'opacity-0');
-      }, 2400);
+      }, 2600);
     }
   </script>
 </body>
